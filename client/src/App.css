@@ -6,6 +6,7 @@ html {
 .background {
   position: absolute 0 0;
   width: 100vw;
+  min-height: 300px;
   height: 70vh;
   filter: contrast(100%) brightness(100%);
   background: radial-gradient(
@@ -16,7 +17,6 @@ html {
     ),
     url(noise.svg);
   display: block;
-  padding: 20vh;
 }
 
 h1 {
@@ -39,6 +39,9 @@ h1 {
 }
 
 .container {
-  border: 1px solid rgb(207, 207, 207);
+  /* border: 1px solid rgb(207, 207, 207); */
   border-radius: 10px;
+}
+
+.titlebox {
 }
