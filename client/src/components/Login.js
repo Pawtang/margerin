@@ -3,12 +3,12 @@ import "../styles/App.css";
 
 //components
 
-function App() {
+function Login() {
   return (
     <div className="container">
-      <p>App goes here</p>
+      <p>Login goes here</p>
     </div>
   );
 }
 
-export default App;
+export default Login;

@@ -1,4 +1,5 @@
 import { React, Fragment } from "react";
+import { Link } from "react-router-dom";
 import "../styles/Landing.css";
 
 const Landing = () => {
@@ -22,9 +23,11 @@ const Landing = () => {
             <h1 className="white display-6">
               Take the guesswork out of product costing
             </h1>
-            <button className="btn btn-lg btn-outline-light mt-2">
-              Try a Demo
-            </button>
+            <Link to="App.js">
+              <button className="btn btn-lg btn-outline-light mt-2">
+                Try a Demo
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -38,15 +41,15 @@ const Landing = () => {
           euismod quis eget lectus. Quisque ullamcorper, diam non mattis.
         </p>
         <div className="row text-center justify-content-between">
-          <div className="col-3 shadow align-items my-5">
+          <div className="col-3 shadow rounded my-5">
             <i class="bi bi-clipboard-data big-icon"></i>
             <p className="text-center">Record recipe data</p>
           </div>
-          <div className="col-3 shadow my-5">
+          <div className="col-3 shadow rounded my-5">
             <i class="bi bi-calculator big-icon"></i>
             <p className="text-center">Automatically calculate cost of goods</p>
           </div>
-          <div className="col-3 shadow my-5">
+          <div className="col-3 shadow rounded my-5">
             <i class="bi bi-cash-coin big-icon"></i>
             <p className="text-center">Set prices with confidence</p>
           </div>
