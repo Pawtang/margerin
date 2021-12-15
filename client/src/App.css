@@ -7,22 +7,26 @@ html {
   position: absolute 0 0;
   width: 100vw;
   min-height: 300px;
-  height: 70vh;
+  height: 60vh;
   filter: contrast(100%) brightness(100%);
   background: radial-gradient(
       circle at 0% 0%,
-      rgba(13, 0, 134, 0.88),
-      rgba(139, 81, 214, 0.7),
-      rgba(252, 212, 82, 0.4)
+      rgba(13, 0, 134, 0.99),
+      rgba(70, 36, 114, 0.7),
+      rgba(83, 61, 209, 0.4)
     ),
     url(noise.svg);
-  display: block;
 }
 
-h1 {
-  font-size: 4em;
+.hero {
+  height: 80%;
+}
+
+.title {
+  font-size: 6em;
   font-style: italic;
   color: white;
+  font-family: "Abril Fatface", sans-serif;
 }
 
 .butter {
@@ -38,10 +42,19 @@ h1 {
   height: 300px;
 }
 
-.container {
+div {
   /* border: 1px solid rgb(207, 207, 207); */
   border-radius: 10px;
 }
 
-.titlebox {
+.big-icon {
+  font-size: 4em;
+  padding: 0;
+}
+
+h2 {
+  margin: 20px auto;
+}
+
+. {
 }
