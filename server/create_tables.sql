@@ -1,13 +1,12 @@
 CREATE DATABASE db;
-USE db;
 
-CREATE TABLE public.product (
-    product_id INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
-    product_name VARCHAR (100) NOT NULL,
+CREATE TABLE  public.product (
+    product_id serial PRIMARY KEY NOT NULL,
+    product_name VARCHAR (100) UNIQUE NOT NULL,
     cost MONEY DEFAULT 0,
 );
 
-CREATE TABLE public.ingredient (
+CREATE TABLE  public.ingredient (
     ingredient_id INT PRIMARY KEY IDENTITY (1, 1) NOT NULL,
     ingredient_name VARCHAR (100) NOT NULL,
     unit VARCHAR (50) NOT NULL,
@@ -15,7 +14,7 @@ CREATE TABLE public.ingredient (
     FOREIGN KEY (supplier) REFERENCES db.supplier (supplier_id)
 );
     
-CREATE TABLE public.supplier (
+CREATE TABLE  public.supplier (
     supplier_id INT PRIMARY KEY IDENTITY (1, 1),
     supplier_name VARCHAR (100) NOT NULL,
     contact_name VARCHAR (100),
@@ -23,7 +22,7 @@ CREATE TABLE public.supplier (
     rating TINYINT,
 );
     
-CREATE TABLE public.product_has_ingredient (
+CREATE TABLE  public.product_has_ingredient (
     product_id INT NOT NULL
     ingredient_id INT NOT NULL
     CONSTRAINT PK_product_ingredient PRIMARY KEY
@@ -36,7 +35,7 @@ CREATE TABLE public.product_has_ingredient (
     quantity 
 );
     
-CREATE TABLE public.unit (
+CREATE TABLE  public.unit (
     unit_id INT PRIMARY KEY IDENTITY (1, 1),
     unit VARCHAR (100) NOT NULL,
 );

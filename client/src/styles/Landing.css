@@ -6,7 +6,7 @@ html {
 .background {
   position: absolute 0 0;
   width: 100vw;
-  min-height: 300px;
+  min-height: 400px;
   height: 60vh;
   filter: contrast(100%) brightness(100%);
   background: radial-gradient(
@@ -54,7 +54,4 @@ div {
 
 h2 {
   margin: 20px auto;
-}
-
-. {
 }

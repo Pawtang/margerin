@@ -1,9 +1,7 @@
-import React, { Fragment } from "react";
-import "./App.css";
+import { React, Fragment } from "react";
+import "../styles/Landing.css";
 
-//components
-
-function App() {
+const Landing = () => {
   return (
     <Fragment>
       <div className="container-fluid background">
@@ -42,7 +40,7 @@ function App() {
         <div className="row text-center justify-content-between">
           <div className="col-3 shadow align-items my-5">
             <i class="bi bi-clipboard-data big-icon"></i>
-            <p className="text-center">Record recipes data</p>
+            <p className="text-center">Record recipe data</p>
           </div>
           <div className="col-3 shadow my-5">
             <i class="bi bi-calculator big-icon"></i>
@@ -56,6 +54,6 @@ function App() {
       </div>
     </Fragment>
   );
-}
+};
 
-export default App;
+export default Landing;
