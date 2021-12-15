@@ -23,7 +23,7 @@ const Landing = () => {
             <h1 className="white display-6">
               Take the guesswork out of product costing
             </h1>
-            <Link to="App.js">
+            <Link to="app">
               <button className="btn btn-lg btn-outline-light mt-2">
                 Try a Demo
               </button>
