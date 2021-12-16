@@ -6,6 +6,7 @@ const Landing = () => {
   return (
     <Fragment>
       <div className="container-fluid background">
+        <div className="blurry"></div>
         <nav className="navbar bg-transparent">
           <div className="container justify-content-end mt-4">
             <button class="btn btn-light me-md-2" type="button">

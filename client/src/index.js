@@ -12,8 +12,8 @@ ReactDOM.render(
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="app" element={<App />} />
-      {/* <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login />} /> */}
+      <Route path="signup" element={<Signup />} />
+      <Route path="login" element={<Login />} />
     </Routes>
   </BrowserRouter>,
   // </React.StrictMode>,

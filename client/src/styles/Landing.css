@@ -3,12 +3,33 @@ html {
   font-family: sans-serif;
 }
 
-.background {
-  position: absolute 0 0;
+* {
+  box-sizing: border-box;
+}
+
+.blurry {
+  filter: blur(5px);
+  position: absolute;
+  background-image: url(../assets/bg.jpg);
+  background-size: cover;
+  background-position: center;
   width: 100vw;
   min-height: 400px;
   height: 60vh;
-  filter: contrast(100%) brightness(100%);
+  z-index: -1;
+  left: -5px;
+  top: -5px;
+  transform: scale(1.1);
+}
+
+.background {
+  overflow: hidden;
+  z-index: 1;
+  position: relative 0 0;
+  width: 100vw;
+  min-height: 400px;
+  height: 60vh;
+  /* filter: contrast(100%) brightness(100%); */
   /* background: radial-gradient(
       circle at 0% 0%,
       rgba(13, 0, 134, 0.99),
@@ -17,7 +38,7 @@ html {
     ),
     url(noise.svg); */
 
-  background: linear-gradient(231deg, #5d157a, #3420af, #efe844), url(noise.svg);
+  /* background: linear-gradient(231deg, #5d157a, #3420af, #efe844), url(noise.svg);
   background-size: 600% 600%;
 
   -webkit-animation: AnimationName 8s ease infinite;
@@ -56,7 +77,7 @@ html {
   }
   100% {
     background-position: 0% 13%;
-  }
+  } */
 }
 
 .hero {
