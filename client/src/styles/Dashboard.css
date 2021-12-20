@@ -14,3 +14,10 @@
     ),
     url(noise.svg);
 }
+
+.app-space {
+  width: 80%;
+  height: 800px;
+  background-color: gray;
+  margin: 20px auto;
+}

@@ -7,7 +7,9 @@ function Login() {
     <Fragment>
       <div className="navbar-clearance"></div>
       <div className="container">
-        <h1>Login</h1>
+        <div className="app-space">
+          <h1>Login</h1>
+        </div>
       </div>
     </Fragment>
   );

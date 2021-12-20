@@ -3,7 +3,9 @@ import React from "react";
 const Transactions = () => {
   return (
     <div className="container">
-      <h1>Transactions Manager</h1>
+      <div className="app-space">
+        <h1>Transactions</h1>
+      </div>
     </div>
   );
 };

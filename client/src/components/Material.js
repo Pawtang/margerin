@@ -5,7 +5,9 @@ import "../styles/Tables.css";
 const Material = () => {
   return (
     <div className="container">
-      <h1>Material.js</h1>
+      <div className="app-space">
+        <h1>Materials</h1>
+      </div>
     </div>
   );
 };

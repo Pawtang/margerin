@@ -5,7 +5,9 @@ const Contact = () => {
     <Fragment>
       <div className="navbar-clearance"></div>
       <div className="container">
-        <h1>Contact</h1>
+        <div className="app-space">
+          <h1>Contact</h1>
+        </div>
       </div>
     </Fragment>
   );

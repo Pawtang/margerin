@@ -6,7 +6,9 @@ const Dashboard = () => {
     <Fragment>
       <div className="navbar-clearance"></div>
       <div className="container">
-        <h1>Dashboard</h1>
+        <div className="app-space">
+          <h1>Dashboard</h1>
+        </div>
       </div>
     </Fragment>
   );

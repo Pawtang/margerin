@@ -5,7 +5,9 @@ const About = () => {
     <Fragment>
       <div className="navbar-clearance"></div>
       <div className="container">
-        <h1>About</h1>
+        <div className="app-space">
+          <h1>About</h1>
+        </div>
       </div>
     </Fragment>
   );

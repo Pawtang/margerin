@@ -5,7 +5,9 @@ import "../styles/Tables.css";
 const Product = () => {
   return (
     <div className="container">
-      <h1>Products Table</h1>
+      <div className="app-space">
+        <h1>Products</h1>
+      </div>
     </div>
   );
 };

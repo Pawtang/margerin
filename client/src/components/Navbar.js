@@ -1,13 +1,15 @@
 import { React, Fragment } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
-
+import logo from "../assets/margerin.png";
 const Navbar = () => {
   return (
     <nav className="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
       <div className="container">
         <Link to="/" class="navbar-brand">
-          <img src="./assets/margerin.png" alt="" width="30px" height="30px" />
+          <div className="box">
+            <h3 class="white">m</h3>
+          </div>
         </Link>
         <button
           class="navbar-toggler"

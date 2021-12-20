@@ -8,7 +8,9 @@ function Signup() {
     <Fragment>
       <div className="navbar-clearance"></div>
       <div className="container">
-        <h1>Sign up</h1>
+        <div className="app-space">
+          <h1>Signup</h1>
+        </div>
       </div>
     </Fragment>
   );
