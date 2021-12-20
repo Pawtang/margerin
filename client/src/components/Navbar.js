@@ -4,34 +4,55 @@ import "../styles/Navbar.css";
 
 const Navbar = () => {
   return (
-    <Fragment>
-      <nav className="navbar navbar-expand-lg">
-        <div className="container-fluid d-flex align-items-center">
-          <Link to="/">
-            <p className="navbar-brand">margerin</p>
-          </Link>
-          <div className="collapse navbar-collapse d-flex align-items-center">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link to="/app">
-                  <button className="btn btn-light">Demo</button>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/Login">
-                  <button className="btn btn-light">Log In</button>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/Signup">
-                  <button className="btn btn-light">Sign Up</button>
-                </Link>
-              </li>
-            </ul>
-          </div>
+    <nav className="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
+      <div className="container">
+        <Link to="/" class="navbar-brand">
+          margerin
+        </Link>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <div className="mx-auto"></div>
+          <ul className="navbar-nav">
+            <li className="nav-item me-0">
+              <Link to="/dashboard">
+                <button className="btn btn-outline-light">Dashboard</button>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/contact">
+                <button className="btn btn-outline-light">Contact</button>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/about">
+                <button className="btn btn-outline-light">About</button>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Login">
+                <button className="btn btn-outline-light">Log In</button>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/Signup">
+                <button className="btn btn-outline-light">Sign Up</button>
+              </Link>
+            </li>
+          </ul>
         </div>
-      </nav>
-    </Fragment>
+      </div>
+    </nav>
   );
 };
 

@@ -1,13 +1,15 @@
 import { React, Fragment } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Landing.css";
+import Navbar from "./Navbar";
 
 const Landing = () => {
   return (
     <Fragment>
+      <Navbar></Navbar>
       <div className="container-fluid background">
-        <div className="blurry"></div>
-        <nav className="navbar bg-transparent">
+        {/* <div className="blurry"></div> */}
+        {/* <nav className="navbar bg-transparent">
           <div className="container justify-content-end mt-4">
             <button class="btn btn-light me-md-2" type="button">
               Log In
@@ -16,7 +18,7 @@ const Landing = () => {
               Sign Up
             </button>
           </div>
-        </nav>
+        </nav> */}
 
         <div className="container-fluid d-flex align-items-center hero">
           <div className="container titlebox">
@@ -24,7 +26,7 @@ const Landing = () => {
             <h1 className="white display-6">
               Take the guesswork out of product costing
             </h1>
-            <Link to="app">
+            <Link to="dashboard">
               <button className="btn btn-lg btn-outline-light mt-2">
                 Try a Demo
               </button>

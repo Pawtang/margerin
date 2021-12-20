@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import "../styles/App.css";
 import Navbar from "./Navbar";
 
 //components
@@ -7,9 +6,9 @@ import Navbar from "./Navbar";
 function Signup() {
   return (
     <Fragment>
-      <Navbar />
+      <div className="navbar-clearance"></div>
       <div className="container">
-        <p>Signup goes here</p>
+        <h1>Sign up</h1>
       </div>
     </Fragment>
   );

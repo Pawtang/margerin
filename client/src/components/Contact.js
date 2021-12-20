@@ -1,16 +1,14 @@
-import React, { Fragment } from "react";
+import { React, Fragment } from "react";
 
-//components
-
-function Login() {
+const Contact = () => {
   return (
     <Fragment>
       <div className="navbar-clearance"></div>
       <div className="container">
-        <h1>Login</h1>
+        <h1>Contact</h1>
       </div>
     </Fragment>
   );
-}
+};
 
-export default Login;
+export default Contact;

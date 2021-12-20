@@ -1,6 +1,7 @@
-navbar {
-  background: black;
-  color: white;
+a {
   text-decoration: none;
-  color: white;
+}
+
+li {
+  margin: 5px;
 }
