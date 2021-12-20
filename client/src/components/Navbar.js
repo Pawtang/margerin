@@ -7,7 +7,7 @@ const Navbar = () => {
     <nav className="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
       <div className="container">
         <Link to="/" class="navbar-brand">
-          margerin
+          <img src="./assets/margerin.png" alt="" width="30px" height="30px" />
         </Link>
         <button
           class="navbar-toggler"
