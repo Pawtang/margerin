@@ -25,11 +25,12 @@
 }
 
 .square-image {
-  margin: 20px;
+  margin: 10px;
   width: 180px;
   height: 180px;
   background-image: url("../assets/mango.jpg");
   background-size: contain;
+  border: 2px solid black;
 }
 
 .habanero {

@@ -6,13 +6,13 @@ const Dashboard = () => {
   return (
     <Fragment>
       <div className="navbar-clearance"></div>
-      <div className="container">
-        <div className="row">
+      <div className="container ">
+        <div className="row ">
           <AppNav></AppNav>
         </div>
-        <div className="row gx-5">
-          <div className="col-3 ">
-            <div className="row  my-4">
+        <div className="row gx-5 shadow rounded-3">
+          <div className="col-3 border-end">
+            <div className="row my-4">
               <div className="col-8">
                 <input
                   type="search"
@@ -25,6 +25,7 @@ const Dashboard = () => {
                 <div className="btn btn-outline-dark">Search</div>
               </div>
             </div>
+
             <div className="row ">
               <table class="table table-hover">
                 <thead>
@@ -61,13 +62,10 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="col-9">
-            <div className="row mt-5">
-              <div className="col-6 gx-0">Buttons go here</div>
-            </div>
+          <div className="col-9 p-4 gx-5">
             <div className="row">
-              <div className="col gx-0">
-                <div className="square-image mx-auto"></div>
+              <div className="col">
+                <div className="square-image"></div>
               </div>
               <div className="col-8">
                 <h3>Mango Bolero</h3>

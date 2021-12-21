@@ -11,7 +11,7 @@ const Material = () => {
           <AppNav></AppNav>
         </div>
 
-        <div className="row ">
+        <div className="row shadow rounded-3 p-4">
           <div className="col ">
             <div className="row">
               <div className="col gx-0">
@@ -65,6 +65,15 @@ const Material = () => {
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div className="row">
+              <div className="col-3"></div>
+              <div className="col-6">
+                <button className="btn btn-outline-dark">
+                  New Transaction
+                </button>
+              </div>
+              <div className="col-3"></div>
             </div>
           </div>
         </div>
