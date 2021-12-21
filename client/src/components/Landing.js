@@ -1,6 +1,5 @@
 import { React, Fragment } from "react";
 import { Link } from "react-router-dom";
-import "../styles/Landing.css";
 import Navbar from "./Navbar";
 
 const Landing = () => {
@@ -38,19 +37,22 @@ const Landing = () => {
       <div className="container content">
         <h2>Lightweight and Affordable Tool for Small Businesses</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-          molestie in sapien id pretium. Aenean et varius augue. Sed varius sem
-          a metus ultrices varius. Donec egestas mauris ut ligula vestibulum
-          euismod quis eget lectus. Quisque ullamcorper, diam non mattis.
+          <br />
+          Margerin is a featherweight ERP platform designed to track the cost of
+          materials from your various suppliers over time. With predictive
+          analytics, you can have a clearer idea of how much your products cost
+          to make, and what your real profit margins are.
         </p>
         <div className="row text-center justify-content-between">
           <div className="col-3 shadow rounded my-5">
             <i class="bi bi-clipboard-data big-icon"></i>
-            <p className="text-center">Record recipe data</p>
+            <p className="text-center">Record material cost data</p>
           </div>
           <div className="col-3 shadow rounded my-5">
             <i class="bi bi-calculator big-icon"></i>
-            <p className="text-center">Automatically calculate cost of goods</p>
+            <p className="text-center">
+              Automatically calculate cost of goods sold
+            </p>
           </div>
           <div className="col-3 shadow rounded my-5">
             <i class="bi bi-cash-coin big-icon"></i>

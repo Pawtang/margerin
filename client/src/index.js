@@ -12,6 +12,8 @@ import Dashboard from "./components/Dashboard";
 import Suppliers from "./components/Suppliers";
 import Transactions from "./components/Transactions";
 import Navbar from "./components/Navbar";
+import "./styles/Styles.css";
+import "./styles/AppPage.css";
 
 ReactDOM.render(
   // <React.StrictMode>

@@ -1,5 +1,4 @@
 import { React, Fragment } from "react";
-import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   return (
