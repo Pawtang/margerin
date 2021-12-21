@@ -31,3 +31,17 @@
   background-image: url("../assets/mango.jpg");
   background-size: contain;
 }
+
+.habanero {
+  margin: 20px;
+  width: 180px;
+  height: 180px;
+  background-image: url("../assets/habanero.png");
+  background-size: cover;
+}
+
+img {
+  object-fit: cover;
+  width: 180px;
+  height: 180px;
+}

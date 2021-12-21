@@ -1,12 +1,20 @@
-import React from "react";
+import { React, Fragment } from "react";
+import { Link } from "react-router-dom";
+import AppNav from "./AppNav";
 
 const Transactions = () => {
   return (
-    <div className="container">
-      <div className="app-space">
-        <h1>Transactions</h1>
+    <Fragment>
+      <div className="navbar-clearance"></div>
+      <div className="container">
+        <div className="row">
+          <AppNav></AppNav>
+        </div>
+        <div className="app-space">
+          <h1>Transactions</h1>
+        </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

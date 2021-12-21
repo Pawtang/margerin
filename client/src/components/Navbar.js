@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="container">
         <Link to="/" class="navbar-brand">
           <div className="box">
-            <h3 class="white">m</h3>
+            <h3 class="white text-center">m</h3>
           </div>
         </Link>
         <button
