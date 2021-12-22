@@ -13,16 +13,60 @@ app.use(express.json()); //req.body
 //create a product
 app.post("/products", async (req, res) => {
   try {
-    const { description } = req.body;
+    console.log(req.body);
+    // const { product_name, product_description, product_image_path } = req.body;
     const newProduct = await pool.query(
-      "INSERT INTO todo (description) VALUES($1) RETURNING *",
-      [description]
+      `INSERT INTO product (product_name, product_description, product_image_path) VALUES(${product_name}, ${product_description}, ${product_image_path}) RETURNING *`
+    );
+    res.json(newProduct.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//create a material
+app.post("/materials", async (req, res) => {
+  try {
+    console.log(req.body);
+    // const { description } = req.body;
+    const newMaterial = await pool.query(
+      `INSERT INTO material (material_name, material_description, material_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
+    );
+    res.json(newMaterial.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//create a supplier
+app.post("/suppliers", async (req, res) => {
+  try {
+    console.log(req.body);
+    // const { description } = req.body;
+    const newSupplier = await pool.query(
+      `INSERT INTO supplier (supplier_name, supplier_description, supplier_rating, supplier_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
+    );
+    res.json(newSupplier.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Get all products
+app.post("/products", async (req, res) => {
+  try {
+    console.log(req.body);
+    // const { description } = req.body;
+    const newProduct = await pool.query(
+      `INSERT INTO products (product_name, product_description, product_image_path) VALUES(${product_name}, ${product_description}, ${product_image_path}) RETURNING *`
     );
     res.json(newProduct.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
 });
+
+//Create a Material
 
 //get all todos
 // app.get("/todos", async (req, res) => {
