@@ -10,7 +10,8 @@ const Dashboard = () => {
         <div className="row ">
           <AppNav></AppNav>
         </div>
-        <div className="row gx-5 shadow rounded-3">
+
+        <div className="row gx-5 shadow rounded-3 p-4">
           <div className="col-3 border-end">
             <div className="row my-4">
               <div className="col-8">

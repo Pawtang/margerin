@@ -11,19 +11,23 @@ const Product = () => {
           <AppNav></AppNav>
         </div>
 
-        <div className="row shadow rounded-3 p-4">
+        <div className="row gx-5 shadow rounded-3 p-4">
           <div className="col ">
             <div className="row">
-              <div className="col gx-0">
+              <div className="col-2 gx-0">
                 <div className="square-image mx-auto"></div>
               </div>
-              <div className="col-8">
+              <div className="col-10">
                 <h3>Mango Bolero</h3>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Praesent eu gravida mauris. Donec at mi in nulla rhoncus
                   sollicitudin sit amet sit amet felis.
                 </p>
+                <h6>
+                  Average Cost to Produce:
+                  <span class="bg-success p-1 m-2 white rounded-3">$0.00</span>
+                </h6>
               </div>
             </div>
             <div className="row">
