@@ -1,20 +1,34 @@
 import { React, Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppNav from "./AppNav";
+import ProductHasMaterials from "./ProductHasMaterials";
 import "../styles/Dashboard.css";
 
 const Dashboard = () => {
+  const [product, setProduct] = useState([]);
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const displayProduct = () => {
-    console.log("Loading prod");
+  const URL_SERVER = "http://localhost:5000";
+
+  const displayProduct = async (id) => {
+    try {
+      const response = await fetch(`${URL_SERVER}/product/${id}`);
+      if (response.status != 200) {
+        throw "response is not 200";
+      }
+      const jsonData = await response.json();
+      console.log(jsonData);
+      setProduct(jsonData);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const getProducts = async () => {
     try {
-      const response = await fetch("http://localhost:5000/products");
+      const response = await fetch(`${URL_SERVER}/products`);
       if (response.status != 200) {
         throw "response is not 200";
       }
@@ -46,15 +60,15 @@ const Dashboard = () => {
   return (
     <Fragment>
       <div className="navbar-clearance"></div>
-      <div className="container">
+      <div className="container-xl">
         <div className="row ">
           <AppNav></AppNav>
         </div>
-
-        <div className="row gx-5 shadow rounded-3 p-4">
+        <div className="row shadow rounded-3 bg-white">
+          {/* /* ----------------------------- Product Search ----------------------------- */}
           <div className="col-3 border-end">
             <div className="row my-4">
-              <div className="col-11">
+              <div className="col-12">
                 <div class="input-group">
                   <span class="input-group-text" id="basic-addon1">
                     <svg
@@ -85,7 +99,10 @@ const Dashboard = () => {
             <div className="row  mx-0 limit-y">
               {filteredProducts.map((product) => (
                 <div className="row my-1">
-                  <button className="btn btn-outline-primary">
+                  <button
+                    className="btn btn-outline-primary"
+                    onClick={() => displayProduct(product.product_id)}
+                  >
                     <div className="row">
                       <div className="col-10 text-start">
                         {product.product_name}
@@ -112,26 +129,34 @@ const Dashboard = () => {
             </div>
           </div>
 
+          {/* /* ----------------------------- Product Profile ---------------------------- */}
+
           <div className="col-9 p-4 gx-5">
-            <div className="row">
-              <div className="col">
-                <div className="square-image"></div>
+            <div className="row mb-5 shadow-sm p-4 rounded-3">
+              <div className="col-3 pic-col">
+                <div className="square-image mx-auto m-0"></div>
               </div>
-              <div className="col-8">
-                <h3>Mango Bolero</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent eu gravida mauris. Donec at mi in nulla rhoncus
-                  sollicitudin sit amet sit amet felis.
-                </p>
+              <div className="col-8 ">
+                <div className="row">
+                  <h3 className="display-6">Mango Bolero</h3>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent eu gravida mauris. Donec at mi in nulla rhoncus
+                    sollicitudin sit amet sit amet felis.
+                  </p>
+                </div>
+                <div className="row p-4">
+                  <h3>
+                    <u>Cost Data</u>
+                  </h3>
+                  <p>Wholesale Cost:</p>
+                  <p>Direct to Customer Cost:</p>
+                  <p>Wholesale Cost:</p>
+                </div>
               </div>
             </div>
-            <div className="row">
-              <h3>Cost Data</h3>
-              <p>Wholesale Cost:</p>
-              <p>Direct to Customer Cost:</p>
-              <p>Wholesale Cost:</p>
-            </div>
+
+            <ProductHasMaterials />
           </div>
         </div>
       </div>

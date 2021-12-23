@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json()); //req.body
 
 //ROUTES//
-
+/* ----------------------------- CREATE METHODS ----------------------------- */
 //create a product
 app.post("/products", async (req, res) => {
   try {
@@ -25,7 +25,21 @@ app.post("/products", async (req, res) => {
   }
 });
 
-//create a material
+//create a material - rarely used
+app.post("/materials", async (req, res) => {
+  try {
+    console.log(req.body);
+    // const { description } = req.body;
+    const newMaterial = await pool.query(
+      `INSERT INTO material (material_name, material_description, material_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
+    );
+    res.json(newMaterial.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Create a material in context of product - primary method
 app.post("/materials", async (req, res) => {
   try {
     console.log(req.body);
@@ -53,6 +67,11 @@ app.post("/suppliers", async (req, res) => {
   }
 });
 
+//Create a transaction
+
+//Create
+
+/* ------------------------------- GET METHODS ------------------------------ */
 //Get all products
 app.get("/products", async (req, res) => {
   try {
@@ -64,7 +83,18 @@ app.get("/products", async (req, res) => {
   }
 });
 
-//Create a Material
+//get a todo
+app.get("/todos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
+      id,
+    ]);
+    res.json(todo.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 //get all todos
 // app.get("/todos", async (req, res) => {
@@ -76,18 +106,7 @@ app.get("/products", async (req, res) => {
 //   }
 // });
 
-// //get a todo
-// app.get("/todos/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
-//       id,
-//     ]);
-//     res.json(todo.rows[0]);
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
+/* ----------------------------- UPDATE METHODS ----------------------------- */
 
 // //update a todo
 // app.put("/todos/:id", async (req, res) => {
@@ -105,6 +124,8 @@ app.get("/products", async (req, res) => {
 //   }
 // });
 
+/* ----------------------------- DELETE METHODS ----------------------------- */
+
 // //delete a todo
 // app.delete("/todos/:id", async (req, res) => {
 //   try {
@@ -117,6 +138,8 @@ app.get("/products", async (req, res) => {
 //     console.error(err.message);
 //   }
 // });
+
+/* ------------------------------- END METHODS ------------------------------ */
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");

@@ -1,6 +1,7 @@
 import { React, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import "../styles/Styles.css";
 
 const Landing = () => {
   return (
@@ -44,17 +45,17 @@ const Landing = () => {
           to make, and what your real profit margins are.
         </p>
         <div className="row text-center justify-content-between">
-          <div className="col-3 shadow rounded my-5">
+          <div className="col-3 shadow rounded my-5 bg-white">
             <i class="bi bi-clipboard-data big-icon"></i>
             <p className="text-center">Record material cost data</p>
           </div>
-          <div className="col-3 shadow rounded my-5">
+          <div className="col-3 shadow rounded my-5 bg-white">
             <i class="bi bi-calculator big-icon"></i>
             <p className="text-center">
               Automatically calculate cost of goods sold
             </p>
           </div>
-          <div className="col-3 shadow rounded my-5">
+          <div className="col-3 shadow rounded my-5 bg-white">
             <i class="bi bi-cash-coin big-icon"></i>
             <p className="text-center">Set prices with confidence</p>
           </div>

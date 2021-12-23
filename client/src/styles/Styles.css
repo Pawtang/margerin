@@ -1,10 +1,11 @@
 html {
   font-family: sans-serif;
 }
-/* 
-div {
-  border: 1px solid red;
-} */
+
+body {
+  background-image: url("../assets/memphis-mini.png");
+  height: 100%;
+}
 
 * {
   box-sizing: border-box;
@@ -13,7 +14,7 @@ div {
 .blurry {
   filter: blur(5px);
   position: absolute;
-  background-image: url(../assets/bg.jpg);
+  /* background-image: url(../assets/bg.jpg); */
   background-size: cover;
   background-position: center;
   width: 100vw;
@@ -129,5 +130,6 @@ h2 {
   font-weight: 100;
 }
 
-.description {
+.pic-col {
+  min-width: 100px;
 }
