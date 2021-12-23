@@ -34,7 +34,6 @@ const Product = () => {
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Material</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Unit</th>
@@ -43,7 +42,6 @@ const Product = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">1</th>
                     <td>Mango</td>
                     <td>16</td>
                     <td>Each</td>
@@ -63,7 +61,6 @@ const Product = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">2</th>
                     <td>Habaneros</td>
                     <td>12</td>
                     <td>lb</td>
@@ -83,7 +80,6 @@ const Product = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">3</th>
                     <td>Vinegar</td>
                     <td>3</td>
                     <td>Cups</td>

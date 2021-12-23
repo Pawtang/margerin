@@ -14,11 +14,12 @@ app.use(express.json()); //req.body
 app.post("/products", async (req, res) => {
   try {
     console.log(req.body);
-    // const { product_name, product_description, product_image_path } = req.body;
+    const { product_name, product_description, product_image_path } = req.body;
     const newProduct = await pool.query(
-      `INSERT INTO product (product_name, product_description, product_image_path) VALUES(${product_name}, ${product_description}, ${product_image_path}) RETURNING *`
+      `INSERT INTO product (product_name, product_description, product_image_path) VALUES('${product_name}', '${product_description}', '${product_image_path}') RETURNING *`
     );
-    res.json(newProduct.rows);
+    console.log(newProduct);
+    res.json(newProduct.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
@@ -32,7 +33,7 @@ app.post("/materials", async (req, res) => {
     const newMaterial = await pool.query(
       `INSERT INTO material (material_name, material_description, material_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
     );
-    res.json(newMaterial.rows);
+    res.json(newMaterial.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
@@ -46,21 +47,18 @@ app.post("/suppliers", async (req, res) => {
     const newSupplier = await pool.query(
       `INSERT INTO supplier (supplier_name, supplier_description, supplier_rating, supplier_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
     );
-    res.json(newSupplier.rows);
+    res.status(201).json(newSupplier.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
 });
 
 //Get all products
-app.post("/products", async (req, res) => {
+app.get("/products", async (req, res) => {
   try {
-    console.log(req.body);
-    // const { description } = req.body;
-    const newProduct = await pool.query(
-      `INSERT INTO products (product_name, product_description, product_image_path) VALUES(${product_name}, ${product_description}, ${product_image_path}) RETURNING *`
-    );
-    res.json(newProduct.rows[0]);
+    const getAllProducts = await pool.query(`SELECT * FROM product`);
+    console.log(getAllProducts.rows);
+    res.status(200).json(getAllProducts.rows);
   } catch (err) {
     console.error(err.message);
   }

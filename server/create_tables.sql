@@ -24,15 +24,16 @@ CREATE TABLE IF NOT EXISTS public.supplier (
     
 CREATE TABLE IF NOT EXISTS public.product_has_ingredient (
     product_id INT NOT NULL,
-    ingredient_id INT NOT NULL,
+    material_id INT NOT NULL,
     CONSTRAINT PK_product_ingredient PRIMARY KEY,
     (
         product_id,
-        ingredient_id
+        material_id
     )
     FOREIGN KEY (product_id) REFERENCES product (product_id),
-    FOREIGN KEY (ingredient_id) REFERENCES ingredient (ingredient_id),
-    quantity 
+    FOREIGN KEY (material_id) REFERENCES material (material_id),
+    quantity,
+    unit
 );
     
 CREATE TABLE IF NOT EXISTS public.unit (
