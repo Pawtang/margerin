@@ -26,7 +26,7 @@ app.post("/products", async (req, res) => {
 });
 
 //create a material - rarely used
-app.post("/materials", async (req, res) => {
+app.post("/material", async (req, res) => {
   try {
     console.log(req.body);
     // const { description } = req.body;
@@ -40,14 +40,14 @@ app.post("/materials", async (req, res) => {
 });
 
 //Create a material in context of product - primary method
-app.post("/materials", async (req, res) => {
+app.post("/productHasMaterial", async (req, res) => {
   try {
     console.log(req.body);
     // const { description } = req.body;
-    const newMaterial = await pool.query(
-      `INSERT INTO material (material_name, material_description, material_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
+    const productHasMaterial = await pool.query(
+      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${product_id}, ${material_id}, ${unit_id}, ${quantity})`
     );
-    res.json(newMaterial.rows[0]);
+    res.json(productHasMaterial.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
@@ -83,18 +83,31 @@ app.get("/products", async (req, res) => {
   }
 });
 
-//get a todo
-app.get("/todos/:id", async (req, res) => {
+//get a product
+app.get("/product/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
-      id,
-    ]);
-    res.json(todo.rows[0]);
+    const getProduct = await pool.query(
+      `SELECT * FROM product WHERE product_id = ${id}`
+    );
+    res.json(getProduct.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
 });
+
+//get a todo
+// app.get("/todos/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
+//       id,
+//     ]);
+//     res.json(todo.rows[0]);
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// });
 
 //get all todos
 // app.get("/todos", async (req, res) => {

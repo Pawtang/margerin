@@ -21,6 +21,7 @@ const Dashboard = () => {
       const jsonData = await response.json();
       console.log(jsonData);
       setProduct(jsonData);
+      console.log(product);
     } catch (error) {
       console.error(error.message);
     }
@@ -33,7 +34,7 @@ const Dashboard = () => {
         throw "response is not 200";
       }
       const jsonData = await response.json();
-      console.log(jsonData);
+      // console.log(jsonData);
       setProducts(jsonData);
       setFilteredProducts(jsonData);
     } catch (err) {
@@ -43,6 +44,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getProducts();
+    displayProduct();
   }, []);
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const Dashboard = () => {
   return (
     <Fragment>
       <div className="navbar-clearance"></div>
-      <div className="container-xl">
+      <div className="container-xxl">
         <div className="row ">
           <AppNav></AppNav>
         </div>
@@ -68,7 +70,7 @@ const Dashboard = () => {
           {/* /* ----------------------------- Product Search ----------------------------- */}
           <div className="col-3 border-end">
             <div className="row my-4">
-              <div className="col-12">
+              <div className="col-11">
                 <div class="input-group">
                   <span class="input-group-text" id="basic-addon1">
                     <svg
@@ -97,6 +99,9 @@ const Dashboard = () => {
             </div>
 
             <div className="row  mx-0 limit-y">
+              <div className="row my-1">
+                <button className="btn btn-primary">Add New Product</button>
+              </div>
               {filteredProducts.map((product) => (
                 <div className="row my-1">
                   <button
@@ -137,15 +142,13 @@ const Dashboard = () => {
                 <div className="square-image mx-auto m-0"></div>
               </div>
               <div className="col-8 ">
-                <div className="row">
-                  <h3 className="display-6">Mango Bolero</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Praesent eu gravida mauris. Donec at mi in nulla rhoncus
-                    sollicitudin sit amet sit amet felis.
-                  </p>
-                </div>
-                <div className="row p-4">
+                {
+                  <div className="row">
+                    <h3 className="display-6">{product.product_name}</h3>
+                    <p>{product.product_description}</p>
+                  </div>
+                }
+                <div className="row p-4 shadow-sm">
                   <h3>
                     <u>Cost Data</u>
                   </h3>
