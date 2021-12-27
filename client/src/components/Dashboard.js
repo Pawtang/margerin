@@ -1,8 +1,9 @@
-import { React, Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import AppNav from "./AppNav";
-import ProductHasMaterials from "./ProductHasMaterials";
-import "../styles/Dashboard.css";
+import { React, Fragment, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import AppNav from './AppNav';
+import NewProduct from './NewProduct';
+import ProductHasMaterials from './ProductHasMaterials';
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const [product, setProduct] = useState([]);
@@ -10,13 +11,13 @@ const Dashboard = () => {
   const [search, setSearch] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const URL_SERVER = "http://localhost:5000";
+  const URL_SERVER = 'http://localhost:5000';
 
   const displayProduct = async (id) => {
     try {
       const response = await fetch(`${URL_SERVER}/product/${id}`);
       if (response.status != 200) {
-        throw "response is not 200";
+        throw 'response is not 200';
       }
       const jsonData = await response.json();
       console.log(jsonData);
@@ -31,7 +32,7 @@ const Dashboard = () => {
     try {
       const response = await fetch(`${URL_SERVER}/products`);
       if (response.status != 200) {
-        throw "response is not 200";
+        throw 'response is not 200';
       }
       const jsonData = await response.json();
       // console.log(jsonData);
@@ -49,7 +50,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     let newFilteredProducts;
-    if (search && search !== "") {
+    if (search && search !== '') {
       newFilteredProducts = products.filter((product) =>
         product.product_name.toLowerCase().includes(search.toLowerCase())
       );
@@ -61,6 +62,31 @@ const Dashboard = () => {
 
   return (
     <Fragment>
+      {/* ---------------------------------- Modal --------------------------------- */}
+      <div className="modal" id="NewProduct" tabIndex={-1}>
+        <div class="modal-dialog modal-dialog-centered">
+          <div className="modal-content p-4">
+            <div className="modal-header">
+              <h3 class="modal-title">New Product</h3>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <label htmlFor="NewProductName">Product Name</label>
+              <input type="text" className="form-control" id="NewProductName" />
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-primary">Submit</button>
+              <button className="btn btn-warning">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* -------------------------------- APPNAV ------------------------------- */}
       <div className="navbar-clearance"></div>
       <div className="container-xxl">
         <div className="row ">
@@ -100,7 +126,14 @@ const Dashboard = () => {
 
             <div className="row  mx-0 limit-y">
               <div className="row my-1">
-                <button className="btn btn-primary">Add New Product</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => console.log('module')}
+                  data-bs-toggle="modal"
+                  data-bs-target="#NewProduct"
+                >
+                  Add New Product
+                </button>
               </div>
               {filteredProducts.map((product) => (
                 <div className="row my-1">

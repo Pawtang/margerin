@@ -1,10 +1,5 @@
-INSERT INTO supplier (supplier_name, supplier_description, supplier_rating, supplier_image_path)
-VALUES('Restaurant Depot', 'Big, expensive restaurant store', '3', ''), 
-      ('Abrams Tanks R Us', 'Finest tanks this side of the Berlin Wall', '5', ''),
-      ('Lagunitas', 'Chicago Beers, the good kind', '5', ''),
-      ('Ben & Ben Co', 'Chicago''s finest hot sauce', '5', ''),
-      ('Apple', 'Expensive hardware', '4', ''),
-      ('Tooth Fairy', 'Scam, rip-off, doesn''t scale with inflation', '1', '');
+INSERT INTO supplier (supplier_name, contact_name, phone, rating, supplier_image_path)
+VALUES('Restaurant Depot', 'Big Tony', '555-555-5555', '4');
 
 
 INSERT INTO product (product_name, product_description, product_image_path)

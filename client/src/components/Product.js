@@ -11,7 +11,7 @@ const Product = () => {
           <AppNav></AppNav>
         </div>
 
-        <div className="row gx-5 shadow rounded-3 p-4">
+        <div className="row shadow rounded-3 bg-white p-4">
           <div className="col ">
             <div className="row">
               <div className="col-2 gx-0">
@@ -30,7 +30,7 @@ const Product = () => {
                 </h6>
               </div>
             </div>
-            <div className="row">
+            <div className="row mt-5">
               <table class="table table-hover">
                 <thead>
                   <tr>
