@@ -27,6 +27,13 @@ const Dashboard = () => {
     }
   };
 
+  const addProduct = async (productName) => {
+    try {
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   const getProducts = async () => {
     try {
       const response = await fetch(`${URL_SERVER}/products`);
@@ -61,6 +68,55 @@ const Dashboard = () => {
 
   return (
     <Fragment>
+      {/* ---------------------------------- Modal --------------------------------- */}
+      <div class="modal" tabindex="-1" id="newProductModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Product</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <label for="productName" class="form-label">
+                Product Name
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="productName"
+                aria-describedby="productName"
+              />
+              <label for="productDescription" class="form-label">
+                Product Description
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="productDescription"
+                aria-describedby="productDescription"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* --------------------------------- Navbar --------------------------------- */}
       <div className="navbar-clearance"></div>
       <div className="container-xxl">
         <div className="row ">
@@ -100,7 +156,13 @@ const Dashboard = () => {
 
             <div className="row  mx-0 limit-y">
               <div className="row my-1">
-                <button className="btn btn-primary">Add New Product</button>
+                <button
+                  className="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#newProductModal"
+                >
+                  Add New Product
+                </button>
               </div>
               {filteredProducts.map((product) => (
                 <div className="row my-1">
