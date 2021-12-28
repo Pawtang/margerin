@@ -11,15 +11,15 @@ app.use(express.json()); //req.body
 //ROUTES//
 /* ----------------------------- CREATE METHODS ----------------------------- */
 //create a product
-app.post("/products", async (req, res) => {
+app.post("/product", async (req, res) => {
   try {
-    console.log(req.body);
-    const { product_name, product_description, product_image_path } = req.body;
+    const { newProductName, newProductDescription } = req.body;
+    console.log("back end", req.body);
     const newProduct = await pool.query(
-      `INSERT INTO product (product_name, product_description, product_image_path) VALUES('${product_name}', '${product_description}', '${product_image_path}') RETURNING *`
+      `INSERT INTO product (product_name, product_description) VALUES('${newProductName}', '${newProductDescription}') RETURNING *`
     );
-    console.log(newProduct);
-    res.json(newProduct.rows[0]);
+    // console.log(newProduct);
+    res.json(newProduct.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -76,7 +76,7 @@ app.post("/suppliers", async (req, res) => {
 app.get("/products", async (req, res) => {
   try {
     const getAllProducts = await pool.query(`SELECT * FROM product`);
-    console.log(getAllProducts.rows);
+    // console.log(getAllProducts.rows);
     res.status(200).json(getAllProducts.rows);
   } catch (err) {
     console.error(err.message);
@@ -138,6 +138,18 @@ app.get("/product/:id", async (req, res) => {
 // });
 
 /* ----------------------------- DELETE METHODS ----------------------------- */
+
+app.delete("/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteProduct = await pool.query(
+      `DELETE FROM product WHERE product_id = ${id}`
+    );
+    res.json("Product deleted!");
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 // //delete a todo
 // app.delete("/todos/:id", async (req, res) => {

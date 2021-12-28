@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS supplier (
     supplier_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     supplier_name VARCHAR (100) NOT NULL,
     contact_name VARCHAR (100),
-    phone VARCHAR (15),
-    rating INT
+    supplier_phone VARCHAR (15),
+    supplier_rating INT
 );
 
 CREATE TABLE IF NOT EXISTS unit (

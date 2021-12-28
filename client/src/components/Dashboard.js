@@ -9,6 +9,8 @@ const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [newProductName, setNewProductName] = useState([]);
+  const [newProductDescription, setnewProductDescription] = useState([]);
 
   const URL_SERVER = "http://localhost:5000";
 
@@ -22,15 +24,27 @@ const Dashboard = () => {
       console.log(jsonData);
       setProduct(jsonData);
       console.log(product);
-    } catch (error) {
-      console.error(error.message);
+    } catch (err) {
+      console.error(err.message);
     }
   };
 
-  const addProduct = async (productName) => {
+  const addProduct = async (e) => {
+    e.preventDefault();
     try {
-    } catch (error) {
-      console.error(error.message);
+      const body = { newProductName, newProductDescription };
+      console.log("Front end", body);
+      const response = await fetch(`${URL_SERVER}/product`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (response.status != 200) {
+        throw "response is not 200";
+      }
+      getProducts();
+    } catch (err) {
+      console.error(err.message);
     }
   };
 
@@ -44,6 +58,19 @@ const Dashboard = () => {
       // console.log(jsonData);
       setProducts(jsonData);
       setFilteredProducts(jsonData);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    try {
+      const deleteProduct = await fetch(`${URL_SERVER}/product/${id}`, {
+        method: "DELETE",
+      });
+      setProducts(products.filter((product) => product.product_id !== id));
+      getProducts();
+      displayProduct(products[0].product_id);
     } catch (err) {
       console.error(err.message);
     }
@@ -66,10 +93,16 @@ const Dashboard = () => {
     setFilteredProducts(newFilteredProducts);
   }, [search]);
 
+  const clearEntry = () => {
+    setNewProductName("");
+    setnewProductDescription("");
+  };
+
   return (
     <Fragment>
+      {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
       {/* ---------------------------------- Modal --------------------------------- */}
-      <div class="modal" tabindex="-1" id="newProductModal">
+      <div class="modal fade" tabindex="-1" id="newProductModal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
@@ -79,39 +112,49 @@ const Dashboard = () => {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={(e) => clearEntry()}
               ></button>
             </div>
             <div class="modal-body">
-              <label for="productName" class="form-label">
-                Product Name
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="productName"
-                aria-describedby="productName"
-              />
-              <label for="productDescription" class="form-label">
-                Product Description
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="productDescription"
-                aria-describedby="productDescription"
-              />
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
-              </button>
+              <form action="" onSubmit={addProduct}>
+                <label for="productName" class="form-label">
+                  Product Name
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="productName"
+                  value={newProductName}
+                  onChange={(e) => setNewProductName(e.target.value)}
+                />
+                <label for="productDescription" class="form-label">
+                  Product Description
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="productDescription"
+                  value={newProductDescription}
+                  onChange={(e) => setnewProductDescription(e.target.value)}
+                />
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    onClick={(e) => clearEntry()}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    data-bs-dismiss="modal"
+                  >
+                    Add product
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -201,7 +244,21 @@ const Dashboard = () => {
           <div className="col-9 p-4 gx-5">
             <div className="row mb-5 shadow-sm p-4 rounded-3">
               <div className="col-3 pic-col">
-                <div className="square-image mx-auto m-0"></div>
+                <div className="square-image mx-auto">
+                  <img src="/assets/mango.jpg" class="img-fluid" alt="" />
+                </div>
+                <div class="row p-4 gy-2">
+                  <button class="btn btn-primary" type="button">
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    type="button"
+                    onClick={() => deleteProduct(product.product_id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
               <div className="col-8 ">
                 {
