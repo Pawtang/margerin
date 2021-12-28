@@ -96,6 +96,18 @@ app.get("/product/:id", async (req, res) => {
   }
 });
 
+//Get all materials for product
+app.post("/productHasMaterials", async (req, res) => {
+  try {
+    console.log(req.body);
+    // const { description } = req.body;
+    const productHasMaterial = await pool.query(`SELECT FROM `); //TODO: Build SQL query to get all materials for product
+    res.json(productHasMaterial.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //get a todo
 // app.get("/todos/:id", async (req, res) => {
 //   try {

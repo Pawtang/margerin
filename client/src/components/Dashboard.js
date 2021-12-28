@@ -63,6 +63,12 @@ const Dashboard = () => {
     }
   };
 
+  const getMaterialsForProduct = async () => {
+    try {
+      const response = await fetch(`${URL_SERVER}/productHasMaterials`);
+    } catch (error) {}
+  };
+
   const deleteProduct = async (id) => {
     try {
       const deleteProduct = await fetch(`${URL_SERVER}/product/${id}`, {
@@ -96,6 +102,10 @@ const Dashboard = () => {
   const clearEntry = () => {
     setNewProductName("");
     setnewProductDescription("");
+  };
+
+  const renderInitial = () => {
+    displayProduct(products[0].product_id);
   };
 
   return (
