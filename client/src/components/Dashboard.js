@@ -20,10 +20,8 @@ const Dashboard = () => {
       if (response.status != 200) {
         throw "response is not 200";
       }
-      const jsonData = await response.json();
-      console.log(jsonData);
-      setProduct(jsonData);
-      console.log(product);
+      const productData = await response.json();
+      setProduct(productData);
     } catch (err) {
       console.error(err.message);
     }
@@ -54,19 +52,14 @@ const Dashboard = () => {
       if (response.status != 200) {
         throw "response is not 200";
       }
-      const jsonData = await response.json();
+      const productArray = await response.json();
       // console.log(jsonData);
-      setProducts(jsonData);
-      setFilteredProducts(jsonData);
+      setProducts(productArray);
+      setFilteredProducts(productArray);
+      setProduct(productArray[0]);
     } catch (err) {
       console.error(err.message);
     }
-  };
-
-  const getMaterialsForProduct = async () => {
-    try {
-      const response = await fetch(`${URL_SERVER}/productHasMaterials`);
-    } catch (error) {}
   };
 
   const deleteProduct = async (id) => {
@@ -104,9 +97,7 @@ const Dashboard = () => {
     setnewProductDescription("");
   };
 
-  const renderInitial = () => {
-    displayProduct(products[0].product_id);
-  };
+  // console.log(product.product_id);
 
   return (
     <Fragment>
@@ -177,7 +168,7 @@ const Dashboard = () => {
         </div>
         <div className="row shadow rounded-3 bg-white">
           {/* /* ----------------------------- Product Search ----------------------------- */}
-          <div className="col-3 border-end">
+          <div className="col-5 col-md-3 border-end">
             <div className="row my-4">
               <div className="col-11">
                 <div class="input-group">
@@ -251,7 +242,7 @@ const Dashboard = () => {
 
           {/* /* ----------------------------- Product Profile ---------------------------- */}
 
-          <div className="col-9 p-4 gx-5">
+          <div className="col-7 col-md-9 p-4 gx-5">
             <div className="row mb-5 shadow-sm p-4 rounded-3">
               <div className="col-3 pic-col">
                 <div className="square-image mx-auto">
@@ -273,22 +264,18 @@ const Dashboard = () => {
               <div className="col-8 ">
                 {
                   <div className="row">
-                    <h3 className="display-6">{product.product_name}</h3>
+                    <h1>{product.product_name}</h1>
                     <p>{product.product_description}</p>
                   </div>
                 }
-                <div className="row p-4 shadow-sm">
-                  <h3>
-                    <u>Cost Data</u>
-                  </h3>
-                  <p>Wholesale Cost:</p>
-                  <p>Direct to Customer Cost:</p>
-                  <p>Wholesale Cost:</p>
-                </div>
+                <h3>Cost Data</h3>
+                <p>Wholesale Cost:</p>
+                <p>Direct to Customer Cost:</p>
+                <p>Wholesale Cost:</p>
               </div>
             </div>
 
-            <ProductHasMaterials />
+            <ProductHasMaterials productID={product.product_id} />
           </div>
         </div>
       </div>

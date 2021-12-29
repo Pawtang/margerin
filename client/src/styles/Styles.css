@@ -129,13 +129,3 @@ h2 {
   font-size: 1.2em;
   font-weight: 100;
 }
-
-.pic-col {
-  min-width: 100px;
-}
-
-.modal-open .container-fluid,
-.modal-open .container,
-.modal-open .row {
-  -webkit-filter: blur(2px) grayscale(50%);
-}

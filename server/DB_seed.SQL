@@ -73,3 +73,7 @@ VALUES('mm', 'length'),
       ('week', 'time'),
       ('month', 'time'),
       ('year', 'time');
+
+INSERT INTO product_has_material (product_id, material_id, unit_id, quantity)
+VALUES('81', '5', '24', '5');
+      ('53', '1', '5', '25');

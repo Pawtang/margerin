@@ -25,7 +25,7 @@ app.post("/product", async (req, res) => {
   }
 });
 
-//create a material - rarely used
+//create a material
 app.post("/material", async (req, res) => {
   try {
     console.log(req.body);
@@ -43,11 +43,11 @@ app.post("/material", async (req, res) => {
 app.post("/productHasMaterial", async (req, res) => {
   try {
     console.log(req.body);
-    // const { description } = req.body;
+    const { productID, newMaterial, newUnit, newQuantity } = req.body;
     const productHasMaterial = await pool.query(
-      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${product_id}, ${material_id}, ${unit_id}, ${quantity})`
+      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${productID}, ${newMaterial}, ${newUnit}, ${newQuantity}) RETURNING *`
     );
-    res.json(productHasMaterial.rows[0]);
+    res.json(productHasMaterial.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -67,10 +67,6 @@ app.post("/suppliers", async (req, res) => {
   }
 });
 
-//Create a transaction
-
-//Create
-
 /* ------------------------------- GET METHODS ------------------------------ */
 //Get all products
 app.get("/products", async (req, res) => {
@@ -78,6 +74,27 @@ app.get("/products", async (req, res) => {
     const getAllProducts = await pool.query(`SELECT * FROM product`);
     // console.log(getAllProducts.rows);
     res.status(200).json(getAllProducts.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Get all materials
+app.get("/materials", async (req, res) => {
+  try {
+    const getAllMaterials = await pool.query(`SELECT * FROM material`);
+    // console.log(getAllProducts.rows);
+    res.status(200).json(getAllMaterials.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Get all units
+app.get("/units", async (req, res) => {
+  try {
+    const getAllUnits = await pool.query(`SELECT * FROM unit`);
+    res.status(200).json(getAllUnits.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -97,12 +114,17 @@ app.get("/product/:id", async (req, res) => {
 });
 
 //Get all materials for product
-app.post("/productHasMaterials", async (req, res) => {
+app.get("/productHasMaterials/:id", async (req, res) => {
   try {
     console.log(req.body);
-    // const { description } = req.body;
-    const productHasMaterial = await pool.query(`SELECT FROM `); //TODO: Build SQL query to get all materials for product
-    res.json(productHasMaterial.rows[0]);
+    const { id } = req.params;
+    const relatedMaterials = await pool.query(
+      `SELECT m.material_name, phm.quantity, u.unit_name FROM material m 
+      INNER JOIN product_has_material phm ON (m.material_id = phm.material_id) 
+      INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
+    );
+    res.json(relatedMaterials.rows);
+    console.log(relatedMaterials.rows);
   } catch (err) {
     console.error(err.message);
   }
