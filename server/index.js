@@ -71,7 +71,9 @@ app.post("/suppliers", async (req, res) => {
 //Get all products
 app.get("/products", async (req, res) => {
   try {
-    const getAllProducts = await pool.query(`SELECT * FROM product`);
+    const getAllProducts = await pool.query(
+      `SELECT * FROM product ORDER BY product_name ASC`
+    );
     // console.log(getAllProducts.rows);
     res.status(200).json(getAllProducts.rows);
   } catch (err) {
@@ -173,6 +175,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
 
 /* ----------------------------- DELETE METHODS ----------------------------- */
 
+//TODO: Delete all product_id's from phm table
 app.delete("/product/:id", async (req, res) => {
   try {
     const { id } = req.params;

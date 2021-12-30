@@ -2,6 +2,12 @@ import { React, Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppNav from "./AppNav";
 import ProductHasMaterials from "./ProductHasMaterials";
+import {
+  displayProduct,
+  addProduct,
+  getProducts,
+  deleteProduct,
+} from "../middleware/DashboardUtils";
 import "../styles/Dashboard.css";
 
 const Dashboard = () => {
@@ -12,72 +18,9 @@ const Dashboard = () => {
   const [newProductName, setNewProductName] = useState([]);
   const [newProductDescription, setnewProductDescription] = useState([]);
 
-  const URL_SERVER = "http://localhost:5000";
-
-  const displayProduct = async (id) => {
-    try {
-      const response = await fetch(`${URL_SERVER}/product/${id}`);
-      if (response.status != 200) {
-        throw "response is not 200";
-      }
-      const productData = await response.json();
-      setProduct(productData);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const addProduct = async (e) => {
-    e.preventDefault();
-    try {
-      const body = { newProductName, newProductDescription };
-      console.log("Front end", body);
-      const response = await fetch(`${URL_SERVER}/product`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (response.status != 200) {
-        throw "response is not 200";
-      }
-      getProducts();
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const getProducts = async () => {
-    try {
-      const response = await fetch(`${URL_SERVER}/products`);
-      if (response.status != 200) {
-        throw "response is not 200";
-      }
-      const productArray = await response.json();
-      // console.log(jsonData);
-      setProducts(productArray);
-      setFilteredProducts(productArray);
-      setProduct(productArray[0]);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const deleteProduct = async (id) => {
-    try {
-      const deleteProduct = await fetch(`${URL_SERVER}/product/${id}`, {
-        method: "DELETE",
-      });
-      setProducts(products.filter((product) => product.product_id !== id));
-      getProducts();
-      displayProduct(products[0].product_id);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
   useEffect(() => {
-    getProducts();
-    displayProduct();
+    getProducts(setProducts, setFilteredProducts, setProduct);
+    displayProduct(setProduct);
   }, []);
 
   useEffect(() => {
@@ -91,6 +34,11 @@ const Dashboard = () => {
     }
     setFilteredProducts(newFilteredProducts);
   }, [search]);
+
+  const handleAddProduct = (e) => {
+    const body = { newProductName, newProductDescription };
+    addProduct(e, body);
+  };
 
   const clearEntry = () => {
     setNewProductName("");
@@ -117,7 +65,7 @@ const Dashboard = () => {
               ></button>
             </div>
             <div class="modal-body">
-              <form action="" onSubmit={addProduct}>
+              <form action="" onSubmit={handleAddProduct}>
                 <label for="productName" class="form-label">
                   Product Name
                 </label>
@@ -212,7 +160,9 @@ const Dashboard = () => {
                 <div className="row my-1">
                   <button
                     className="btn btn-outline-primary"
-                    onClick={() => displayProduct(product.product_id)}
+                    onClick={() =>
+                      displayProduct(product.product_id, setProduct)
+                    }
                   >
                     <div className="row">
                       <div className="col-10 text-start">
@@ -255,7 +205,9 @@ const Dashboard = () => {
                   <button
                     class="btn btn-danger"
                     type="button"
-                    onClick={() => deleteProduct(product.product_id)}
+                    onClick={() =>
+                      deleteProduct(product.product_id, products, setProducts)
+                    }
                   >
                     Delete
                   </button>

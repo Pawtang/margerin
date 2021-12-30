@@ -6,7 +6,7 @@ import {
   getMaterialsForProduct,
   addMaterialToProduct,
   getUnits,
-} from "../middleware/productHasMaterialUtils";
+} from "../middleware/ProductHasMaterialUtils";
 
 const ProductHasMaterials = (props) => {
   const [materials, setMaterials] = useState([]);
@@ -61,7 +61,7 @@ const ProductHasMaterials = (props) => {
         </div>
 
         {productHasMaterials.map((material) => (
-          <div className="row row-cols-5 border-bottom my-2 mx-auto">
+          <div className="row row-cols-5 border-bottom py-2 mx-auto">
             <div className="col">
               <p className="text-center">{material.material_name}</p>
             </div>
