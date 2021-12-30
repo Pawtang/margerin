@@ -1,7 +1,6 @@
 import { React, Fragment } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
-import logo from "../assets/margerin.png";
 const Navbar = () => {
   return (
     <nav className="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">

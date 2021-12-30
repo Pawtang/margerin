@@ -6,11 +6,11 @@
   min-width: 100px;
 }
 
-.modal-open .container-fluid,
+/* .modal-open .container-fluid,
 .modal-open .container,
 .modal-open .row {
   -webkit-filter: blur(2px) grayscale(50%);
-}
+} */
 
 .limit-x-search {
   min-width: 400px;

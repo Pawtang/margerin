@@ -1,5 +1,4 @@
 import { React, Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import AppNav from "./AppNav";
 import ProductHasMaterials from "./ProductHasMaterials";
 import {
@@ -36,8 +35,9 @@ const Dashboard = () => {
   }, [search]);
 
   const handleAddProduct = (e) => {
+    e.preventDefault();
     const body = { newProductName, newProductDescription };
-    addProduct(e, body);
+    addProduct(body);
   };
 
   const clearEntry = () => {
@@ -61,7 +61,7 @@ const Dashboard = () => {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={(e) => clearEntry()}
+                onClick={() => clearEntry()}
               ></button>
             </div>
             <div class="modal-body">
@@ -91,7 +91,7 @@ const Dashboard = () => {
                     type="button"
                     class="btn btn-secondary"
                     data-bs-dismiss="modal"
-                    onClick={(e) => clearEntry()}
+                    onClick={() => clearEntry()}
                   >
                     Close
                   </button>
@@ -99,6 +99,7 @@ const Dashboard = () => {
                     type="submit"
                     class="btn btn-primary"
                     data-bs-dismiss="modal"
+                    onClick={() => clearEntry()}
                   >
                     Add product
                   </button>
@@ -214,12 +215,12 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="col-8 ">
-                {
+                {product.length > 0 && (
                   <div className="row">
                     <h1>{product.product_name}</h1>
                     <p>{product.product_description}</p>
                   </div>
-                }
+                )}
                 <h3>Cost Data</h3>
                 <p>Wholesale Cost:</p>
                 <p>Direct to Customer Cost:</p>
@@ -227,7 +228,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <ProductHasMaterials productID={product.product_id} />
+            {product.length > 0 && (
+              <ProductHasMaterials productID={product.product_id} />
+            )}
           </div>
         </div>
       </div>

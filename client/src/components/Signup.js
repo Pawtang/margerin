@@ -1,9 +1,6 @@
 import React, { Fragment } from "react";
-import Navbar from "./Navbar";
 
-//components
-
-function Signup() {
+const Signup = () => {
   return (
     <Fragment>
       <div className="navbar-clearance"></div>
@@ -14,6 +11,6 @@ function Signup() {
       </div>
     </Fragment>
   );
-}
+};
 
 export default Signup;

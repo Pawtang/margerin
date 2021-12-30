@@ -31,7 +31,8 @@ VALUES('Scrap Metal', '', ''),
       ('Anus', '', '');
 
 INSERT INTO unit (unit_name, unit_type)
-VALUES('mm', 'length'),
+VALUES('each', 'each'),
+      ('mm', 'length'),
       ('cm', 'length'),
       ('m', 'length'),
       ('in', 'length'),

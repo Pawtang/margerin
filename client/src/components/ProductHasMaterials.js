@@ -1,30 +1,33 @@
 import { React, Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import AppNav from "./AppNav";
 import {
   getMaterials,
   getMaterialsForProduct,
   addMaterialToProduct,
+  deleteMaterialFromProduct,
   getUnits,
+  newMaterial,
 } from "../middleware/ProductHasMaterialUtils";
 
 const ProductHasMaterials = (props) => {
   const [materials, setMaterials] = useState([]);
   const [units, setUnits] = useState([]);
-  const [newMaterial, setNewMaterial] = useState([]);
+  const [addMaterial, setAddMaterial] = useState([]);
   const [newUnit, setNewUnit] = useState([]);
   const [newQuantity, setNewQuantity] = useState([]);
   const [productHasMaterials, setProductHasMaterials] = useState([]);
   const productID = props.productID;
 
+  const [newMaterialName, setNewMaterialName] = useState([]);
+  const [newMaterialDescription, setNewMaterialDescription] = useState([]);
+
   const handleAddMaterial = () => {
-    const body = { productID, newMaterial, newUnit, newQuantity };
+    const body = { productID, addMaterial, newUnit, newQuantity };
     addMaterialToProduct(setProductHasMaterials, body);
-    setNewMaterial("");
+    setAddMaterial("");
     setNewUnit("");
     setNewQuantity("");
     getMaterialsForProduct(productID, setProductHasMaterials);
-    console.log(newMaterial, newUnit, newQuantity);
+    console.log(addMaterial, newUnit, newQuantity);
   };
 
   useEffect(() => {
@@ -36,11 +39,78 @@ const ProductHasMaterials = (props) => {
     getMaterialsForProduct(productID, setProductHasMaterials);
   }, [productID]);
 
-  // console.log("material state:", productHasMaterials);
+  const handleNewMaterial = (e) => {
+    e.prevenDefault();
+    const body = { newMaterialName, newMaterialDescription };
+    newMaterial(body);
+  };
+
+  const clearEntry = () => {
+    setNewMaterialName("");
+    setNewMaterialDescription("");
+  };
 
   return (
-    // <div className="container  ">
     <Fragment>
+      <div class="modal fade" tabindex="-1" id="newMaterialModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Material</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onClick={() => clearEntry()}
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form action="" onSubmit={handleNewMaterial}>
+                <label for="productName" class="form-label">
+                  Material Name
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="productName"
+                  value={newMaterialName}
+                  onChange={(e) => setNewMaterialName(e.target.value)}
+                />
+                <label for="productDescription" class="form-label">
+                  Material Description
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="productDescription"
+                  value={newMaterialDescription}
+                  onChange={(e) => setNewMaterialDescription(e.target.value)}
+                />
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    onClick={() => clearEntry()}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    data-bs-dismiss="modal"
+                    onClick={() => clearEntry()}
+                  >
+                    Add material
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="row shadow-sm mx-auto">
         <div className="row row-cols-5 mx-auto">
           <div className="col">
@@ -112,7 +182,16 @@ const ProductHasMaterials = (props) => {
                     />
                   </svg>
                 </button>
-                <button className="btn btn-outline-danger">
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() =>
+                    deleteMaterialFromProduct(
+                      material.material_id,
+                      productHasMaterials,
+                      setProductHasMaterials
+                    )
+                  }
+                >
                   <i class="bi bi-trash-fill"></i>
                 </button>
               </div>
@@ -120,24 +199,33 @@ const ProductHasMaterials = (props) => {
           </div>
         ))}
         <div className="row row-cols-5 my-2 mx-auto">
-          <div class="col">
-            <select
-              id="inputMaterialName"
-              class="form-select"
-              value={newMaterial}
-              onChange={(e) => setNewMaterial(e.target.value)}
-            >
-              <option disabled value="">
-                Material
-              </option>
-              {materials.map((material) => (
-                <option value={material.material_id}>
-                  {material.material_name}
+          <div class="col-3">
+            <div className="input-group">
+              <select
+                id="inputMaterialName"
+                class="form-select"
+                value={addMaterial}
+                onChange={(e) => setAddMaterial(e.target.value)}
+              >
+                <option disabled value="">
+                  Material
                 </option>
-              ))}
-            </select>
+                {materials.map((material) => (
+                  <option value={material.material_id}>
+                    {material.material_name}
+                  </option>
+                ))}
+              </select>
+              <button
+                className="btn btn-outline-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#newMaterialModal"
+              >
+                +
+              </button>
+            </div>
           </div>
-          <div class="col">
+          <div class="col-2">
             <input
               type="number"
               class="form-control"
@@ -150,7 +238,7 @@ const ProductHasMaterials = (props) => {
             />
           </div>
 
-          <div className="col">
+          <div className="col-2">
             <select
               id="inputUnits"
               class="form-select"

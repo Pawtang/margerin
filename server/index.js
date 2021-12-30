@@ -29,11 +29,13 @@ app.post("/product", async (req, res) => {
 app.post("/material", async (req, res) => {
   try {
     console.log(req.body);
-    // const { description } = req.body;
+    const { materialName, materialDescription } = req.body;
     const newMaterial = await pool.query(
-      `INSERT INTO material (material_name, material_description, material_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
+      `INSERT INTO material (material_name, material_description) VALUES(${materialName}, ${materialDescription}) RETURNING *`
     );
-    res.json(newMaterial.rows[0]);
+    console.log(newMaterial);
+    console.log(newMaterial);
+    res.json(newMaterial.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -121,7 +123,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
     console.log(req.body);
     const { id } = req.params;
     const relatedMaterials = await pool.query(
-      `SELECT m.material_name, phm.quantity, u.unit_name FROM material m 
+      `SELECT  m.material_id, m.material_name, phm.quantity, u.unit_name FROM material m 
       INNER JOIN product_has_material phm ON (m.material_id = phm.material_id) 
       INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
     );
@@ -131,29 +133,6 @@ app.get("/productHasMaterials/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-
-//get a todo
-// app.get("/todos/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
-//       id,
-//     ]);
-//     res.json(todo.rows[0]);
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
-
-//get all todos
-// app.get("/todos", async (req, res) => {
-//   try {
-//     const allTodos = await pool.query("SELECT * FROM todo");
-//     res.json(allTodos.rows);
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
 
 /* ----------------------------- UPDATE METHODS ----------------------------- */
 
@@ -188,18 +167,17 @@ app.delete("/product/:id", async (req, res) => {
   }
 });
 
-// //delete a todo
-// app.delete("/todos/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const deleteTodo = await pool.query("DELETE FROM todo WHERE todo_id = $1", [
-//       id,
-//     ]);
-//     res.json("Todo was deleted!");
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
+app.delete("/productHasMaterial/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteMaterial = await pool.query(
+      `DELETE FROM product_has_material WHERE material_id = ${id}`
+    );
+    res.json("Material deleted!");
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 /* ------------------------------- END METHODS ------------------------------ */
 

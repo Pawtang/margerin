@@ -3,7 +3,7 @@ const URL_SERVER = "http://localhost:5000";
 export const displayProduct = async (id, setProduct) => {
   try {
     const response = await fetch(`${URL_SERVER}/product/${id}`);
-    if (response.status != 200) {
+    if (response.status !== 200) {
       throw "response is not 200";
     }
     const productData = await response.json();
@@ -13,8 +13,8 @@ export const displayProduct = async (id, setProduct) => {
   }
 };
 
-export const addProduct = async (e, body) => {
-  e.preventDefault();
+export const addProduct = async (body) => {
+  // e.preventDefault();
   try {
     // const body = { newProductName, newProductDescription };
     console.log("Front end", body);
@@ -23,7 +23,7 @@ export const addProduct = async (e, body) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (response.status != 200) {
+    if (response.status !== 200) {
       throw "response is not 200";
     }
     getProducts();
@@ -39,7 +39,7 @@ export const getProducts = async (
 ) => {
   try {
     const response = await fetch(`${URL_SERVER}/products`);
-    if (response.status != 200) {
+    if (response.status !== 200) {
       throw "response is not 200";
     }
     const productArray = await response.json();

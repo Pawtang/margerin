@@ -61,3 +61,42 @@ export const getUnits = async (setUnits) => {
     console.error(err.message);
   }
 };
+
+export const deleteMaterialFromProduct = async (
+  id,
+  productHasMaterials,
+  setProductHasMaterials
+) => {
+  try {
+    console.log(`deleting material with id ${id}`);
+    const deleteMaterial = await fetch(
+      `${URL_SERVER}/productHasMaterial/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    setProductHasMaterials(
+      productHasMaterials.filter((material) => material.material_id !== id)
+    );
+    getMaterialsForProduct();
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+export const newMaterial = async (body) => {
+  try {
+    console.log("Front end", body);
+    const response = await fetch(`${URL_SERVER}/material`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
+    getMaterials();
+  } catch (err) {
+    console.error(err.message);
+  }
+};
