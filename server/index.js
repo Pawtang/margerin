@@ -28,12 +28,10 @@ app.post("/product", async (req, res) => {
 //create a material
 app.post("/material", async (req, res) => {
   try {
-    console.log(req.body);
     const { materialName, materialDescription } = req.body;
     const newMaterial = await pool.query(
       `INSERT INTO material (material_name, material_description) VALUES(${materialName}, ${materialDescription}) RETURNING *`
     );
-    console.log(newMaterial);
     res.json(newMaterial.rows);
   } catch (err) {
     console.error(err.message);
@@ -43,7 +41,6 @@ app.post("/material", async (req, res) => {
 //Add a material to a product
 app.post("/productHasMaterial", async (req, res) => {
   try {
-    console.log(req.body);
     const { productID, newMaterial, newUnit, newQuantity } = req.body;
     const productHasMaterial = await pool.query(
       `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${productID}, ${newMaterial}, ${newUnit}, ${newQuantity}) RETURNING *`
@@ -57,7 +54,6 @@ app.post("/productHasMaterial", async (req, res) => {
 //create a supplier
 app.post("/suppliers", async (req, res) => {
   try {
-    console.log(req.body);
     // const { description } = req.body;
     const newSupplier = await pool.query(
       `INSERT INTO supplier (supplier_name, supplier_description, supplier_rating, supplier_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
@@ -75,7 +71,6 @@ app.get("/products", async (req, res) => {
     const getAllProducts = await pool.query(
       `SELECT * FROM product ORDER BY product_name ASC`
     );
-    // console.log(getAllProducts.rows);
     res.status(200).json(getAllProducts.rows);
   } catch (err) {
     console.error(err.message);
@@ -86,7 +81,6 @@ app.get("/products", async (req, res) => {
 app.get("/materials", async (req, res) => {
   try {
     const getAllMaterials = await pool.query(`SELECT * FROM material`);
-    // console.log(getAllProducts.rows);
     res.status(200).json(getAllMaterials.rows);
   } catch (err) {
     console.error(err.message);
@@ -119,7 +113,6 @@ app.get("/product/:id", async (req, res) => {
 //Get all materials for product
 app.get("/productHasMaterials/:id", async (req, res) => {
   try {
-    console.log(req.body);
     const { id } = req.params;
     const relatedMaterials = await pool.query(
       `SELECT  m.material_id, m.material_name, phm.quantity, u.unit_name FROM material m 
@@ -127,7 +120,6 @@ app.get("/productHasMaterials/:id", async (req, res) => {
       INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
     );
     res.json(relatedMaterials.rows);
-    console.log(relatedMaterials.rows);
   } catch (err) {
     console.error(err.message);
   }

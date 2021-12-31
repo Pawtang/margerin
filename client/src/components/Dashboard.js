@@ -11,7 +11,7 @@ import {
 import "../styles/Dashboard.css";
 
 const Dashboard = () => {
-  const [product, setProduct] = useState([]);
+  const [displayedProduct, setDisplayedProduct] = useState({});
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -24,7 +24,7 @@ const Dashboard = () => {
       const productArray = await getProducts();
       setProducts(productArray);
       setFilteredProducts(productArray);
-      setProduct(productArray[0]);
+      setDisplayedProduct(productArray[0]);
     };
     loadProductList();
   }, []);
@@ -181,14 +181,14 @@ const Dashboard = () => {
               </div>
               {/* --------------------------- Render Product List -------------------------- */}
               {filteredProducts.map((product) => (
-                <div className="row my-1">
+                <div className="row my-1" key={product.product_id}>
                   <button
                     className="btn btn-outline-primary"
                     onClick={async () => {
                       const productData = await displayProduct(
                         product.product_id
                       );
-                      setProduct(productData);
+                      setDisplayedProduct(productData);
                     }}
                   >
                     <div className="row">
@@ -234,16 +234,12 @@ const Dashboard = () => {
                     class="btn btn-danger"
                     type="button"
                     onClick={async () => {
-                      await deleteProduct(product.product_id);
-                      // setProducts(
-                      //   products.filter(
-                      //     (e) => product.product_id !== e.product_id
-                      //   )
-                      // );
+                      await deleteProduct(displayedProduct.product_id);
                       const productArray = await getProducts();
                       setProducts(productArray);
-                      console.log(productArray);
-                      // displayProduct(productArray[0].product_id);
+                      setFilteredProducts(productArray);
+                      displayProduct(productArray[0].product_id);
+                      setSearch("");
                     }}
                   >
                     Delete
@@ -251,10 +247,10 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="col-8 ">
-                {!_.isEmpty(product) && (
+                {!_.isEmpty(displayedProduct) && (
                   <div className="row">
-                    <h1>{product.product_name}</h1>
-                    <p>{product.product_description}</p>
+                    <h1>{displayedProduct.product_name}</h1>
+                    <p>{displayedProduct.product_description}</p>
                   </div>
                 )}
                 <h3>Cost Data</h3>
@@ -264,8 +260,8 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {!_.isEmpty(product) && (
-              <ProductHasMaterials productID={product.product_id} />
+            {!_.isEmpty(displayedProduct) && (
+              <ProductHasMaterials productID={displayedProduct.product_id} />
             )}
           </div>
         </div>

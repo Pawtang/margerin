@@ -15,10 +15,9 @@ const ProductHasMaterials = (props) => {
   const [newUnit, setNewUnit] = useState([]);
   const [newQuantity, setNewQuantity] = useState([]);
   const [productHasMaterials, setProductHasMaterials] = useState([]);
-  const productID = props.productID;
-
   const [newMaterialName, setNewMaterialName] = useState([]);
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
+  const productID = props.productID;
 
   const handleAddMaterial = () => {
     const body = { productID, addMaterial, newUnit, newQuantity };
@@ -131,7 +130,10 @@ const ProductHasMaterials = (props) => {
         </div>
 
         {productHasMaterials.map((material) => (
-          <div className="row row-cols-5 border-bottom py-2 mx-auto">
+          <div
+            className="row row-cols-5 border-bottom py-2 mx-auto"
+            key={material.material_id}
+          >
             <div className="col">
               <p className="text-center">{material.material_name}</p>
             </div>
@@ -211,7 +213,10 @@ const ProductHasMaterials = (props) => {
                   Material
                 </option>
                 {materials.map((material) => (
-                  <option value={material.material_id}>
+                  <option
+                    value={material.material_id}
+                    key={material.material_id}
+                  >
                     {material.material_name}
                   </option>
                 ))}
@@ -249,7 +254,9 @@ const ProductHasMaterials = (props) => {
                 Unit
               </option>
               {units.map((unit) => (
-                <option value={unit.unit_id}>{unit.unit_name}</option>
+                <option value={unit.unit_id} key={unit.unit_id}>
+                  {unit.unit_name}
+                </option>
               ))}
             </select>
           </div>

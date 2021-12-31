@@ -8,7 +8,7 @@ export const displayProduct = async (id) => {
     }
     return await response.json();
   } catch (err) {
-    console.error(err.message);
+    console.error("displayProduct get /product/:id", err.message);
   }
 };
 
@@ -26,7 +26,7 @@ export const addProduct = async (body) => {
       throw "response is not 200";
     }
   } catch (err) {
-    console.error(err.message);
+    console.error("addProduct POST /product", err.message);
   }
 };
 
@@ -38,7 +38,7 @@ export const getProducts = async () => {
     }
     return await response.json();
   } catch (err) {
-    console.error(err.message);
+    console.error("getProducts GET /products", err.message);
   }
 };
 
@@ -48,6 +48,6 @@ export const deleteProduct = async (id) => {
       method: "DELETE",
     });
   } catch (err) {
-    console.error(err.message);
+    console.error("deleteProduct DELETE /product", err.message);
   }
 };
