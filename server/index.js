@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
-const { Router } = require("express");
+// const { Router } = require("express");
 
 //middleware
 app.use(cors());
@@ -34,14 +34,13 @@ app.post("/material", async (req, res) => {
       `INSERT INTO material (material_name, material_description) VALUES(${materialName}, ${materialDescription}) RETURNING *`
     );
     console.log(newMaterial);
-    console.log(newMaterial);
     res.json(newMaterial.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
 
-//Create a material in context of product - primary method
+//Add a material to a product
 app.post("/productHasMaterial", async (req, res) => {
   try {
     console.log(req.body);

@@ -1,13 +1,12 @@
 const URL_SERVER = "http://localhost:5000";
 
-export const displayProduct = async (id, setProduct) => {
+export const displayProduct = async (id) => {
   try {
     const response = await fetch(`${URL_SERVER}/product/${id}`);
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    const productData = await response.json();
-    setProduct(productData);
+    return await response.json();
   } catch (err) {
     console.error(err.message);
   }
@@ -26,40 +25,28 @@ export const addProduct = async (body) => {
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    getProducts();
   } catch (err) {
     console.error(err.message);
   }
 };
 
-export const getProducts = async (
-  setProducts,
-  setFilteredProducts,
-  setProduct
-) => {
+export const getProducts = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/products`);
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    const productArray = await response.json();
-    console.log(productArray);
-    setProducts(productArray);
-    setFilteredProducts(productArray);
-    setProduct(productArray[0]);
+    return await response.json();
   } catch (err) {
     console.error(err.message);
   }
 };
 
-export const deleteProduct = async (id, products, setProducts) => {
+export const deleteProduct = async (id) => {
   try {
     const deleteProduct = await fetch(`${URL_SERVER}/product/${id}`, {
       method: "DELETE",
     });
-    setProducts(products.filter((product) => product.product_id !== id));
-    getProducts();
-    displayProduct(products[0].product_id);
   } catch (err) {
     console.error(err.message);
   }

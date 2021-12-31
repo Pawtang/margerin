@@ -1,4 +1,5 @@
 import { React, Fragment, useState, useEffect } from "react";
+import _ from "lodash";
 import AppNav from "./AppNav";
 import ProductHasMaterials from "./ProductHasMaterials";
 import {
@@ -12,16 +13,27 @@ import "../styles/Dashboard.css";
 const Dashboard = () => {
   const [product, setProduct] = useState([]);
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState([]);
+  const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [newProductName, setNewProductName] = useState([]);
   const [newProductDescription, setnewProductDescription] = useState([]);
 
+  /* ------------------------------ List Products ----------------------------- */
   useEffect(() => {
-    getProducts(setProducts, setFilteredProducts, setProduct);
-    displayProduct(setProduct);
+    const loadProductList = async () => {
+      const productArray = await getProducts();
+      setProducts(productArray);
+      setFilteredProducts(productArray);
+      setProduct(productArray[0]);
+    };
+    loadProductList();
   }, []);
 
+  // useEffect(() => {
+  //   !_.isEmpty(product) && displayProduct(products[0].product_id);
+  // }, [product]);
+
+  /* ------------------------ Filter Products by Search ----------------------- */
   useEffect(() => {
     let newFilteredProducts;
     if (search && search !== "") {
@@ -34,10 +46,20 @@ const Dashboard = () => {
     setFilteredProducts(newFilteredProducts);
   }, [search]);
 
-  const handleAddProduct = (e) => {
+  // const renderProduct = async () => {
+  //   const newProductArray = await getProducts();
+  //   await displayProduct(newProductArray[0]);
+  // };
+
+  /* ------------------------------- Add Product ------------------------------ */
+  const handleAddProduct = async (e) => {
     e.preventDefault();
     const body = { newProductName, newProductDescription };
-    addProduct(body);
+    await addProduct(body);
+    const newProductArray = await getProducts();
+    console.log(newProductArray);
+    setProducts([...newProductArray]);
+    await displayProduct(newProductArray[0]);
   };
 
   const clearEntry = () => {
@@ -45,7 +67,7 @@ const Dashboard = () => {
     setnewProductDescription("");
   };
 
-  // console.log(product.product_id);
+  console.log(products);
 
   return (
     <Fragment>
@@ -99,7 +121,7 @@ const Dashboard = () => {
                     type="submit"
                     class="btn btn-primary"
                     data-bs-dismiss="modal"
-                    onClick={() => clearEntry()}
+                    // onClick={() => clearEntry()}
                   >
                     Add product
                   </button>
@@ -157,13 +179,17 @@ const Dashboard = () => {
                   Add New Product
                 </button>
               </div>
+              {/* --------------------------- Render Product List -------------------------- */}
               {filteredProducts.map((product) => (
                 <div className="row my-1">
                   <button
                     className="btn btn-outline-primary"
-                    onClick={() =>
-                      displayProduct(product.product_id, setProduct)
-                    }
+                    onClick={async () => {
+                      const productData = await displayProduct(
+                        product.product_id
+                      );
+                      setProduct(productData);
+                    }}
                   >
                     <div className="row">
                       <div className="col-10 text-start">
@@ -179,7 +205,7 @@ const Dashboard = () => {
                           viewBox="0 0 16 16"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
                           />
                         </svg>
@@ -188,6 +214,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               ))}
+              {/* ----------------------------- End Render List ---------------------------- */}
             </div>
           </div>
 
@@ -206,16 +233,25 @@ const Dashboard = () => {
                   <button
                     class="btn btn-danger"
                     type="button"
-                    onClick={() =>
-                      deleteProduct(product.product_id, products, setProducts)
-                    }
+                    onClick={async () => {
+                      await deleteProduct(product.product_id);
+                      // setProducts(
+                      //   products.filter(
+                      //     (e) => product.product_id !== e.product_id
+                      //   )
+                      // );
+                      const productArray = await getProducts();
+                      setProducts(productArray);
+                      console.log(productArray);
+                      // displayProduct(productArray[0].product_id);
+                    }}
                   >
                     Delete
                   </button>
                 </div>
               </div>
               <div className="col-8 ">
-                {product.length > 0 && (
+                {!_.isEmpty(product) && (
                   <div className="row">
                     <h1>{product.product_name}</h1>
                     <p>{product.product_description}</p>
@@ -228,7 +264,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {product.length > 0 && (
+            {!_.isEmpty(product) && (
               <ProductHasMaterials productID={product.product_id} />
             )}
           </div>
