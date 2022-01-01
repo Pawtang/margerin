@@ -29,10 +29,6 @@ const Dashboard = () => {
     loadProductList();
   }, []);
 
-  // useEffect(() => {
-  //   !_.isEmpty(product) && displayProduct(products[0].product_id);
-  // }, [product]);
-
   /* ------------------------ Filter Products by Search ----------------------- */
   useEffect(() => {
     let newFilteredProducts;
@@ -46,25 +42,24 @@ const Dashboard = () => {
     setFilteredProducts(newFilteredProducts);
   }, [search]);
 
-  // const renderProduct = async () => {
-  //   const newProductArray = await getProducts();
-  //   await displayProduct(newProductArray[0]);
-  // };
-
   /* ------------------------------- Add Product ------------------------------ */
   const handleAddProduct = async (e) => {
     e.preventDefault();
     const body = { newProductName, newProductDescription };
     await addProduct(body);
-    const newProductArray = await getProducts();
-    console.log(newProductArray);
-    setProducts([...newProductArray]);
-    await displayProduct(newProductArray[0]);
+    renderProducts();
   };
 
   const clearEntry = () => {
     setNewProductName("");
     setnewProductDescription("");
+  };
+
+  const renderProducts = async () => {
+    const productArray = await getProducts();
+    setProducts(productArray);
+    setFilteredProducts(productArray);
+    setDisplayedProduct(productArray[0].product_id);
   };
 
   console.log(products);
@@ -161,6 +156,7 @@ const Dashboard = () => {
                     placeholder="Search products..."
                     aria-label="Search products..."
                     aria-describedby="search-products"
+                    value={search}
                     onChange={(e) => {
                       setSearch(e.target.value);
                     }}
@@ -189,6 +185,7 @@ const Dashboard = () => {
                         product.product_id
                       );
                       setDisplayedProduct(productData);
+                      setSearch("");
                     }}
                   >
                     <div className="row">
@@ -235,11 +232,7 @@ const Dashboard = () => {
                     type="button"
                     onClick={async () => {
                       await deleteProduct(displayedProduct.product_id);
-                      const productArray = await getProducts();
-                      setProducts(productArray);
-                      setFilteredProducts(productArray);
-                      displayProduct(productArray[0].product_id);
-                      setSearch("");
+                      renderProducts();
                     }}
                   >
                     Delete
