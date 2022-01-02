@@ -1,37 +1,31 @@
 const URL_SERVER = "http://localhost:5000";
 
-export const getMaterials = async (setMaterials) => {
+export const getMaterials = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/materials`);
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    const allMaterials = await response.json();
-    setMaterials(allMaterials);
+    return await response.json();
   } catch (err) {
     console.error(err.message);
   }
 };
 
-export const getMaterialsForProduct = async (id, setProductHasMaterials) => {
+export const getMaterialsForProduct = async (id) => {
   try {
-    console.log("Getting Mats");
     const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`);
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    const materialArray = await response.json();
-    console.log("response from API:", materialArray);
-    setProductHasMaterials(materialArray);
+    return await response.json();
   } catch (err) {
     console.error(err.message);
   }
 };
 
-export const addMaterialToProduct = async (setProductHasMaterials, body) => {
-  // e.preventDefault();
+export const addMaterialToProduct = async (body) => {
   try {
-    console.log(body);
     const response = await fetch(`${URL_SERVER}/productHasMaterial`, {
       method: "POST",
       headers: {
@@ -39,46 +33,33 @@ export const addMaterialToProduct = async (setProductHasMaterials, body) => {
       },
       body: JSON.stringify(body),
     });
-    console.log(response);
+    console.log("body:", body);
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    getMaterialsForProduct(body.productID, setProductHasMaterials);
   } catch (err) {
     console.error(err.message);
   }
 };
 
-export const getUnits = async (setUnits) => {
+export const getUnits = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/units`);
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    const jsonData = await response.json();
-    setUnits(jsonData);
+    return response.json();
   } catch (err) {
     console.error(err.message);
   }
 };
 
-export const deleteMaterialFromProduct = async (
-  id,
-  productHasMaterials,
-  setProductHasMaterials
-) => {
+export const deleteMaterialFromProduct = async (id) => {
   try {
     console.log(`deleting material with id ${id}`);
-    const deleteMaterial = await fetch(
-      `${URL_SERVER}/productHasMaterial/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-    setProductHasMaterials(
-      productHasMaterials.filter((material) => material.material_id !== id)
-    );
-    getMaterialsForProduct();
+    return await fetch(`${URL_SERVER}/productHasMaterial/${id}`, {
+      method: "DELETE",
+    });
   } catch (err) {
     console.error(err.message);
   }

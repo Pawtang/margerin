@@ -8,7 +8,7 @@ export const displayProduct = async (id) => {
     }
     return await response.json();
   } catch (err) {
-    console.error("displayProduct get /product/:id", err.message);
+    console.error("displayProduct get /product/:id error:", err.message);
   }
 };
 
@@ -26,7 +26,7 @@ export const addProduct = async (body) => {
       throw "response is not 200";
     }
   } catch (err) {
-    console.error("addProduct POST /product", err.message);
+    console.error("addProduct POST /product error:", err.message);
   }
 };
 
@@ -38,16 +38,19 @@ export const getProducts = async () => {
     }
     return await response.json();
   } catch (err) {
-    console.error("getProducts GET /products", err.message);
+    console.error("getProducts GET /products error:", err.message);
   }
 };
 
 export const deleteProduct = async (id) => {
   try {
-    const deleteProduct = await fetch(`${URL_SERVER}/product/${id}`, {
+    const response = await fetch(`${URL_SERVER}/product/${id}`, {
       method: "DELETE",
     });
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
   } catch (err) {
-    console.error("deleteProduct DELETE /product", err.message);
+    console.error("deleteProduct DELETE /product error:", err.message);
   }
 };

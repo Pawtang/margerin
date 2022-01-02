@@ -42,6 +42,7 @@ app.post("/material", async (req, res) => {
 app.post("/productHasMaterial", async (req, res) => {
   try {
     const { productID, newMaterial, newUnit, newQuantity } = req.body;
+    console.log(productID, newMaterial, newUnit, newQuantity);
     const productHasMaterial = await pool.query(
       `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${productID}, ${newMaterial}, ${newUnit}, ${newQuantity}) RETURNING *`
     );

@@ -62,8 +62,6 @@ const Dashboard = () => {
     setDisplayedProduct(productArray[0].product_id);
   };
 
-  console.log(products);
-
   return (
     <Fragment>
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}

@@ -19,24 +19,16 @@ const ProductHasMaterials = (props) => {
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
   const productID = props.productID;
 
-  const handleAddMaterial = () => {
+  const handleAddMaterial = async () => {
     const body = { productID, addMaterial, newUnit, newQuantity };
-    addMaterialToProduct(setProductHasMaterials, body);
+    await addMaterialToProduct(body);
+    const materialArray = await getMaterialsForProduct(productID);
+    setProductHasMaterials(materialArray);
+    console.log(productID, addMaterial, newUnit, newQuantity);
     setAddMaterial("");
     setNewUnit("");
     setNewQuantity("");
-    getMaterialsForProduct(productID, setProductHasMaterials);
-    console.log(addMaterial, newUnit, newQuantity);
   };
-
-  useEffect(() => {
-    getMaterials(setMaterials);
-    getUnits(setUnits);
-  }, []);
-
-  useEffect(() => {
-    getMaterialsForProduct(productID, setProductHasMaterials);
-  }, [productID]);
 
   const handleNewMaterial = (e) => {
     e.prevenDefault();
@@ -44,10 +36,32 @@ const ProductHasMaterials = (props) => {
     newMaterial(body);
   };
 
+  const handleDeleteMaterial = (id) => {
+    deleteMaterialFromProduct(id);
+    setProductHasMaterials(
+      productHasMaterials.filter((material) => material.material_id !== id)
+    );
+    getMaterialsForProduct(productID);
+  };
+
   const clearEntry = () => {
     setNewMaterialName("");
     setNewMaterialDescription("");
   };
+
+  useEffect(() => {
+    const loadLists = async () => {
+      const allMaterials = await getMaterials();
+      const unitList = await getUnits();
+      setMaterials(allMaterials);
+      setUnits(unitList);
+    };
+    loadLists();
+  }, []);
+
+  useEffect(() => {
+    getMaterialsForProduct(productID);
+  }, [productID]);
 
   return (
     <Fragment>
@@ -186,13 +200,7 @@ const ProductHasMaterials = (props) => {
                 </button>
                 <button
                   className="btn btn-outline-danger"
-                  onClick={() =>
-                    deleteMaterialFromProduct(
-                      material.material_id,
-                      productHasMaterials,
-                      setProductHasMaterials
-                    )
-                  }
+                  onClick={() => handleDeleteMaterial(material.material_id)}
                 >
                   <i class="bi bi-trash-fill"></i>
                 </button>
