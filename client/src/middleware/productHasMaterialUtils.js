@@ -54,14 +54,19 @@ export const getUnits = async () => {
   }
 };
 
-export const deleteMaterialFromProduct = async (id) => {
+export const deleteMaterialFromProduct = async (productID, materialID) => {
   try {
-    console.log(`deleting material with id ${id}`);
-    return await fetch(`${URL_SERVER}/productHasMaterial/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `${URL_SERVER}/productHasMaterial/product/${productID}/material/${materialID}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (response.status !== 200) {
+      throw "DELETE not successful";
+    }
   } catch (err) {
-    console.error(err.message);
+    console.error("Failed to Delete", err.message);
   }
 };
 

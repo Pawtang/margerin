@@ -14,16 +14,17 @@ const ProductHasMaterials = (props) => {
   const [addMaterial, setAddMaterial] = useState([]);
   const [newUnit, setNewUnit] = useState([]);
   const [newQuantity, setNewQuantity] = useState([]);
-  const [productHasMaterials, setProductHasMaterials] = useState([]);
+  const [materialsForProduct, setMaterialsForProduct] = useState([]);
   const [newMaterialName, setNewMaterialName] = useState([]);
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
-  const productID = props.productID;
+  const productID = parseInt(props.productID);
 
   const handleAddMaterial = async () => {
     const body = { productID, addMaterial, newUnit, newQuantity };
+    console.log("Front-end body:", body);
     await addMaterialToProduct(body);
     const materialArray = await getMaterialsForProduct(productID);
-    setProductHasMaterials(materialArray);
+    setMaterialsForProduct(materialArray);
     console.log(productID, addMaterial, newUnit, newQuantity);
     setAddMaterial("");
     setNewUnit("");
@@ -36,10 +37,13 @@ const ProductHasMaterials = (props) => {
     newMaterial(body);
   };
 
-  const handleDeleteMaterial = (id) => {
-    deleteMaterialFromProduct(id);
-    setProductHasMaterials(
-      productHasMaterials.filter((material) => material.material_id !== id)
+  const handleDeleteMaterial = async (materialID) => {
+    const body = { materialID, productID };
+    await deleteMaterialFromProduct(body);
+    setMaterialsForProduct(
+      materialsForProduct.filter(
+        (material) => material.material_id !== materialID
+      )
     );
     getMaterialsForProduct(productID);
   };
@@ -60,7 +64,11 @@ const ProductHasMaterials = (props) => {
   }, []);
 
   useEffect(() => {
-    getMaterialsForProduct(productID);
+    const retrieveMaterialsForProduct = async () => {
+      const array = await getMaterialsForProduct(productID);
+      setMaterialsForProduct(array);
+    };
+    retrieveMaterialsForProduct();
   }, [productID]);
 
   return (
@@ -143,7 +151,7 @@ const ProductHasMaterials = (props) => {
           </div>
         </div>
 
-        {productHasMaterials.map((material) => (
+        {materialsForProduct.map((material) => (
           <div
             className="row row-cols-5 border-bottom py-2 mx-auto"
             key={material.material_id}

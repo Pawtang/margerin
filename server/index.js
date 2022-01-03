@@ -41,12 +41,18 @@ app.post("/material", async (req, res) => {
 //Add a material to a product
 app.post("/productHasMaterial", async (req, res) => {
   try {
-    const { productID, newMaterial, newUnit, newQuantity } = req.body;
-    console.log(productID, newMaterial, newUnit, newQuantity);
-    const productHasMaterial = await pool.query(
-      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${productID}, ${newMaterial}, ${newUnit}, ${newQuantity}) RETURNING *`
+    const { productID, addMaterial, newUnit, newQuantity } = req.body;
+    console.log(
+      "back-end body: ",
+      productID,
+      addMaterial,
+      newUnit,
+      newQuantity
     );
-    res.json(productHasMaterial.rows);
+    const productHasMaterial = await pool.query(
+      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${productID}, ${addMaterial}, ${newUnit}, ${newQuantity}) RETURNING *`
+    );
+    res.status(201).json(productHasMaterial.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -159,17 +165,20 @@ app.delete("/product/:id", async (req, res) => {
   }
 });
 
-app.delete("/productHasMaterial/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deleteMaterial = await pool.query(
-      `DELETE FROM product_has_material WHERE material_id = ${id}`
-    );
-    res.json("Material deleted!");
-  } catch (error) {
-    console.error(error);
+app.delete(
+  "/productHasMaterial/product/:productID/material/:materialID",
+  async (req, res) => {
+    try {
+      const { productID, materialID } = req.params;
+      const deleteMaterial = await pool.query(
+        `DELETE FROM product_has_material WHERE material_id = ${materialID} AND product_id = ${productID}`
+      );
+      res.json("Material deleted!");
+    } catch (error) {
+      console.error(error);
+    }
   }
-});
+);
 
 /* ------------------------------- END METHODS ------------------------------ */
 
