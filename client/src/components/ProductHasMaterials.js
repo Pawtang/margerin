@@ -19,27 +19,25 @@ const ProductHasMaterials = (props) => {
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
   const productID = parseInt(props.productID);
 
-  const handleAddMaterial = async () => {
+  const handleAddMaterialToProduct = async () => {
     const body = { productID, addMaterial, newUnit, newQuantity };
-    console.log("Front-end body:", body);
     await addMaterialToProduct(body);
     const materialArray = await getMaterialsForProduct(productID);
     setMaterialsForProduct(materialArray);
-    console.log(productID, addMaterial, newUnit, newQuantity);
     setAddMaterial("");
     setNewUnit("");
     setNewQuantity("");
   };
 
-  const handleNewMaterial = (e) => {
-    e.prevenDefault();
+  const handleNewMaterial = async (e) => {
+    e.preventDefault();
     const body = { newMaterialName, newMaterialDescription };
-    newMaterial(body);
+    await newMaterial(body);
+    getMaterials();
   };
 
   const handleDeleteMaterial = async (materialID) => {
-    const body = { materialID, productID };
-    await deleteMaterialFromProduct(body);
+    await deleteMaterialFromProduct(productID, materialID);
     setMaterialsForProduct(
       materialsForProduct.filter(
         (material) => material.material_id !== materialID
@@ -121,7 +119,6 @@ const ProductHasMaterials = (props) => {
                     type="submit"
                     class="btn btn-primary"
                     data-bs-dismiss="modal"
-                    onClick={() => clearEntry()}
                   >
                     Add material
                   </button>
@@ -132,7 +129,7 @@ const ProductHasMaterials = (props) => {
         </div>
       </div>
 
-      <div className="row shadow-sm mx-auto">
+      <div className="row shadow-sm mx-auto pt-2">
         <div className="row row-cols-5 mx-auto">
           <div className="col">
             <h6 className="text-center">Material</h6>
@@ -282,7 +279,7 @@ const ProductHasMaterials = (props) => {
           <div className="col text-center">
             <button
               className="btn btn-outline-primary"
-              onClick={() => handleAddMaterial()}
+              onClick={() => handleAddMaterialToProduct()}
             >
               Add Material
             </button>

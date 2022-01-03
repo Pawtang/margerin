@@ -33,12 +33,11 @@ export const addMaterialToProduct = async (body) => {
       },
       body: JSON.stringify(body),
     });
-    console.log("body:", body);
     if (response.status !== 200) {
       throw "response is not 200";
     }
   } catch (err) {
-    console.error(err.message);
+    console.error("Failed to add material: ", err.message);
   }
 };
 
@@ -57,7 +56,7 @@ export const getUnits = async () => {
 export const deleteMaterialFromProduct = async (productID, materialID) => {
   try {
     const response = await fetch(
-      `${URL_SERVER}/productHasMaterial/product/${productID}/material/${materialID}`,
+      `${URL_SERVER}/productHasMaterial/${productID}/${materialID}`,
       {
         method: "DELETE",
       }
@@ -72,7 +71,6 @@ export const deleteMaterialFromProduct = async (productID, materialID) => {
 
 export const newMaterial = async (body) => {
   try {
-    console.log("Front end", body);
     const response = await fetch(`${URL_SERVER}/material`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -81,7 +79,6 @@ export const newMaterial = async (body) => {
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    getMaterials();
   } catch (err) {
     console.error(err.message);
   }

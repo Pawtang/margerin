@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS product_has_material (
         product_id,
         material_id
     ),
-    FOREIGN KEY (product_id) REFERENCES product (product_id),
+    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
     FOREIGN KEY (material_id) REFERENCES material (material_id),
     FOREIGN KEY (unit_id) REFERENCES unit (unit_id),
     quantity INT

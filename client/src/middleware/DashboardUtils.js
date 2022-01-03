@@ -13,9 +13,7 @@ export const displayProduct = async (id) => {
 };
 
 export const addProduct = async (body) => {
-  // e.preventDefault();
   try {
-    // const body = { newProductName, newProductDescription };
     console.log("Front end", body);
     const response = await fetch(`${URL_SERVER}/product`, {
       method: "POST",

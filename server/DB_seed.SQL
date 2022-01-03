@@ -15,7 +15,6 @@ VALUES('Rio Verde', 'A mild, earthy, spiced blend of fermented jalapenos, garlic
       ('iPhone 13', 'Our most advanced dual‑camera system ever.', ''),
       ('Two Front Teeth', 'Literally just two teeth', ''),
       ('Special Keyboard', 'I was clearly a bit tipsy when I wrote these and I still am now', ''),
-      ('Glow in the Dark Anus', 'Its like your regular asshole, but it glows in the dark', ''),
       ('Expensive Doormat', 'Tired of cheap ass door mats? Buy this expensive one.', '');
       
 
@@ -27,8 +26,15 @@ VALUES('Scrap Metal', '', ''),
       ('Silicon', '', ''),
       ('Water', '', ''),
       ('Enamel', '', ''),
-      ('Keratin', '', ''),
-      ('Anus', '', '');
+      ('Monkey NFT', '', ''),
+      ('Bones', '', ''),
+      ('Brains', '', ''),
+      ('Sweat', '', ''),
+      ('Tears', '', ''),
+      ('Blood', '', ''),
+      ('Paper', '', ''),
+      ('Keratin', '', '');
+
 
 INSERT INTO unit (unit_name, unit_type)
 VALUES('each', 'each'),

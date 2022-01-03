@@ -28,9 +28,11 @@ app.post("/product", async (req, res) => {
 //create a material
 app.post("/material", async (req, res) => {
   try {
-    const { materialName, materialDescription } = req.body;
+    console.log("--------------->BODY:", req.body);
+    const { newMaterialName, newMaterialDescription } = req.body;
+    console.log("Back-end name, desc", newMaterialName, newMaterialDescription);
     const newMaterial = await pool.query(
-      `INSERT INTO material (material_name, material_description) VALUES(${materialName}, ${materialDescription}) RETURNING *`
+      `INSERT INTO material (material_name, material_description) VALUES('${newMaterialName}', '${newMaterialDescription}') RETURNING *`
     );
     res.json(newMaterial.rows);
   } catch (err) {
@@ -41,6 +43,7 @@ app.post("/material", async (req, res) => {
 //Add a material to a product
 app.post("/productHasMaterial", async (req, res) => {
   try {
+    console.log(req.body);
     const { productID, addMaterial, newUnit, newQuantity } = req.body;
     console.log(
       "back-end body: ",
@@ -157,7 +160,8 @@ app.delete("/product/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = await pool.query(
-      `DELETE FROM product WHERE product_id = ${id}`
+      `DELETE FROM product WHERE product_id = ${id}
+      `
     );
     res.json("Product deleted!");
   } catch (error) {
@@ -165,20 +169,18 @@ app.delete("/product/:id", async (req, res) => {
   }
 });
 
-app.delete(
-  "/productHasMaterial/product/:productID/material/:materialID",
-  async (req, res) => {
-    try {
-      const { productID, materialID } = req.params;
-      const deleteMaterial = await pool.query(
-        `DELETE FROM product_has_material WHERE material_id = ${materialID} AND product_id = ${productID}`
-      );
-      res.json("Material deleted!");
-    } catch (error) {
-      console.error(error);
-    }
+app.delete("/productHasMaterial/:productID/:materialID", async (req, res) => {
+  console.log("Back-end:", req.params);
+  try {
+    const { productID, materialID } = req.params;
+    const deleteMaterial = await pool.query(
+      `DELETE FROM product_has_material WHERE material_id = ${materialID} AND product_id = ${productID}`
+    );
+    res.json("Material deleted!");
+  } catch (error) {
+    console.error("DELETE error in Index", error);
   }
-);
+});
 
 /* ------------------------------- END METHODS ------------------------------ */
 

@@ -2,6 +2,7 @@ import { React, Fragment, useState, useEffect } from "react";
 import _ from "lodash";
 import AppNav from "./AppNav";
 import ProductHasMaterials from "./ProductHasMaterials";
+import ProductSearch from "./ProductSearch";
 import {
   displayProduct,
   addProduct,
@@ -212,7 +213,7 @@ const Dashboard = () => {
               {/* ----------------------------- End Render List ---------------------------- */}
             </div>
           </div>
-
+          {/* --------------------------- End Product Search --------------------------- */}
           {/* /* ----------------------------- Product Profile ---------------------------- */}
 
           <div className="col-7 col-md-9 p-4 gx-5">
