@@ -4,7 +4,6 @@ import AppNav from "./AppNav";
 import ProductHasMaterials from "./ProductHasMaterials";
 import ProductSearch from "./ProductSearch";
 import {
-  displayProduct,
   addProduct,
   getProducts,
   deleteProduct,
@@ -13,39 +12,37 @@ import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const [displayedProduct, setDisplayedProduct] = useState({});
-  const [products, setProducts] = useState([]);
   const [newProductName, setNewProductName] = useState([]);
   const [newProductDescription, setnewProductDescription] = useState([]);
+  const [products, setProducts] = useState([]);
 
   /* ------------------------------ List Products ----------------------------- */
   useEffect(() => {
     const loadProductList = async () => {
       const productArray = await getProducts();
       setProducts(productArray);
-      // setFilteredProducts(productArray);
       setDisplayedProduct(productArray[0]);
     };
     loadProductList();
   }, []);
+
+  //How to trigger rendering?
+  const renderProducts = async () => {
+    const productArray = await getProducts();
+    setProducts(productArray);
+    setDisplayedProduct(productArray[0].product_id);
+  };
 
   /* ------------------------------- Add Product ------------------------------ */
   const handleAddProduct = async (e) => {
     e.preventDefault();
     const body = { newProductName, newProductDescription };
     await addProduct(body);
-    renderProducts();
   };
 
   const clearEntry = () => {
     setNewProductName("");
     setnewProductDescription("");
-  };
-
-  const renderProducts = async () => {
-    const productArray = await getProducts();
-    setProducts(productArray);
-    // setFilteredProducts(productArray);
-    setDisplayedProduct(productArray[0].product_id);
   };
 
   return (
@@ -119,8 +116,8 @@ const Dashboard = () => {
         <div className="row shadow rounded-3 bg-white">
           {/* /* ----------------------------- Product Search ----------------------------- */}
           <ProductSearch
-            products={products}
             setDisplayedProduct={setDisplayedProduct}
+            products={products}
           />
           {/* --------------------------- End Product Search --------------------------- */}
           {/* /* ----------------------------- Product Profile ---------------------------- */}

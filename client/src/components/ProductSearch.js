@@ -1,10 +1,10 @@
+//TODO: Generic Naming
 import { displayProduct } from "../middleware/DashboardUtils";
 import { React, useState } from "react";
-import { getProducts } from "../middleware/DashboardUtils";
 
 export const ProductSearch = (props) => {
   const [search, setSearch] = useState("");
-  const { products, setDisplayedProduct } = props;
+  const { setDisplayedProduct, products } = props;
 
   return (
     <div className="col-5 col-md-3 border-end">

@@ -165,6 +165,7 @@ app.delete("/product/:id", async (req, res) => {
     );
     res.json("Product deleted!");
   } catch (error) {
+    res.status(400).json({ errorCode: "1002", error: error.message });
     console.error(error);
   }
 });
