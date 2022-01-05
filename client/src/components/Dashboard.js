@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [newProductName, setNewProductName] = useState([]);
   const [newProductDescription, setnewProductDescription] = useState([]);
   const [products, setProducts] = useState([]);
+  const [transactionMaterial, setTransactionMaterial] = useState({});
 
   /* ------------------------------ List Products ----------------------------- */
   useEffect(() => {
@@ -38,6 +39,7 @@ const Dashboard = () => {
     e.preventDefault();
     const body = { newProductName, newProductDescription };
     await addProduct(body);
+    clearEntry("productModal");
   };
 
   const clearEntry = () => {
@@ -48,7 +50,8 @@ const Dashboard = () => {
   return (
     <Fragment>
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
-      {/* ---------------------------------- Modal --------------------------------- */}
+      {/* -------------------- TODO: Generalize the input modal -------------------- */}
+      {/* --------------------------Material Modal --------------------------------- */}
       <div class="modal fade" tabindex="-1" id="newProductModal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -107,6 +110,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
       {/* --------------------------------- Navbar --------------------------------- */}
       <div className="navbar-clearance"></div>
       <div className="container-xxl">

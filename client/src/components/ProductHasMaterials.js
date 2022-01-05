@@ -71,6 +71,47 @@ const ProductHasMaterials = (props) => {
 
   return (
     <Fragment>
+      {/* ---------------------------- Transaction Modal --------------------------- */}
+      <div class="modal fade" tabindex="-1" id="materialTransactionModal">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                Recent Transactions for %MATERIAL_NAME%
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onClick={() => clearEntry()}
+              ></button>
+            </div>
+
+            <div class="modal-body">
+              <div className="row row-cols-5">
+                <div className="col">
+                  <h6 className="text-center">Supplier</h6>
+                </div>
+                <div className="col">
+                  <h6 className="text-center">Quantity</h6>
+                </div>
+                <div className="col">
+                  <h6 className="text-center">Unit</h6>
+                </div>
+                <div className="col">
+                  <h6 className="text-center">Cost</h6>
+                </div>
+                <div className="col">
+                  <h6 className="text-center">Date</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ----------------------------- Material Modal ----------------------------- */}
       <div class="modal fade" tabindex="-1" id="newMaterialModal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -163,7 +204,11 @@ const ProductHasMaterials = (props) => {
               <p className="text-center">{material.unit_name}</p>
             </div>
             <div className="col text-center">
-              <button className="btn btn-outline-primary">
+              <button
+                className="btn btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#materialTransactionModal"
+              >
                 $7.99{" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
