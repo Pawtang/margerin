@@ -24,6 +24,18 @@ export const getMaterialsForProduct = async (id) => {
   }
 };
 
+export const getTransactionsForMaterial = async (id) => {
+  try {
+    const response = await fetch(`${URL_SERVER}/materialHasTransactions/${id}`);
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
+    return await response.json();
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
 export const addMaterialToProduct = async (body) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterial`, {
@@ -44,6 +56,18 @@ export const addMaterialToProduct = async (body) => {
 export const getUnits = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/units`);
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
+    return response.json();
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+export const getSuppliers = async () => {
+  try {
+    const response = await fetch(`${URL_SERVER}/suppliers`);
     if (response.status !== 200) {
       throw "response is not 200";
     }

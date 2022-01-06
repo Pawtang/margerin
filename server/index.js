@@ -107,6 +107,16 @@ app.get("/units", async (req, res) => {
   }
 });
 
+//Get all suppliers
+app.get("/suppliers", async (req, res) => {
+  try {
+    const getAllSuppliers = await pool.query(`SELECT * FROM supplier`);
+    res.status(200).json(getAllSuppliers.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //get a product
 app.get("/product/:id", async (req, res) => {
   try {
@@ -130,6 +140,22 @@ app.get("/productHasMaterials/:id", async (req, res) => {
       INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
     );
     res.json(relatedMaterials.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Get all transactions for material
+app.get("/materialHasTransactions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const relatedTransactions = await pool.query(
+      `SELECT  t.transaction_id, t.cost, t.quantity, s.supplier_name, u.unit_name FROM transaction t 
+      INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) 
+      INNER JOIN unit u ON (t.unit_id = u.unit_id) WHERE (material_id = ${id});`
+    );
+    console.log(relatedTransactions.rows);
+    res.json(relatedTransactions.rows);
   } catch (err) {
     console.error(err.message);
   }

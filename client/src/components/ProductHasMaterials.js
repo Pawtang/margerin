@@ -1,23 +1,37 @@
 import { React, Fragment, useState, useEffect } from "react";
+import _ from "lodash";
 import {
   getMaterials,
   getMaterialsForProduct,
   addMaterialToProduct,
   deleteMaterialFromProduct,
   getUnits,
+  getSuppliers,
   newMaterial,
+  getTransactionsForMaterial,
 } from "../middleware/ProductHasMaterialUtils";
 
 const ProductHasMaterials = (props) => {
+  //General Purpose
   const [materials, setMaterials] = useState([]);
   const [units, setUnits] = useState([]);
+
+  //Transaction Modal States
+  const [suppliers, setSuppliers] = useState([]);
+  const [transactionsForMaterial, setTransactionsForMaterial] = useState([]);
+  const [modalMaterial, setModalMaterial] = useState({});
+  const [newCost, setNewCost] = useState("");
+
+  //Product has materials
   const [addMaterial, setAddMaterial] = useState([]);
   const [newUnit, setNewUnit] = useState([]);
   const [newQuantity, setNewQuantity] = useState([]);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
+
+  //Create new material
   const [newMaterialName, setNewMaterialName] = useState([]);
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
-  const [modalMaterial, setModalMaterial] = useState({});
+
   const productID = props.productID;
 
   const handleAddMaterialToProduct = async () => {
@@ -56,8 +70,10 @@ const ProductHasMaterials = (props) => {
     const loadLists = async () => {
       const allMaterials = await getMaterials();
       const unitList = await getUnits();
+      const supplierList = await getSuppliers();
       setMaterials(allMaterials);
       setUnits(unitList);
+      setSuppliers(supplierList);
     };
     loadLists();
   }, []);
@@ -69,6 +85,16 @@ const ProductHasMaterials = (props) => {
     };
     retrieveMaterialsForProduct();
   }, [productID]);
+
+  useEffect(() => {
+    const retrieveTransactionsForMaterial = async () => {
+      console.log("material ID front end: ", modalMaterial.material_id);
+      const array = await getTransactionsForMaterial(modalMaterial.material_id);
+      console.log("response from back: ", array);
+      setTransactionsForMaterial(array);
+    };
+    retrieveTransactionsForMaterial();
+  }, [modalMaterial]);
 
   return (
     <Fragment>
@@ -111,26 +137,28 @@ const ProductHasMaterials = (props) => {
                 </div>
               </div>
 
-              <div className="row row-cols-6">
+              <div className="row row-cols-6 border-bottom py-2 mb-2">
+                {/* --------------------------------- Inputs --------------------------------- */}
+                {/* -------------------------------- Supplier -------------------------------- */}
                 <div className="col">
                   <div className="input-group">
                     <select
                       id="inputMaterialName"
                       class="form-select"
                       // value={}
-                      onChange={(e) => console.log("ok, it works")}
+                      onChange={(e) => console.log(e.target.value)}
                     >
                       <option disabled value="">
                         Supplier
                       </option>
-                      {/* {suppliers.map((supplier) => (
+                      {suppliers.map((supplier) => (
                         <option
                           value={supplier.supplier_id}
                           key={supplier.supplier_id}
                         >
                           {supplier.supplier_name}
                         </option>
-                      ))} */}
+                      ))}
                     </select>
                     <button
                       className="btn btn-outline-secondary"
@@ -141,16 +169,138 @@ const ProductHasMaterials = (props) => {
                     </button>
                   </div>
                 </div>
-
+                {/* -------------------------------- Quantity -------------------------------- */}
                 <div className="col">
                   <input
                     type="number"
                     class="form-control"
-                    placeholder="Quantity"
+                    placeholder="0"
                     aria-label="Quantity"
                     // value={}
                     onChange={(e) => {}}
                   />
+                </div>
+                {/* ---------------------------------- Unit ---------------------------------- */}
+                <div className="col">
+                  <select
+                    id="inputUnits"
+                    class="form-select"
+                    // value={}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                    }}
+                  >
+                    <option disabled value="">
+                      Unit
+                    </option>
+                    {units.map((unit) => (
+                      <option value={unit.unit_id} key={unit.unit_id}>
+                        {unit.unit_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {/* ---------------------------------- Cost ---------------------------------- */}
+                <div className="col">
+                  <div className="input-group">
+                    <span className="input-group-text">$</span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="0.00"
+                      aria-label="cost"
+                      step="0.01"
+                      value={newCost}
+                      onChange={(e) => {
+                        setNewCost(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
+                {/* ---------------------------------- Date ---------------------------------- */}
+                <div className="col">
+                  <p className="text-center"> %DATE%</p>
+                </div>
+
+                {/* --------------------------------- Buttons -------------------------------- */}
+                <div className="col"></div>
+              </div>
+              {/* --------------------------- Enumerated Existing -------------------------- */}
+              <div className="row row-cols-6 border-bottom py-2">
+                <div className="col">
+                  {!_.isEmpty(transactionsForMaterial) &&
+                    transactionsForMaterial.map((transaction) => (
+                      <div className="col">
+                        <p className="text-center">
+                          {transaction.supplier_name}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+                <div className="col">
+                  {!_.isEmpty(transactionsForMaterial) &&
+                    transactionsForMaterial.map((transaction) => (
+                      <div className="col">
+                        <p className="text-center">{transaction.quantity}</p>
+                      </div>
+                    ))}
+                </div>
+                <div className="col">
+                  {!_.isEmpty(transactionsForMaterial) &&
+                    transactionsForMaterial.map((transaction) => (
+                      <div className="col">
+                        <p className="text-center">{transaction.unit_name}</p>
+                      </div>
+                    ))}
+                </div>
+                <div className="col">
+                  {!_.isEmpty(transactionsForMaterial) &&
+                    transactionsForMaterial.map((transaction) => (
+                      <div className="col">
+                        <p className="text-center">{transaction.cost}</p>
+                      </div>
+                    ))}
+                </div>
+                <div className="col">
+                  {!_.isEmpty(transactionsForMaterial) &&
+                    transactionsForMaterial.map((transaction) => (
+                      <div className="col">
+                        <p className="text-center">%DATE%</p>
+                      </div>
+                    ))}
+                </div>
+                <div className="col text-center">
+                  {!_.isEmpty(transactionsForMaterial) &&
+                    transactionsForMaterial.map((transaction) => (
+                      <div
+                        className="btn-group"
+                        role="group"
+                        aria-label="update delete"
+                      >
+                        <button className="btn btn-outline-primary">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-pencil-square"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                            <path
+                              fill-rule="evenodd"
+                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          className="btn btn-outline-danger"
+                          onClick={() => {}}
+                        >
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
