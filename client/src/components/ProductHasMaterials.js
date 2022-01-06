@@ -17,7 +17,8 @@ const ProductHasMaterials = (props) => {
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
   const [newMaterialName, setNewMaterialName] = useState([]);
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
-  const productID = parseInt(props.productID);
+  const [modalMaterial, setModalMaterial] = useState({});
+  const productID = props.productID;
 
   const handleAddMaterialToProduct = async () => {
     const body = { productID, addMaterial, newUnit, newQuantity };
@@ -77,7 +78,7 @@ const ProductHasMaterials = (props) => {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">
-                Recent Transactions for %MATERIAL_NAME%
+                Recent Transactions for {modalMaterial.material_name}
               </h5>
               <button
                 type="button"
@@ -89,7 +90,7 @@ const ProductHasMaterials = (props) => {
             </div>
 
             <div class="modal-body">
-              <div className="row row-cols-5">
+              <div className="row row-cols-6">
                 <div className="col">
                   <h6 className="text-center">Supplier</h6>
                 </div>
@@ -104,6 +105,52 @@ const ProductHasMaterials = (props) => {
                 </div>
                 <div className="col">
                   <h6 className="text-center">Date</h6>
+                </div>
+                <div className="col">
+                  <h6 className="text-center"></h6>
+                </div>
+              </div>
+
+              <div className="row row-cols-6">
+                <div className="col">
+                  <div className="input-group">
+                    <select
+                      id="inputMaterialName"
+                      class="form-select"
+                      // value={}
+                      onChange={(e) => console.log("ok, it works")}
+                    >
+                      <option disabled value="">
+                        Supplier
+                      </option>
+                      {/* {suppliers.map((supplier) => (
+                        <option
+                          value={supplier.supplier_id}
+                          key={supplier.supplier_id}
+                        >
+                          {supplier.supplier_name}
+                        </option>
+                      ))} */}
+                    </select>
+                    <button
+                      className="btn btn-outline-secondary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#newMaterialModal"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div className="col">
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Quantity"
+                    aria-label="Quantity"
+                    // value={}
+                    onChange={(e) => {}}
+                  />
                 </div>
               </div>
             </div>
@@ -208,6 +255,9 @@ const ProductHasMaterials = (props) => {
                 className="btn btn-outline-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#materialTransactionModal"
+                onClick={() => {
+                  setModalMaterial(material);
+                }}
               >
                 $7.99{" "}
                 <svg

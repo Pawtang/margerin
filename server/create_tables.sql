@@ -32,9 +32,12 @@ CREATE TABLE IF NOT EXISTS transaction (
     transaction_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     supplier_id integer NOT NULL,
     material_id integer NOT NULL,
+    unit_id INT NOT NULL,
     FOREIGN KEY (supplier_id) REFERENCES supplier (supplier_id),
     FOREIGN KEY (material_id) REFERENCES material (material_id),
-    cost MONEY DEFAULT (0)
+    FOREIGN KEY (unit_id) REFERENCES unit (unit_id),
+    cost MONEY DEFAULT (0),
+    quantity INT
 );
     
 CREATE TABLE IF NOT EXISTS product_has_material (

@@ -84,3 +84,6 @@ VALUES('each', 'each'),
 INSERT INTO product_has_material (product_id, material_id, unit_id, quantity)
 VALUES('81', '5', '24', '5');
       ('53', '1', '5', '25');
+
+INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity)
+VALUES('2', '2', '2', '4.30', '3')
