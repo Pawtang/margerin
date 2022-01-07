@@ -61,6 +61,34 @@ app.post("/productHasMaterial", async (req, res) => {
   }
 });
 
+//add a transaction to a material
+app.post("/materialHasTransaction", async (req, res) => {
+  try {
+    console.log(req.body);
+    const {
+      transactionSupplierID,
+      transactionMaterialID,
+      transactionUnitID,
+      transactionCost,
+      transactionQuantity,
+      transactionDate,
+    } = req.body;
+    console.log(
+      "back-end body: ",
+      productID,
+      addMaterial,
+      newUnit,
+      newQuantity
+    );
+    const productHasMaterial = await pool.query(
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplierID}, ${transactionMaterialID}, ${transactionUnitID}, ${transactionCost},${transactionQuantity}, ${transactionDate}) RETURNING *`
+    );
+    res.status(201).json(productHasMaterial.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //create a supplier
 app.post("/suppliers", async (req, res) => {
   try {
@@ -150,7 +178,7 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const relatedTransactions = await pool.query(
-      `SELECT  t.transaction_id, t.cost, t.quantity, s.supplier_name, u.unit_name FROM transaction t 
+      `SELECT  t.transaction_id, t.cost, t.quantity, t.transaction_date, s.supplier_name, u.unit_name FROM transaction t 
       INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) 
       INNER JOIN unit u ON (t.unit_id = u.unit_id) WHERE (material_id = ${id});`
     );
@@ -208,6 +236,22 @@ app.delete("/productHasMaterial/:productID/:materialID", async (req, res) => {
     console.error("DELETE error in Index", error);
   }
 });
+
+app.delete(
+  "/materialHasTransaction/:materialID/:transactionID",
+  async (req, res) => {
+    console.log("Back-end:", req.params);
+    try {
+      const { materialID, transactionID } = req.params;
+      const deleteTransaction = await pool.query(
+        `DELETE FROM transaction WHERE material_id = ${materialID} AND transaction_id = ${transactionID}`
+      );
+      res.json("Transaction deleted!");
+    } catch (error) {
+      console.error("DELETE error in Index", error);
+    }
+  }
+);
 
 /* ------------------------------- END METHODS ------------------------------ */
 

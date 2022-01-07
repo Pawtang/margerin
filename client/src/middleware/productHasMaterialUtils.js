@@ -53,6 +53,23 @@ export const addMaterialToProduct = async (body) => {
   }
 };
 
+export const addTransactionForMaterial = async (body) => {
+  try {
+    const response = await fetch(`${URL_SERVER}/materialHasTransaction`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
+  } catch (err) {
+    console.error("Failed to add transaction: ", err.message);
+  }
+};
+
 export const getUnits = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/units`);
@@ -81,6 +98,25 @@ export const deleteMaterialFromProduct = async (productID, materialID) => {
   try {
     const response = await fetch(
       `${URL_SERVER}/productHasMaterial/${productID}/${materialID}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (response.status !== 200) {
+      throw "DELETE not successful";
+    }
+  } catch (err) {
+    console.error("Failed to Delete", err.message);
+  }
+};
+
+export const deleteTransactionFromMaterial = async (
+  materialID,
+  transactionID
+) => {
+  try {
+    const response = await fetch(
+      `${URL_SERVER}/materialHasTransaction/${materialID}/${transactionID}`,
       {
         method: "DELETE",
       }

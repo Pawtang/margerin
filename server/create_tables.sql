@@ -37,7 +37,8 @@ CREATE TABLE IF NOT EXISTS transaction (
     FOREIGN KEY (material_id) REFERENCES material (material_id),
     FOREIGN KEY (unit_id) REFERENCES unit (unit_id),
     cost MONEY DEFAULT (0),
-    quantity INT
+    quantity INT,
+    transaction_date date DEFAULT CURRENT_DATE;
 );
     
 CREATE TABLE IF NOT EXISTS product_has_material (

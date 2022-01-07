@@ -4,7 +4,9 @@ import {
   getMaterials,
   getMaterialsForProduct,
   addMaterialToProduct,
+  addTransactionForMaterial,
   deleteMaterialFromProduct,
+  deleteTransactionFromMaterial,
   getUnits,
   getSuppliers,
   newMaterial,
@@ -20,7 +22,11 @@ const ProductHasMaterials = (props) => {
   const [suppliers, setSuppliers] = useState([]);
   const [transactionsForMaterial, setTransactionsForMaterial] = useState([]);
   const [modalMaterial, setModalMaterial] = useState({});
-  const [newCost, setNewCost] = useState("");
+  const [transactionSupplier, setTransactionSupplier] = useState("");
+  const [transactionUnit, setTransactionUnit] = useState("");
+  const [transactionCost, setTransactionCost] = useState("0.00");
+  const [transactionQuantity, setTransactionQuantity] = useState("0");
+  const [transactionDate, setTransactionDate] = useState("");
 
   //Product has materials
   const [addMaterial, setAddMaterial] = useState([]);
@@ -117,22 +123,22 @@ const ProductHasMaterials = (props) => {
 
             <div class="modal-body">
               <div className="row row-cols-6">
-                <div className="col">
+                <div className="col-3">
                   <h6 className="text-center">Supplier</h6>
                 </div>
-                <div className="col">
+                <div className="col-1">
                   <h6 className="text-center">Quantity</h6>
                 </div>
-                <div className="col">
+                <div className="col-2">
                   <h6 className="text-center">Unit</h6>
                 </div>
-                <div className="col">
-                  <h6 className="text-center">Cost</h6>
+                <div className="col-2">
+                  <h6 className="text-center">Total Cost</h6>
                 </div>
-                <div className="col">
+                <div className="col-2">
                   <h6 className="text-center">Date</h6>
                 </div>
-                <div className="col">
+                <div className="col-2">
                   <h6 className="text-center"></h6>
                 </div>
               </div>
@@ -140,13 +146,13 @@ const ProductHasMaterials = (props) => {
               <div className="row row-cols-6 border-bottom py-2 mb-2">
                 {/* --------------------------------- Inputs --------------------------------- */}
                 {/* -------------------------------- Supplier -------------------------------- */}
-                <div className="col">
+                <div className="col-3">
                   <div className="input-group">
                     <select
-                      id="inputMaterialName"
+                      id="inputSupplier"
                       class="form-select"
-                      // value={}
-                      onChange={(e) => console.log(e.target.value)}
+                      value={transactionSupplier}
+                      onChange={(e) => setTransactionSupplier(e.target.value)}
                     >
                       <option disabled value="">
                         Supplier
@@ -170,24 +176,26 @@ const ProductHasMaterials = (props) => {
                   </div>
                 </div>
                 {/* -------------------------------- Quantity -------------------------------- */}
-                <div className="col">
+                <div className="col-1">
                   <input
                     type="number"
                     class="form-control"
                     placeholder="0"
                     aria-label="Quantity"
-                    // value={}
-                    onChange={(e) => {}}
+                    value={transactionQuantity}
+                    onChange={(e) => {
+                      setTransactionQuantity(e.target.value);
+                    }}
                   />
                 </div>
                 {/* ---------------------------------- Unit ---------------------------------- */}
-                <div className="col">
+                <div className="col-2">
                   <select
                     id="inputUnits"
                     class="form-select"
-                    // value={}
+                    value={transactionUnit}
                     onChange={(e) => {
-                      console.log(e.target.value);
+                      setTransactionUnit(e.target.value);
                     }}
                   >
                     <option disabled value="">
@@ -201,7 +209,7 @@ const ProductHasMaterials = (props) => {
                   </select>
                 </div>
                 {/* ---------------------------------- Cost ---------------------------------- */}
-                <div className="col">
+                <div className="col-2">
                   <div className="input-group">
                     <span className="input-group-text">$</span>
                     <input
@@ -210,27 +218,34 @@ const ProductHasMaterials = (props) => {
                       placeholder="0.00"
                       aria-label="cost"
                       step="0.01"
-                      value={newCost}
+                      value={transactionCost}
                       onChange={(e) => {
-                        setNewCost(e.target.value);
+                        setTransactionCost(e.target.value);
                       }}
                     />
                   </div>
                 </div>
                 {/* ---------------------------------- Date ---------------------------------- */}
-                <div className="col">
-                  <p className="text-center"> %DATE%</p>
+                <div className="col-2">
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={transactionDate}
+                    onChange={(e) => setTransactionDate(e.target.value)}
+                  />
                 </div>
 
                 {/* --------------------------------- Buttons -------------------------------- */}
-                <div className="col"></div>
+                <div className="col-2">
+                  <button className="btn btn-primary">Add Transaction</button>
+                </div>
               </div>
               {/* --------------------------- Enumerated Existing -------------------------- */}
               <div className="row row-cols-6 border-bottom py-2">
                 <div className="col">
                   {!_.isEmpty(transactionsForMaterial) &&
                     transactionsForMaterial.map((transaction) => (
-                      <div className="col">
+                      <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">
                           {transaction.supplier_name}
                         </p>
@@ -240,7 +255,7 @@ const ProductHasMaterials = (props) => {
                 <div className="col">
                   {!_.isEmpty(transactionsForMaterial) &&
                     transactionsForMaterial.map((transaction) => (
-                      <div className="col">
+                      <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.quantity}</p>
                       </div>
                     ))}
@@ -248,7 +263,7 @@ const ProductHasMaterials = (props) => {
                 <div className="col">
                   {!_.isEmpty(transactionsForMaterial) &&
                     transactionsForMaterial.map((transaction) => (
-                      <div className="col">
+                      <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.unit_name}</p>
                       </div>
                     ))}
@@ -256,7 +271,7 @@ const ProductHasMaterials = (props) => {
                 <div className="col">
                   {!_.isEmpty(transactionsForMaterial) &&
                     transactionsForMaterial.map((transaction) => (
-                      <div className="col">
+                      <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.cost}</p>
                       </div>
                     ))}
@@ -264,8 +279,10 @@ const ProductHasMaterials = (props) => {
                 <div className="col">
                   {!_.isEmpty(transactionsForMaterial) &&
                     transactionsForMaterial.map((transaction) => (
-                      <div className="col">
-                        <p className="text-center">%DATE%</p>
+                      <div className="col" key={transaction.transaction_id}>
+                        <p className="text-center">
+                          {transaction.transaction_date}
+                        </p>
                       </div>
                     ))}
                 </div>
@@ -276,22 +293,10 @@ const ProductHasMaterials = (props) => {
                         className="btn-group"
                         role="group"
                         aria-label="update delete"
+                        key={transaction.transaction_id}
                       >
                         <button className="btn btn-outline-primary">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            class="bi bi-pencil-square"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                            <path
-                              fill-rule="evenodd"
-                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-                            />
-                          </svg>
+                          <i class="bi bi-pencil-square"></i>
                         </button>
                         <button
                           className="btn btn-outline-danger"
@@ -409,21 +414,7 @@ const ProductHasMaterials = (props) => {
                   setModalMaterial(material);
                 }}
               >
-                $7.99{" "}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-pencil-square"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                  <path
-                    fill-rule="evenodd"
-                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-                  />
-                </svg>
+                $7.99 <i class="bi bi-pencil-square"></i>
               </button>
             </div>
             <div className="col text-center">
@@ -433,20 +424,7 @@ const ProductHasMaterials = (props) => {
                 aria-label="update delete"
               >
                 <button className="btn btn-outline-primary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-pencil-square"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                    <path
-                      fill-rule="evenodd"
-                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-                    />
-                  </svg>
+                  <i class="bi bi-pencil-square"></i>
                 </button>
                 <button
                   className="btn btn-outline-danger"

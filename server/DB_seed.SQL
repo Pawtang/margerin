@@ -1,6 +1,11 @@
 INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating)
 VALUES('Restaurant Depot', 'Teddy', '5555837463', '4'),
-      ('Toys R Us', 'Johnny', '84775778382', '5');
+      ('Toys R Us', 'Johnny', '84775778382', '5'),
+      ('Military Surplus', 'Johnny', '84775778382', '5'),
+      ('Cat Toys Inc', 'Johnny', '84775778382', '5'),
+      ('Steel and Aluminum Company', 'Johnny', '84775778382', '5'),
+      ('Small Ball Co.', 'Johnny', '84775778382', '5'),
+      ('Gidgets, Widgets, and More', 'Johnny', '84775778382', '5');
 
 
 INSERT INTO product (product_name, product_description, product_image_path)
