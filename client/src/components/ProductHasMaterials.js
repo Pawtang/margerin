@@ -15,6 +15,9 @@ import {
 
 const ProductHasMaterials = (props) => {
   //General Purpose
+  const todayDate = new Date().toISOString().split("T")[0];
+  console.log(todayDate);
+
   const [materials, setMaterials] = useState([]);
   const [units, setUnits] = useState([]);
 
@@ -26,7 +29,7 @@ const ProductHasMaterials = (props) => {
   const [transactionUnit, setTransactionUnit] = useState("");
   const [transactionCost, setTransactionCost] = useState("0.00");
   const [transactionQuantity, setTransactionQuantity] = useState("0");
-  const [transactionDate, setTransactionDate] = useState("");
+  const [transactionDate, setTransactionDate] = useState(todayDate);
 
   //Product has materials
   const [addMaterial, setAddMaterial] = useState([]);
@@ -48,6 +51,23 @@ const ProductHasMaterials = (props) => {
     setAddMaterial("");
     setNewUnit("");
     setNewQuantity("");
+  };
+
+  const handleAddTransactionForMaterial = async () => {
+    console.log("Trying to add transaction");
+    let materialID = modalMaterial.material_id;
+    const body = {
+      transactionSupplier,
+      materialID,
+      transactionUnit,
+      transactionCost,
+      transactionQuantity,
+      transactionDate,
+    };
+    await addTransactionForMaterial(body);
+    const transactionArray = await retrieveTransactionsForMaterial();
+    console.log(transactionArray);
+    setTransactionsForMaterial(transactionArray);
   };
 
   const handleNewMaterial = async (e) => {
@@ -72,33 +92,36 @@ const ProductHasMaterials = (props) => {
     setNewMaterialDescription("");
   };
 
+  const loadLists = async () => {
+    const allMaterials = await getMaterials();
+    const unitList = await getUnits();
+    const supplierList = await getSuppliers();
+    setMaterials(allMaterials);
+    setUnits(unitList);
+    setSuppliers(supplierList);
+  };
+
   useEffect(() => {
-    const loadLists = async () => {
-      const allMaterials = await getMaterials();
-      const unitList = await getUnits();
-      const supplierList = await getSuppliers();
-      setMaterials(allMaterials);
-      setUnits(unitList);
-      setSuppliers(supplierList);
-    };
     loadLists();
   }, []);
 
+  const retrieveMaterialsForProduct = async () => {
+    const array = await getMaterialsForProduct(productID);
+    setMaterialsForProduct(array);
+  };
+
   useEffect(() => {
-    const retrieveMaterialsForProduct = async () => {
-      const array = await getMaterialsForProduct(productID);
-      setMaterialsForProduct(array);
-    };
     retrieveMaterialsForProduct();
   }, [productID]);
 
+  const retrieveTransactionsForMaterial = async () => {
+    console.log("material ID front end: ", modalMaterial.material_id);
+    const array = await getTransactionsForMaterial(modalMaterial.material_id);
+    console.log("response from back: ", array);
+    setTransactionsForMaterial(array);
+  };
+
   useEffect(() => {
-    const retrieveTransactionsForMaterial = async () => {
-      console.log("material ID front end: ", modalMaterial.material_id);
-      const array = await getTransactionsForMaterial(modalMaterial.material_id);
-      console.log("response from back: ", array);
-      setTransactionsForMaterial(array);
-    };
     retrieveTransactionsForMaterial();
   }, [modalMaterial]);
 
@@ -237,58 +260,48 @@ const ProductHasMaterials = (props) => {
 
                 {/* --------------------------------- Buttons -------------------------------- */}
                 <div className="col-2">
-                  <button className="btn btn-primary">Add Transaction</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleAddTransactionForMaterial()}
+                  >
+                    Add Transaction
+                  </button>
                 </div>
               </div>
               {/* --------------------------- Enumerated Existing -------------------------- */}
-              <div className="row row-cols-6 border-bottom py-2">
-                <div className="col">
-                  {!_.isEmpty(transactionsForMaterial) &&
-                    transactionsForMaterial.map((transaction) => (
+              {!_.isEmpty(transactionsForMaterial) &&
+                transactionsForMaterial.map((transaction) => (
+                  <div className="row row-cols-6 border-bottom py-2 mb-2">
+                    <div className="col">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">
                           {transaction.supplier_name}
                         </p>
                       </div>
-                    ))}
-                </div>
-                <div className="col">
-                  {!_.isEmpty(transactionsForMaterial) &&
-                    transactionsForMaterial.map((transaction) => (
+                    </div>
+                    <div className="col">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.quantity}</p>
                       </div>
-                    ))}
-                </div>
-                <div className="col">
-                  {!_.isEmpty(transactionsForMaterial) &&
-                    transactionsForMaterial.map((transaction) => (
+                    </div>
+                    <div className="col">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.unit_name}</p>
                       </div>
-                    ))}
-                </div>
-                <div className="col">
-                  {!_.isEmpty(transactionsForMaterial) &&
-                    transactionsForMaterial.map((transaction) => (
+                    </div>
+                    <div className="col">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.cost}</p>
                       </div>
-                    ))}
-                </div>
-                <div className="col">
-                  {!_.isEmpty(transactionsForMaterial) &&
-                    transactionsForMaterial.map((transaction) => (
+                    </div>
+                    <div className="col">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">
                           {transaction.transaction_date}
                         </p>
                       </div>
-                    ))}
-                </div>
-                <div className="col text-center">
-                  {!_.isEmpty(transactionsForMaterial) &&
-                    transactionsForMaterial.map((transaction) => (
+                    </div>
+                    <div className="col text-center">
                       <div
                         className="btn-group"
                         role="group"
@@ -305,9 +318,9 @@ const ProductHasMaterials = (props) => {
                           <i class="bi bi-trash-fill"></i>
                         </button>
                       </div>
-                    ))}
-                </div>
-              </div>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

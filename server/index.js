@@ -43,15 +43,7 @@ app.post("/material", async (req, res) => {
 //Add a material to a product
 app.post("/productHasMaterial", async (req, res) => {
   try {
-    console.log(req.body);
     const { productID, addMaterial, newUnit, newQuantity } = req.body;
-    console.log(
-      "back-end body: ",
-      productID,
-      addMaterial,
-      newUnit,
-      newQuantity
-    );
     const productHasMaterial = await pool.query(
       `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${productID}, ${addMaterial}, ${newUnit}, ${newQuantity}) RETURNING *`
     );
@@ -66,22 +58,15 @@ app.post("/materialHasTransaction", async (req, res) => {
   try {
     console.log(req.body);
     const {
-      transactionSupplierID,
-      transactionMaterialID,
-      transactionUnitID,
+      transactionSupplier,
+      materialID,
+      transactionUnit,
       transactionCost,
       transactionQuantity,
       transactionDate,
     } = req.body;
-    console.log(
-      "back-end body: ",
-      productID,
-      addMaterial,
-      newUnit,
-      newQuantity
-    );
     const productHasMaterial = await pool.query(
-      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplierID}, ${transactionMaterialID}, ${transactionUnitID}, ${transactionCost},${transactionQuantity}, ${transactionDate}) RETURNING *`
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplier}, ${materialID}, ${transactionUnit}, ${transactionCost},${transactionQuantity}, TO_DATE('${transactionDate}', 'YYYY-MM-DD') ) RETURNING *`
     );
     res.status(201).json(productHasMaterial.rows);
   } catch (err) {
