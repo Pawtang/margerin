@@ -144,6 +144,7 @@ app.get("/product/:id", async (req, res) => {
 });
 
 //Get all materials for product
+// TODO: Get the average as part of this function?
 app.get("/productHasMaterials/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -167,12 +168,31 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
       INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) 
       INNER JOIN unit u ON (t.unit_id = u.unit_id) WHERE (material_id = ${id});`
     );
+    // relatedTransactions.transaction_date.split("T")[0];
     console.log(relatedTransactions.rows);
     res.json(relatedTransactions.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
+
+//Get average cost of transaction for material
+app.get(
+  "/materialHasTransactions/averageCost/:materialID/:unitID",
+  async (req, res) => {
+    try {
+      const { materialID, unitID } = req.params;
+      console.log(materialID, unitID);
+      const averageCost = await pool.query(
+        `SELECT AVG(regexp_replace(cost::text, '[$,]', '', 'g')::numeric)::numeric(10,2) FROM transaction WHERE material_id = '${materialID}' AND unit_id = '${unitID}'`
+      );
+      console.log(averageCost.rows[0]);
+      res.json(averageCost.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+);
 
 /* ----------------------------- UPDATE METHODS ----------------------------- */
 

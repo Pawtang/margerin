@@ -1,5 +1,6 @@
 import { React, Fragment, useState, useEffect } from "react";
 import _ from "lodash";
+import dayjs from "dayjs";
 import {
   getMaterials,
   getMaterialsForProduct,
@@ -11,6 +12,7 @@ import {
   getSuppliers,
   newMaterial,
   getTransactionsForMaterial,
+  getAverageCostForUnitMaterial,
 } from "../middleware/ProductHasMaterialUtils";
 
 const ProductHasMaterials = (props) => {
@@ -36,6 +38,7 @@ const ProductHasMaterials = (props) => {
   const [newUnit, setNewUnit] = useState([]);
   const [newQuantity, setNewQuantity] = useState([]);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
+  const [materialUnitCost, setMaterialUnitCost] = useState([]);
 
   //Create new material
   const [newMaterialName, setNewMaterialName] = useState([]);
@@ -43,15 +46,7 @@ const ProductHasMaterials = (props) => {
 
   const productID = props.productID;
 
-  const handleAddMaterialToProduct = async () => {
-    const body = { productID, addMaterial, newUnit, newQuantity };
-    await addMaterialToProduct(body);
-    const materialArray = await getMaterialsForProduct(productID);
-    setMaterialsForProduct(materialArray);
-    setAddMaterial("");
-    setNewUnit("");
-    setNewQuantity("");
-  };
+  /* --------------------------- Transaction Methods -------------------------- */
 
   const handleAddTransactionForMaterial = async () => {
     console.log("Trying to add transaction");
@@ -67,7 +62,41 @@ const ProductHasMaterials = (props) => {
     await addTransactionForMaterial(body);
     const transactionArray = await retrieveTransactionsForMaterial();
     console.log(transactionArray);
-    setTransactionsForMaterial(transactionArray);
+    retrieveTransactionsForMaterial();
+    clearEntry();
+  };
+
+  const retrieveTransactionsForMaterial = async () => {
+    console.log("material ID front end: ", modalMaterial.material_id);
+    const array = await getTransactionsForMaterial(modalMaterial.material_id);
+    console.log("response from back: ", array);
+    setTransactionsForMaterial(array);
+  };
+
+  const handleDeleteTransaction = async (transactionID) => {
+    const materialID = modalMaterial.material_id;
+    await deleteTransactionFromMaterial(materialID, transactionID);
+    setTransactionsForMaterial(
+      transactionsForMaterial.filter(
+        (transaction) => transaction.transaction_id !== transactionID
+      )
+    );
+  };
+
+  useEffect(() => {
+    retrieveTransactionsForMaterial();
+  }, [modalMaterial]);
+
+  /* ---------------------------- Material Methods ---------------------------- */
+
+  const handleAddMaterialToProduct = async () => {
+    const body = { productID, addMaterial, newUnit, newQuantity };
+    await addMaterialToProduct(body);
+    const materialArray = await getMaterialsForProduct(productID);
+    setMaterialsForProduct(materialArray);
+    setAddMaterial("");
+    setNewUnit("");
+    setNewQuantity("");
   };
 
   const handleNewMaterial = async (e) => {
@@ -90,6 +119,12 @@ const ProductHasMaterials = (props) => {
   const clearEntry = () => {
     setNewMaterialName("");
     setNewMaterialDescription("");
+    setModalMaterial({});
+    setTransactionSupplier("");
+    setTransactionUnit("");
+    setTransactionCost("0.00");
+    setTransactionQuantity("0");
+    setTransactionDate(todayDate);
   };
 
   const loadLists = async () => {
@@ -114,17 +149,6 @@ const ProductHasMaterials = (props) => {
     retrieveMaterialsForProduct();
   }, [productID]);
 
-  const retrieveTransactionsForMaterial = async () => {
-    console.log("material ID front end: ", modalMaterial.material_id);
-    const array = await getTransactionsForMaterial(modalMaterial.material_id);
-    console.log("response from back: ", array);
-    setTransactionsForMaterial(array);
-  };
-
-  useEffect(() => {
-    retrieveTransactionsForMaterial();
-  }, [modalMaterial]);
-
   return (
     <Fragment>
       {/* ---------------------------- Transaction Modal --------------------------- */}
@@ -145,7 +169,7 @@ const ProductHasMaterials = (props) => {
             </div>
 
             <div class="modal-body">
-              <div className="row row-cols-6">
+              <div className="row row-cols-6 gx-1">
                 <div className="col-3">
                   <h6 className="text-center">Supplier</h6>
                 </div>
@@ -166,7 +190,7 @@ const ProductHasMaterials = (props) => {
                 </div>
               </div>
 
-              <div className="row row-cols-6 border-bottom py-2 mb-2">
+              <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
                 {/* --------------------------------- Inputs --------------------------------- */}
                 {/* -------------------------------- Supplier -------------------------------- */}
                 <div className="col-3">
@@ -241,10 +265,16 @@ const ProductHasMaterials = (props) => {
                       placeholder="0.00"
                       aria-label="cost"
                       step="0.01"
+                      min="0"
                       value={transactionCost}
                       onChange={(e) => {
                         setTransactionCost(e.target.value);
                       }}
+                      onBlur={() =>
+                        setTransactionCost(
+                          parseFloat(transactionCost).toFixed(2)
+                        )
+                      }
                     />
                   </div>
                 </div>
@@ -271,37 +301,39 @@ const ProductHasMaterials = (props) => {
               {/* --------------------------- Enumerated Existing -------------------------- */}
               {!_.isEmpty(transactionsForMaterial) &&
                 transactionsForMaterial.map((transaction) => (
-                  <div className="row row-cols-6 border-bottom py-2 mb-2">
-                    <div className="col">
+                  <div className="row row-cols-6 border-bottom py-2 mb-2 gx-0">
+                    <div className="col-3">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">
                           {transaction.supplier_name}
                         </p>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-1">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.quantity}</p>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-2">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.unit_name}</p>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-2">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">{transaction.cost}</p>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-2">
                       <div className="col" key={transaction.transaction_id}>
                         <p className="text-center">
-                          {transaction.transaction_date}
+                          {dayjs(transaction.transaction_date).format(
+                            "MMM D, YYYY"
+                          )}
                         </p>
                       </div>
                     </div>
-                    <div className="col text-center">
+                    <div className="col-2 text-center">
                       <div
                         className="btn-group"
                         role="group"
@@ -313,7 +345,9 @@ const ProductHasMaterials = (props) => {
                         </button>
                         <button
                           className="btn btn-outline-danger"
-                          onClick={() => {}}
+                          onClick={() => {
+                            handleDeleteTransaction(transaction.transaction_id);
+                          }}
                         >
                           <i class="bi bi-trash-fill"></i>
                         </button>
@@ -427,7 +461,7 @@ const ProductHasMaterials = (props) => {
                   setModalMaterial(material);
                 }}
               >
-                $7.99 <i class="bi bi-pencil-square"></i>
+                $%COST% <i class="bi bi-pencil-square"></i>
               </button>
             </div>
             <div className="col text-center">

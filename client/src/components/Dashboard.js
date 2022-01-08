@@ -31,7 +31,7 @@ const Dashboard = () => {
   const renderProducts = async () => {
     const productArray = await getProducts();
     setProducts(productArray);
-    setDisplayedProduct(productArray[0].product_id);
+    !_.isEmpty() && setDisplayedProduct(productArray[0].product_id);
   };
 
   /* ------------------------------- Add Product ------------------------------ */
@@ -40,6 +40,7 @@ const Dashboard = () => {
     const body = { newProductName, newProductDescription };
     await addProduct(body);
     clearEntry("productModal");
+    renderProducts();
   };
 
   const clearEntry = () => {
