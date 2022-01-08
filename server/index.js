@@ -56,7 +56,7 @@ app.post("/productHasMaterial", async (req, res) => {
 //add a transaction to a material
 app.post("/materialHasTransaction", async (req, res) => {
   try {
-    console.log(req.body);
+    console.log("Request body for materialHasTransaction:", req.body);
     const {
       transactionSupplier,
       materialID,
@@ -96,7 +96,7 @@ app.get("/products", async (req, res) => {
     );
     res.status(200).json(getAllProducts.rows);
   } catch (err) {
-    console.error(err.message);
+    console.error("Get all products", err.message);
   }
 });
 
@@ -106,7 +106,7 @@ app.get("/materials", async (req, res) => {
     const getAllMaterials = await pool.query(`SELECT * FROM material`);
     res.status(200).json(getAllMaterials.rows);
   } catch (err) {
-    console.error(err.message);
+    console.error("Get all materials", err.message);
   }
 });
 
@@ -116,7 +116,7 @@ app.get("/units", async (req, res) => {
     const getAllUnits = await pool.query(`SELECT * FROM unit`);
     res.status(200).json(getAllUnits.rows);
   } catch (err) {
-    console.error(err.message);
+    console.error("Get all units", err.message);
   }
 });
 
@@ -126,7 +126,7 @@ app.get("/suppliers", async (req, res) => {
     const getAllSuppliers = await pool.query(`SELECT * FROM supplier`);
     res.status(200).json(getAllSuppliers.rows);
   } catch (err) {
-    console.error(err.message);
+    console.error("Get all suppliers", err.message);
   }
 });
 
@@ -139,7 +139,7 @@ app.get("/product/:id", async (req, res) => {
     );
     res.json(getProduct.rows[0]);
   } catch (err) {
-    console.error(err.message);
+    console.error("Get a product", err.message);
   }
 });
 
@@ -149,13 +149,26 @@ app.get("/productHasMaterials/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const relatedMaterials = await pool.query(
-      `SELECT  m.material_id, m.material_name, phm.quantity, u.unit_name FROM material m 
+      `SELECT  m.material_id, m.material_name, phm.quantity, u.unit_name, u.unit_id FROM material m 
       INNER JOIN product_has_material phm ON (m.material_id = phm.material_id) 
       INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
     );
-    res.json(relatedMaterials.rows);
+    const reformattedArray = await Promise.all(
+      relatedMaterials.rows.map(async (material) => {
+        const returned = await pool.query(
+          `SELECT SUM(cost::numeric * quantity::numeric) / SUM(quantity::numeric) AS avgcost FROM transaction WHERE material_id = '${material.material_id}' AND unit_id = '${material.unit_id}'`
+        );
+        console.log("returned from ProductHasMats: ", returned.rows[0]);
+        return {
+          ...material,
+          avgcost: parseFloat(returned.rows[0].avgcost).toFixed(2),
+        };
+      })
+    );
+    res.json(reformattedArray);
+    console.log("reformatted array:", reformattedArray);
   } catch (err) {
-    console.error(err.message);
+    console.error("Error source productHasMaterials", err.message);
   }
 });
 
@@ -163,20 +176,19 @@ app.get("/productHasMaterials/:id", async (req, res) => {
 app.get("/materialHasTransactions/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("ID for transactions", id);
     const relatedTransactions = await pool.query(
       `SELECT  t.transaction_id, t.cost, t.quantity, t.transaction_date, s.supplier_name, u.unit_name FROM transaction t 
       INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) 
       INNER JOIN unit u ON (t.unit_id = u.unit_id) WHERE (material_id = ${id});`
     );
-    // relatedTransactions.transaction_date.split("T")[0];
-    console.log(relatedTransactions.rows);
     res.json(relatedTransactions.rows);
   } catch (err) {
-    console.error(err.message);
+    console.error("Get all transactions for materials", err.message);
   }
 });
 
-//Get average cost of transaction for material
+// Get average cost of transaction for material
 app.get(
   "/materialHasTransactions/averageCost/:materialID/:unitID",
   async (req, res) => {

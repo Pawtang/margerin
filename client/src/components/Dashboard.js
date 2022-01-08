@@ -15,7 +15,6 @@ const Dashboard = () => {
   const [newProductName, setNewProductName] = useState([]);
   const [newProductDescription, setnewProductDescription] = useState([]);
   const [products, setProducts] = useState([]);
-  const [transactionMaterial, setTransactionMaterial] = useState({});
 
   /* ------------------------------ List Products ----------------------------- */
   useEffect(() => {
@@ -52,7 +51,7 @@ const Dashboard = () => {
     <Fragment>
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
       {/* -------------------- TODO: Generalize the input modal -------------------- */}
-      {/* --------------------------Material Modal --------------------------------- */}
+      {/* --------------------------Product Modal --------------------------------- */}
       <div class="modal fade" tabindex="-1" id="newProductModal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -81,8 +80,9 @@ const Dashboard = () => {
                 <label for="productDescription" class="form-label">
                   Product Description
                 </label>
-                <input
+                <textarea
                   type="text"
+                  rows="3"
                   class="form-control"
                   id="productDescription"
                   value={newProductDescription}

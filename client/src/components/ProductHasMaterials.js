@@ -63,10 +63,11 @@ const ProductHasMaterials = (props) => {
     const transactionArray = await retrieveTransactionsForMaterial();
     console.log(transactionArray);
     retrieveTransactionsForMaterial();
-    clearEntry();
+    retrieveMaterialsForProduct();
   };
 
   const retrieveTransactionsForMaterial = async () => {
+    if (_.isEmpty(modalMaterial)) return;
     console.log("material ID front end: ", modalMaterial.material_id);
     const array = await getTransactionsForMaterial(modalMaterial.material_id);
     console.log("response from back: ", array);
@@ -81,6 +82,7 @@ const ProductHasMaterials = (props) => {
         (transaction) => transaction.transaction_id !== transactionID
       )
     );
+    retrieveMaterialsForProduct();
   };
 
   useEffect(() => {
@@ -113,7 +115,7 @@ const ProductHasMaterials = (props) => {
         (material) => material.material_id !== materialID
       )
     );
-    getMaterialsForProduct(productID);
+    retrieveMaterialsForProduct();
   };
 
   const clearEntry = () => {
@@ -359,7 +361,6 @@ const ProductHasMaterials = (props) => {
           </div>
         </div>
       </div>
-
       {/* ----------------------------- Material Modal ----------------------------- */}
       <div class="modal fade" tabindex="-1" id="newMaterialModal">
         <div class="modal-dialog modal-dialog-centered">
@@ -376,23 +377,24 @@ const ProductHasMaterials = (props) => {
             </div>
             <div class="modal-body">
               <form action="" onSubmit={handleNewMaterial}>
-                <label for="productName" class="form-label">
+                <label for="materialName" class="form-label">
                   Material Name
                 </label>
                 <input
                   type="text"
                   class="form-control"
-                  id="productName"
+                  id="materialName"
                   value={newMaterialName}
                   onChange={(e) => setNewMaterialName(e.target.value)}
                 />
-                <label for="productDescription" class="form-label">
+                <label for="materialDescription" class="form-label">
                   Material Description
                 </label>
-                <input
+                <textarea
                   type="text"
+                  rows="3"
                   class="form-control"
-                  id="productDescription"
+                  id="materialDescription"
                   value={newMaterialDescription}
                   onChange={(e) => setNewMaterialDescription(e.target.value)}
                 />
@@ -418,7 +420,8 @@ const ProductHasMaterials = (props) => {
           </div>
         </div>
       </div>
-
+      {/* -------------------------------- End Modal
+      ------------------------------- */}
       <div className="row shadow-sm mx-auto pt-2">
         <div className="row row-cols-5 mx-auto">
           <div className="col">
@@ -454,14 +457,24 @@ const ProductHasMaterials = (props) => {
             </div>
             <div className="col text-center">
               <button
-                className="btn btn-outline-primary"
+                key="displayAverageCost"
+                className={
+                  !isNaN(material.avgcost)
+                    ? `btn btn-outline-success`
+                    : `btn btn-outline-secondary`
+                }
                 data-bs-toggle="modal"
                 data-bs-target="#materialTransactionModal"
                 onClick={() => {
                   setModalMaterial(material);
                 }}
               >
-                $%COST% <i class="bi bi-pencil-square"></i>
+                {!isNaN(material.avgcost)
+                  ? `$${parseFloat(
+                      material.avgcost * material.quantity
+                    ).toFixed(2)}`
+                  : "$ --.--"}{" "}
+                <i class="bi bi-pencil-square"></i>
               </button>
             </div>
             <div className="col text-center">
@@ -483,7 +496,7 @@ const ProductHasMaterials = (props) => {
             </div>
           </div>
         ))}
-        <div className="row row-cols-5 my-2 mx-auto">
+        <div className="row row-cols-5 my-2 mx-auto gx-1">
           <div class="col-3">
             <div className="input-group">
               <select
