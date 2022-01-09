@@ -12,13 +12,13 @@ import {
   getSuppliers,
   newMaterial,
   getTransactionsForMaterial,
-  getAverageCostForUnitMaterial,
 } from "../middleware/ProductHasMaterialUtils";
 
 const ProductHasMaterials = (props) => {
   //General Purpose
+  const productID = props.productID;
+  const setProductAverageCost = props.setProductAverageCost;
   const todayDate = new Date().toISOString().split("T")[0];
-  console.log(todayDate);
 
   const [materials, setMaterials] = useState([]);
   const [units, setUnits] = useState([]);
@@ -35,7 +35,7 @@ const ProductHasMaterials = (props) => {
 
   //Product has materials
   const [addMaterial, setAddMaterial] = useState([]);
-  const [newUnit, setNewUnit] = useState([]);
+  const [newUnit, setNewUnit] = useState();
   const [newQuantity, setNewQuantity] = useState([]);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
   const [materialUnitCost, setMaterialUnitCost] = useState([]);
@@ -43,8 +43,6 @@ const ProductHasMaterials = (props) => {
   //Create new material
   const [newMaterialName, setNewMaterialName] = useState([]);
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
-
-  const productID = props.productID;
 
   /* --------------------------- Transaction Methods -------------------------- */
 
@@ -138,6 +136,17 @@ const ProductHasMaterials = (props) => {
     setSuppliers(supplierList);
   };
 
+  const calculateProductCost = () => {
+    if (_.isEmpty(materialsForProduct)) return;
+    const accumulator = (acc, material) => {
+      return acc + Number(material.avgcost) * material.quantity;
+    };
+    const calculatedCost = parseFloat(
+      materialsForProduct.reduce(accumulator, 0)
+    ).toFixed(2);
+    setProductAverageCost(calculatedCost);
+  };
+
   useEffect(() => {
     loadLists();
   }, []);
@@ -147,8 +156,9 @@ const ProductHasMaterials = (props) => {
     setMaterialsForProduct(array);
   };
 
-  useEffect(() => {
-    retrieveMaterialsForProduct();
+  useEffect(async () => {
+    await retrieveMaterialsForProduct();
+    calculateProductCost();
   }, [productID]);
 
   return (
@@ -247,9 +257,6 @@ const ProductHasMaterials = (props) => {
                       setTransactionUnit(e.target.value);
                     }}
                   >
-                    <option disabled value="">
-                      Unit
-                    </option>
                     {units.map((unit) => (
                       <option value={unit.unit_id} key={unit.unit_id}>
                         {unit.unit_name}
@@ -263,7 +270,7 @@ const ProductHasMaterials = (props) => {
                     <span className="input-group-text">$</span>
                     <input
                       type="number"
-                      class="form-control"
+                      class="form-control user-select-all"
                       placeholder="0.00"
                       aria-label="cost"
                       step="0.01"
@@ -284,7 +291,7 @@ const ProductHasMaterials = (props) => {
                 <div className="col-2">
                   <input
                     type="date"
-                    className="form-control"
+                    className="form-control user-select-all"
                     value={transactionDate}
                     onChange={(e) => setTransactionDate(e.target.value)}
                   />
@@ -422,7 +429,7 @@ const ProductHasMaterials = (props) => {
       </div>
       {/* -------------------------------- End Modal
       ------------------------------- */}
-      <div className="row shadow-sm mx-auto pt-2">
+      <div className="row mx-auto pt-2">
         <div className="row row-cols-5 mx-auto">
           <div className="col">
             <h6 className="text-center">Material</h6>
@@ -441,19 +448,89 @@ const ProductHasMaterials = (props) => {
           </div>
         </div>
 
+        <div className="row row-cols-5 pt-3 mx-auto gx-1">
+          <div class="col-3">
+            <div className="input-group">
+              <select
+                id="inputMaterialName"
+                class="form-select"
+                value={addMaterial}
+                onChange={(e) => setAddMaterial(e.target.value)}
+              >
+                <option disabled value="" className="text-muted">
+                  Add Material...
+                </option>
+                {materials.map((material) => (
+                  <option
+                    value={material.material_id}
+                    key={material.material_id}
+                  >
+                    {material.material_name}
+                  </option>
+                ))}
+              </select>
+              <button
+                className="btn btn-outline-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#newMaterialModal"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div class="col-2">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Quantity"
+              aria-label="Quantity"
+              value={newQuantity}
+              onChange={(e) => {
+                setNewQuantity(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className="col-2">
+            <select
+              id="inputUnits"
+              class="form-select"
+              value={newUnit}
+              onChange={(e) => setNewUnit(e.target.value)}
+            >
+              {units.map((unit) => (
+                <option value={unit.unit_id} key={unit.unit_id}>
+                  {unit.unit_name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col text-center text-muted mx-auto">
+            <p className="fw-light fst-italic py-2 mx-auto">Calculated field</p>
+          </div>
+          <div className="col text-center">
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => handleAddMaterialToProduct()}
+            >
+              Add Material
+            </button>
+          </div>
+        </div>
+
         {materialsForProduct.map((material) => (
           <div
-            className="row row-cols-5 border-bottom py-2 mx-auto"
+            className="row row-cols-5 border-bottom py-1 mx-auto"
             key={material.material_id}
           >
             <div className="col">
-              <p className="text-center">{material.material_name}</p>
+              <p className="text-center my-2">{material.material_name}</p>
             </div>
             <div className="col">
-              <p className="text-center">{material.quantity}</p>
+              <p className="text-center my-2">{material.quantity}</p>
             </div>
             <div className="col">
-              <p className="text-center">{material.unit_name}</p>
+              <p className="text-center my-2">{material.unit_name}</p>
             </div>
             <div className="col text-center">
               <button
@@ -496,78 +573,6 @@ const ProductHasMaterials = (props) => {
             </div>
           </div>
         ))}
-        <div className="row row-cols-5 my-2 mx-auto gx-1">
-          <div class="col-3">
-            <div className="input-group">
-              <select
-                id="inputMaterialName"
-                class="form-select"
-                value={addMaterial}
-                onChange={(e) => setAddMaterial(e.target.value)}
-              >
-                <option disabled value="">
-                  Material
-                </option>
-                {materials.map((material) => (
-                  <option
-                    value={material.material_id}
-                    key={material.material_id}
-                  >
-                    {material.material_name}
-                  </option>
-                ))}
-              </select>
-              <button
-                className="btn btn-outline-secondary"
-                data-bs-toggle="modal"
-                data-bs-target="#newMaterialModal"
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div class="col-2">
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Quantity"
-              aria-label="Quantity"
-              value={newQuantity}
-              onChange={(e) => {
-                setNewQuantity(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="col-2">
-            <select
-              id="inputUnits"
-              class="form-select"
-              value={newUnit}
-              onChange={(e) => setNewUnit(e.target.value)}
-            >
-              <option disabled value="">
-                Unit
-              </option>
-              {units.map((unit) => (
-                <option value={unit.unit_id} key={unit.unit_id}>
-                  {unit.unit_name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col text-center text-muted">
-            <p className="fw-light fst-italic py-1">Calculated field</p>
-          </div>
-          <div className="col text-center">
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => handleAddMaterialToProduct()}
-            >
-              Add Material
-            </button>
-          </div>
-        </div>
       </div>
     </Fragment>
   );

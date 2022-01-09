@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [newProductName, setNewProductName] = useState([]);
   const [newProductDescription, setnewProductDescription] = useState([]);
   const [products, setProducts] = useState([]);
+  const [productAverageCost, setProductAverageCost] = useState("");
 
   /* ------------------------------ List Products ----------------------------- */
   useEffect(() => {
@@ -30,7 +31,8 @@ const Dashboard = () => {
   const renderProducts = async () => {
     const productArray = await getProducts();
     setProducts(productArray);
-    !_.isEmpty() && setDisplayedProduct(productArray[0].product_id);
+    if (_.isEmpty(productArray)) console.log("isEmpty True");
+    setDisplayedProduct(productArray[0]);
   };
 
   /* ------------------------------- Add Product ------------------------------ */
@@ -157,18 +159,21 @@ const Dashboard = () => {
                   </div>
                 )}
                 <h3>Cost Data</h3>
-                <p>Wholesale Cost:</p>
-                <p>Direct to Customer Cost:</p>
-                <p>Wholesale Cost:</p>
+                <p>Product Unit Cost: {productAverageCost}</p>
               </div>
             </div>
 
             {!_.isEmpty(displayedProduct) && (
-              <ProductHasMaterials productID={displayedProduct.product_id} />
+              <ProductHasMaterials
+                productID={displayedProduct.product_id}
+                setProductAverageCost={setProductAverageCost}
+              />
             )}
           </div>
         </div>
       </div>
+
+      <div className="footer"></div>
     </Fragment>
   );
 };

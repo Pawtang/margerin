@@ -36,19 +36,19 @@ export const getTransactionsForMaterial = async (id) => {
   }
 };
 
-export const getAverageCostForUnitMaterial = async (materialID, unitID) => {
-  try {
-    const response = await fetch(
-      `${URL_SERVER}/materialHasTransactions/averageCost/${materialID}/${unitID}`
-    );
-    if (response.status !== 200) {
-      throw "response is not 200";
-    }
-    return await response.json();
-  } catch (err) {
-    console.error("getAverageCostForUnitMaterial ERROR: ", err.message);
-  }
-};
+// export const getAverageCostForUnitMaterial = async (materialID, unitID) => {
+//   try {
+//     const response = await fetch(
+//       `${URL_SERVER}/materialHasTransactions/averageCost/${materialID}/${unitID}`
+//     );
+//     if (response.status !== 200) {
+//       throw "response is not 200";
+//     }
+//     return await response.json();
+//   } catch (err) {
+//     console.error("getAverageCostForUnitMaterial ERROR: ", err.message);
+//   }
+// };
 
 export const addMaterialToProduct = async (body) => {
   try {

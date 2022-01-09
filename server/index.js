@@ -156,12 +156,12 @@ app.get("/productHasMaterials/:id", async (req, res) => {
     const reformattedArray = await Promise.all(
       relatedMaterials.rows.map(async (material) => {
         const returned = await pool.query(
-          `SELECT SUM(cost::numeric * quantity::numeric) / SUM(quantity::numeric) AS avgcost FROM transaction WHERE material_id = '${material.material_id}' AND unit_id = '${material.unit_id}'`
+          `SELECT SUM(cost::numeric / quantity::numeric) / COUNT(cost) AS avgcost FROM transaction WHERE material_id = '${material.material_id}' AND unit_id = '${material.unit_id}'`
         );
         console.log("returned from ProductHasMats: ", returned.rows[0]);
         return {
           ...material,
-          avgcost: parseFloat(returned.rows[0].avgcost).toFixed(2),
+          avgcost: Number(parseFloat(returned.rows[0].avgcost).toFixed(2)),
         };
       })
     );
@@ -188,23 +188,23 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
   }
 });
 
-// Get average cost of transaction for material
-app.get(
-  "/materialHasTransactions/averageCost/:materialID/:unitID",
-  async (req, res) => {
-    try {
-      const { materialID, unitID } = req.params;
-      console.log(materialID, unitID);
-      const averageCost = await pool.query(
-        `SELECT AVG(regexp_replace(cost::text, '[$,]', '', 'g')::numeric)::numeric(10,2) FROM transaction WHERE material_id = '${materialID}' AND unit_id = '${unitID}'`
-      );
-      console.log(averageCost.rows[0]);
-      res.json(averageCost.rows[0]);
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
-);
+// // Get average cost of transaction for material
+// app.get(
+//   "/materialHasTransactions/averageCost/:materialID/:unitID",
+//   async (req, res) => {
+//     try {
+//       const { materialID, unitID } = req.params;
+//       console.log(materialID, unitID);
+//       const averageCost = await pool.query(
+//         `SELECT AVG(regexp_replace(cost::text, '[$,]', '', 'g')::numeric)::numeric(10,2) FROM transaction WHERE material_id = '${materialID}' AND unit_id = '${unitID}'`
+//       );
+//       console.log(averageCost.rows[0]);
+//       res.json(averageCost.rows[0]);
+//     } catch (err) {
+//       console.error(err.message);
+//     }
+//   }
+// );
 
 /* ----------------------------- UPDATE METHODS ----------------------------- */
 
