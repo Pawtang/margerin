@@ -159,7 +159,12 @@ const Dashboard = () => {
                   </div>
                 )}
                 <h3>Cost Data</h3>
-                <p>Product Unit Cost: {productAverageCost}</p>
+                <p>
+                  Product Unit Production Cost:{" "}
+                  <span class="badge rounded-pill bg-success">
+                    ${productAverageCost}
+                  </span>
+                </p>
               </div>
             </div>
 

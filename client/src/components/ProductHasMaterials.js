@@ -66,9 +66,7 @@ const ProductHasMaterials = (props) => {
 
   const retrieveTransactionsForMaterial = async () => {
     if (_.isEmpty(modalMaterial)) return;
-    console.log("material ID front end: ", modalMaterial.material_id);
     const array = await getTransactionsForMaterial(modalMaterial.material_id);
-    console.log("response from back: ", array);
     setTransactionsForMaterial(array);
   };
 
@@ -137,13 +135,18 @@ const ProductHasMaterials = (props) => {
   };
 
   const calculateProductCost = () => {
-    if (_.isEmpty(materialsForProduct)) return;
+    if (_.isEmpty(materialsForProduct)) {
+      setProductAverageCost("No Cost Data");
+      return;
+    }
     const accumulator = (acc, material) => {
       return acc + Number(material.avgcost) * material.quantity;
     };
     const calculatedCost = parseFloat(
       materialsForProduct.reduce(accumulator, 0)
     ).toFixed(2);
+    console.log("mat", materialsForProduct);
+    console.log("CC", calculatedCost);
     setProductAverageCost(calculatedCost);
   };
 
@@ -153,14 +156,21 @@ const ProductHasMaterials = (props) => {
 
   const retrieveMaterialsForProduct = async () => {
     const array = await getMaterialsForProduct(productID);
-    setMaterialsForProduct(array);
+    setMaterialsForProduct([...array]);
   };
 
-  useEffect(async () => {
-    await retrieveMaterialsForProduct();
-    calculateProductCost();
+  useEffect(() => {
+    const asyncGet = async () => {
+      await retrieveMaterialsForProduct();
+    };
+    asyncGet();
   }, [productID]);
 
+  useEffect(() => {
+    calculateProductCost();
+  }, [materialsForProduct]);
+
+  console.log("materials", materialsForProduct);
   return (
     <Fragment>
       {/* ---------------------------- Transaction Modal --------------------------- */}
@@ -536,7 +546,7 @@ const ProductHasMaterials = (props) => {
               <button
                 key="displayAverageCost"
                 className={
-                  !isNaN(material.avgcost)
+                  material.avgcost
                     ? `btn btn-outline-success`
                     : `btn btn-outline-secondary`
                 }
@@ -546,7 +556,7 @@ const ProductHasMaterials = (props) => {
                   setModalMaterial(material);
                 }}
               >
-                {!isNaN(material.avgcost)
+                {material.avgcost
                   ? `$${parseFloat(
                       material.avgcost * material.quantity
                     ).toFixed(2)}`
