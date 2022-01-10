@@ -108,10 +108,14 @@ export const getSuppliers = async () => {
   }
 };
 
-export const deleteMaterialFromProduct = async (productID, materialID) => {
+export const deleteMaterialFromProduct = async (
+  productID,
+  materialID,
+  unitID
+) => {
   try {
     const response = await fetch(
-      `${URL_SERVER}/productHasMaterial/${productID}/${materialID}`,
+      `${URL_SERVER}/productHasMaterial/${productID}/${materialID}/${unitID}`,
       {
         method: "DELETE",
       }

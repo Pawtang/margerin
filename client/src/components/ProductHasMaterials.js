@@ -38,7 +38,6 @@ const ProductHasMaterials = (props) => {
   const [newUnit, setNewUnit] = useState();
   const [newQuantity, setNewQuantity] = useState([]);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
-  const [materialUnitCost, setMaterialUnitCost] = useState([]);
 
   //Create new material
   const [newMaterialName, setNewMaterialName] = useState([]);
@@ -104,8 +103,8 @@ const ProductHasMaterials = (props) => {
     getMaterials();
   };
 
-  const handleDeleteMaterial = async (materialID) => {
-    await deleteMaterialFromProduct(productID, materialID);
+  const handleDeleteMaterial = async (materialID, unitID) => {
+    await deleteMaterialFromProduct(productID, materialID, unitID);
     setMaterialsForProduct(
       materialsForProduct.filter(
         (material) => material.material_id !== materialID
@@ -170,7 +169,6 @@ const ProductHasMaterials = (props) => {
     calculateProductCost();
   }, [materialsForProduct]);
 
-  console.log("materials", materialsForProduct);
   return (
     <Fragment>
       {/* ---------------------------- Transaction Modal --------------------------- */}
@@ -575,7 +573,9 @@ const ProductHasMaterials = (props) => {
                 </button>
                 <button
                   className="btn btn-outline-danger"
-                  onClick={() => handleDeleteMaterial(material.material_id)}
+                  onClick={() =>
+                    handleDeleteMaterial(material.material_id, material.unit_id)
+                  }
                 >
                   <i class="bi bi-trash-fill"></i>
                 </button>

@@ -241,18 +241,21 @@ app.delete("/product/:id", async (req, res) => {
   }
 });
 
-app.delete("/productHasMaterial/:productID/:materialID", async (req, res) => {
-  console.log("Back-end:", req.params);
-  try {
-    const { productID, materialID } = req.params;
-    const deleteMaterial = await pool.query(
-      `DELETE FROM product_has_material WHERE material_id = ${materialID} AND product_id = ${productID}`
-    );
-    res.json("Material deleted!");
-  } catch (error) {
-    console.error("DELETE error in Index", error);
+app.delete(
+  "/productHasMaterial/:productID/:materialID/:unitID",
+  async (req, res) => {
+    console.log("Back-end:", req.params);
+    try {
+      const { productID, materialID, unitID } = req.params;
+      const deleteMaterial = await pool.query(
+        `DELETE FROM product_has_material WHERE material_id = ${materialID} AND product_id = ${productID} AND unit_id = ${unitID}`
+      );
+      res.json("Material deleted!");
+    } catch (error) {
+      console.error("DELETE error in Index", error);
+    }
   }
-});
+);
 
 app.delete(
   "/materialHasTransaction/:materialID/:transactionID",
