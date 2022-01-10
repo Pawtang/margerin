@@ -132,9 +132,9 @@ const Dashboard = () => {
           <div className="col-7 col-md-9 p-4 gx-5">
             <div className="row mb-5 shadow-sm p-4 rounded-3">
               <div className="col-3 pic-col">
-                <div className="square-image mx-auto">
+                {/* <div className="square-image mx-auto">
                   <img src="/assets/mango.jpg" class="img-fluid" alt="" />
-                </div>
+                </div> */}
                 <div class="row p-4 gy-2">
                   <button class="btn btn-primary" type="button">
                     Edit

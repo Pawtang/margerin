@@ -61,6 +61,7 @@ const ProductHasMaterials = (props) => {
     console.log(transactionArray);
     retrieveTransactionsForMaterial();
     retrieveMaterialsForProduct();
+    clearTransactionEntry();
   };
 
   const retrieveTransactionsForMaterial = async () => {
@@ -94,29 +95,32 @@ const ProductHasMaterials = (props) => {
     setAddMaterial("");
     setNewUnit("");
     setNewQuantity("");
+    clearMaterialEntry();
   };
 
   const handleNewMaterial = async (e) => {
     e.preventDefault();
     const body = { newMaterialName, newMaterialDescription };
     await newMaterial(body);
-    getMaterials();
+    const materials = await getMaterials();
+    setMaterials(materials);
   };
 
-  const handleDeleteMaterial = async (materialID, unitID) => {
-    await deleteMaterialFromProduct(productID, materialID, unitID);
+  const handleDeleteMaterial = async (phmID) => {
+    await deleteMaterialFromProduct(phmID);
     setMaterialsForProduct(
-      materialsForProduct.filter(
-        (material) => material.material_id !== materialID
-      )
+      materialsForProduct.filter((material) => material.phm_id !== phmID)
     );
     retrieveMaterialsForProduct();
   };
 
-  const clearEntry = () => {
+  const clearMaterialEntry = () => {
     setNewMaterialName("");
     setNewMaterialDescription("");
     setModalMaterial({});
+  };
+
+  const clearTransactionEntry = () => {
     setTransactionSupplier("");
     setTransactionUnit("");
     setTransactionCost("0.00");
@@ -169,6 +173,8 @@ const ProductHasMaterials = (props) => {
     calculateProductCost();
   }, [materialsForProduct]);
 
+  console.log("product's materials:", materialsForProduct);
+
   return (
     <Fragment>
       {/* ---------------------------- Transaction Modal --------------------------- */}
@@ -184,7 +190,7 @@ const ProductHasMaterials = (props) => {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={() => clearEntry()}
+                onClick={() => clearTransactionEntry()}
               ></button>
             </div>
 
@@ -387,7 +393,7 @@ const ProductHasMaterials = (props) => {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={() => clearEntry()}
+                onClick={() => clearMaterialEntry()}
               ></button>
             </div>
             <div class="modal-body">
@@ -418,7 +424,7 @@ const ProductHasMaterials = (props) => {
                     type="button"
                     class="btn btn-secondary"
                     data-bs-dismiss="modal"
-                    onClick={() => clearEntry()}
+                    onClick={() => clearMaterialEntry()}
                   >
                     Close
                   </button>
@@ -506,6 +512,9 @@ const ProductHasMaterials = (props) => {
               value={newUnit}
               onChange={(e) => setNewUnit(e.target.value)}
             >
+              <option disabled value="" className="text-muted">
+                Unit
+              </option>
               {units.map((unit) => (
                 <option value={unit.unit_id} key={unit.unit_id}>
                   {unit.unit_name}
@@ -529,7 +538,7 @@ const ProductHasMaterials = (props) => {
         {materialsForProduct.map((material) => (
           <div
             className="row row-cols-5 border-bottom py-1 mx-auto"
-            key={material.material_id}
+            key={material.phm_id}
           >
             <div className="col">
               <p className="text-center my-2">{material.material_name}</p>
@@ -573,9 +582,7 @@ const ProductHasMaterials = (props) => {
                 </button>
                 <button
                   className="btn btn-outline-danger"
-                  onClick={() =>
-                    handleDeleteMaterial(material.material_id, material.unit_id)
-                  }
+                  onClick={() => handleDeleteMaterial(material.phm_id)}
                 >
                   <i class="bi bi-trash-fill"></i>
                 </button>

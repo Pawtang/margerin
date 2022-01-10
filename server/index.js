@@ -149,7 +149,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const relatedMaterials = await pool.query(
-      `SELECT  m.material_id, m.material_name, phm.quantity, u.unit_name, u.unit_id FROM material m 
+      `SELECT  m.material_id, m.material_name, phm.quantity, u.unit_name, u.unit_id, phm.phm_id FROM material m 
       INNER JOIN product_has_material phm ON (m.material_id = phm.material_id) 
       INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
     );
@@ -241,21 +241,18 @@ app.delete("/product/:id", async (req, res) => {
   }
 });
 
-app.delete(
-  "/productHasMaterial/:productID/:materialID/:unitID",
-  async (req, res) => {
-    console.log("Back-end:", req.params);
-    try {
-      const { productID, materialID, unitID } = req.params;
-      const deleteMaterial = await pool.query(
-        `DELETE FROM product_has_material WHERE material_id = ${materialID} AND product_id = ${productID} AND unit_id = ${unitID}`
-      );
-      res.json("Material deleted!");
-    } catch (error) {
-      console.error("DELETE error in Index", error);
-    }
+app.delete("/productHasMaterial/:phmID", async (req, res) => {
+  console.log("Back-end:", req.params);
+  try {
+    const { phmID } = req.params;
+    const deleteMaterial = await pool.query(
+      `DELETE FROM product_has_material WHERE phm_id = ${phmID}`
+    );
+    res.json("Material deleted!");
+  } catch (error) {
+    console.error("DELETE error in Index", error);
   }
-);
+});
 
 app.delete(
   "/materialHasTransaction/:materialID/:transactionID",

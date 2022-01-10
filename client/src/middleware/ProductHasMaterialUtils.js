@@ -18,7 +18,9 @@ export const getMaterialsForProduct = async (id) => {
     if (response.status !== 200) {
       throw "response is not 200";
     }
-    return await response.json();
+    const res = await response.json();
+    console.log("get materials response: ", res);
+    return res;
   } catch (err) {
     console.error(err.message);
   }
@@ -108,18 +110,11 @@ export const getSuppliers = async () => {
   }
 };
 
-export const deleteMaterialFromProduct = async (
-  productID,
-  materialID,
-  unitID
-) => {
+export const deleteMaterialFromProduct = async (phmID) => {
   try {
-    const response = await fetch(
-      `${URL_SERVER}/productHasMaterial/${productID}/${materialID}/${unitID}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`${URL_SERVER}/productHasMaterial/${phmID}`, {
+      method: "DELETE",
+    });
     if (response.status !== 200) {
       throw "DELETE not successful";
     }

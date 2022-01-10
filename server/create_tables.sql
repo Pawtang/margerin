@@ -57,3 +57,8 @@ CREATE TABLE IF NOT EXISTS product_has_material (
     quantity INT
 );
     
+ALTER TABLE product_has_material 
+    DROP CONSTRAINT PK_product_ingredient,
+    ADD phm_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    ADD CONSTRAINT material_uniqueness UNIQUE (product_id, material_id, unit_id)
+;

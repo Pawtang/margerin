@@ -14,7 +14,7 @@ const Product = () => {
           <div className="col ">
             <div className="row">
               <div className="col-2 gx-0">
-                <div className="square-image mx-auto"></div>
+                {/* <div className="square-image mx-auto"></div> */}
               </div>
               <div className="col-10">
                 <h3>Mango Bolero</h3>
