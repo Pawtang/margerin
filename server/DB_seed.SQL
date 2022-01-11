@@ -12,33 +12,40 @@ INSERT INTO product (product_name, product_description, product_image_path)
 VALUES('Rio Verde', 'A mild, earthy, spiced blend of fermented jalapenos, garlic, ginger and serranos. A very versatile flavor.', ''),
       ('Hot Like Me', 'A bright, fiery sauce with a forward, peppery fruitiness and a unique fermented flavor.', ''),
       ('Mango Bolero', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', ''),
-      ('Hullabalooberry', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', ''),
-      ('M1 Abrams Tank', 'The M1 Abrams is a third-generation American main battle tank designed by Chrysler Defense (now General Dynamics Land Systems)[9] and named for General Creighton Abrams.', ''), 
-      ('B-52 Bomber', 'The Boeing B-52 Stratofortress is an American long-range, subsonic, jet-powered strategic bomber. The B-52 was designed and built by Boeing, which has continued to provide support and upgrades. ', ''),
-      ('Lagunitas Stereohopic IPA', 'An experimental series focusing on two hops at a time. Taste what happens when the almighty Citra hop synthesizes with New Zealand''s newest star, the mouth-smackingly stellar Nectaron.', ''),
-      ('Ben Dibuz', 'I am a mechanical engineer studying web development, python, data analytics, algorithms and data visualization in my free time, working to pivot into a role where I can apply more of these skills. You can learn more about me on my LinkedIn page. You can read some of my overly-earnest writing on my Wordpress, Follow the Yarn.', ''),
-      ('iPhone 13', 'Our most advanced dual‑camera system ever.', ''),
-      ('Two Front Teeth', 'Literally just two teeth', ''),
-      ('Special Keyboard', 'I was clearly a bit tipsy when I wrote these and I still am now', ''),
-      ('Expensive Doormat', 'Tired of cheap ass door mats? Buy this expensive one.', '');
+      ('Hullabalooberry', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', '');
       
 
 
 INSERT INTO material (material_name, material_description, material_image_path)
-VALUES('Scrap Metal', '', ''), 
-      ('Hops', '', ''),
-      ('Aluminum', '', ''),
-      ('Silicon', '', ''),
-      ('Water', '', ''),
-      ('Enamel', '', ''),
-      ('Monkey NFT', '', ''),
-      ('Bones', '', ''),
-      ('Brains', '', ''),
-      ('Sweat', '', ''),
-      ('Tears', '', ''),
-      ('Blood', '', ''),
-      ('Paper', '', ''),
-      ('Keratin', '', '');
+VALUES('Habanero Peppers', '', ''), 
+      ('Mango', '', ''),
+      ('Blueberries', '', ''),
+      ('Jalapeno Peppers', '', ''),
+      ('Serrano Peppers', ' ', ''),
+      ('Arbol Peppers', '', ''),
+      ('Ancho Peppers', '', ''),
+      ('Pulla Peppers', '', ''),
+      ('Guajillo Peppers', '', ''),
+      ('Fresno Peppers', '', ''),
+      ('Carrots', '', ''),
+      ('Garlic', '', ''),
+      ('Ginger', '', ''),
+      ('Vinegar', '', ''),
+      ('Black Pepper', '', ''),
+      ('Allspice', '', ''),
+      ('Mustard Seed', '', ''),
+      ('Coriander', '', ''),
+      ('One Step Sanitizer', '', ''),
+      ('Cheesecloth', '', ''),
+      ('Label Printing', '', ''),
+      ('Gloves', '', ''),
+      ('Prep Table', '', ''),
+      ('Moritas', '', ''),
+      ('Sugar', '', ''),
+      ('Salt', '', ''),
+      ('Cumin', '', ''),
+      ('Catering Kitchen Time', '', ''),
+      ('Xanthan Gum', '', '');
 
 
 INSERT INTO unit (unit_name, unit_type)

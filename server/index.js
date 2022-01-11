@@ -103,7 +103,9 @@ app.get("/products", async (req, res) => {
 //Get all materials
 app.get("/materials", async (req, res) => {
   try {
-    const getAllMaterials = await pool.query(`SELECT * FROM material`);
+    const getAllMaterials = await pool.query(
+      `SELECT * FROM material ORDER BY material_name ASC`
+    );
     res.status(200).json(getAllMaterials.rows);
   } catch (err) {
     console.error("Get all materials", err.message);
