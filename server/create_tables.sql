@@ -70,3 +70,5 @@ ALTER TABLE product_has_material
 -- 1/11/21 Add support for batching and yield counts
 ALTER TABLE product_has_material ADD is_per_unit BOOLEAN;
 ALTER TABLE product ADD yield INTEGER;
+-- 1/12/21 Add product sales cost
+ALTER TABLE product ADD price MONEY;

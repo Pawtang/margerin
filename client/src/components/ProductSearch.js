@@ -4,7 +4,8 @@ import { React, useState } from "react";
 
 export const ProductSearch = (props) => {
   const [search, setSearch] = useState("");
-  const { setDisplayedProduct, products } = props;
+  const { setDisplayedProduct, products, setProductYield, setProductPrice } =
+    props;
 
   return (
     <div className="col-5 col-md-3 border-end">
@@ -61,6 +62,8 @@ export const ProductSearch = (props) => {
                 onClick={async () => {
                   const productData = await displayProduct(product.product_id);
                   setDisplayedProduct(productData);
+                  setProductYield(productData.yield);
+                  setProductPrice(productData.price);
                   setSearch("");
                 }}
               >

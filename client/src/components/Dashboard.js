@@ -3,6 +3,7 @@ import _ from "lodash";
 import AppNav from "./AppNav";
 import ProductHasMaterials from "./ProductHasMaterials";
 import ProductSearch from "./ProductSearch";
+import AddPropModal from "./AddPropModal";
 import {
   addProduct,
   getProducts,
@@ -13,18 +14,24 @@ import "../styles/Dashboard.css";
 const Dashboard = () => {
   const [displayedProduct, setDisplayedProduct] = useState({});
   const [newProductName, setNewProductName] = useState([]);
+  const [productYield, setProductYield] = useState("");
   const [newProductDescription, setnewProductDescription] = useState([]);
   const [products, setProducts] = useState([]);
+  const [productPrice, setProductPrice] = useState("");
   const [productAverageCost, setProductAverageCost] = useState("");
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
 
   /* ------------------------------ List Products ----------------------------- */
   useEffect(() => {
-    const loadProductList = async () => {
-      const productArray = await getProducts();
-      setProducts(productArray);
-      setDisplayedProduct(productArray[0]);
-    };
-    loadProductList();
+    renderProducts();
   }, []);
 
   //How to trigger rendering?
@@ -33,6 +40,7 @@ const Dashboard = () => {
     setProducts(productArray);
     if (_.isEmpty(productArray)) console.log("isEmpty True");
     setDisplayedProduct(productArray[0]);
+    setProductYield(displayedProduct.yield);
   };
 
   /* ------------------------------- Add Product ------------------------------ */
@@ -51,68 +59,16 @@ const Dashboard = () => {
 
   return (
     <Fragment>
+      <AddPropModal
+        itemType="Product"
+        handleAddItem={handleAddProduct}
+        newItemName={newProductName}
+        setNewItemDescription={newProductDescription}
+        setNewItemName={setNewProductName}
+        setNewItemDescription={setnewProductDescription}
+        clearEntry={clearEntry}
+      />
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
-      {/* -------------------- TODO: Generalize the input modal -------------------- */}
-      {/* --------------------------Product Modal --------------------------------- */}
-      <div class="modal fade" tabindex="-1" id="newProductModal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add New Product</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={() => clearEntry()}
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form action="" onSubmit={handleAddProduct}>
-                <label for="productName" class="form-label">
-                  Product Name
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="productName"
-                  value={newProductName}
-                  onChange={(e) => setNewProductName(e.target.value)}
-                />
-                <label for="productDescription" class="form-label">
-                  Product Description
-                </label>
-                <textarea
-                  type="text"
-                  rows="3"
-                  class="form-control"
-                  id="productDescription"
-                  value={newProductDescription}
-                  onChange={(e) => setnewProductDescription(e.target.value)}
-                />
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                    onClick={() => clearEntry()}
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    data-bs-dismiss="modal"
-                    // onClick={() => clearEntry()}
-                  >
-                    Add product
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* --------------------------------- Navbar --------------------------------- */}
       <div className="navbar-clearance"></div>
@@ -125,33 +81,38 @@ const Dashboard = () => {
           <ProductSearch
             setDisplayedProduct={setDisplayedProduct}
             products={products}
+            setProductYield={setProductYield}
+            setProductPrice={setProductPrice}
           />
           {/* --------------------------- End Product Search --------------------------- */}
           {/* /* ----------------------------- Product Profile ---------------------------- */}
 
           <div className="col-7 col-md-9 p-4 gx-5">
-            <div className="row mb-5 shadow-sm p-4 rounded-3">
-              <div className="col-3 pic-col">
-                {/* <div className="square-image mx-auto">
-                  <img src="/assets/mango.jpg" class="img-fluid" alt="" />
-                </div> */}
-                <div class="row p-4 gy-2">
+            <div className="row mb-5 shadow-sm p-4 rounded-3 ">
+              <div className="d-flex flex-row-reverse">
+                <div className="btn-group">
                   <button class="btn btn-primary" type="button">
-                    Edit
+                    Edit <i class="bi bi-pencil-square"></i>
                   </button>
                   <button
-                    class="btn btn-danger"
+                    class="btn btn-outline-danger"
                     type="button"
                     onClick={async () => {
                       await deleteProduct(displayedProduct.product_id);
                       renderProducts();
                     }}
                   >
-                    Delete
+                    Delete <i class="bi bi-trash-fill"></i>
                   </button>
                 </div>
               </div>
-              <div className="col-8 ">
+              {/* <div className="col-3 pic-col">
+                <div className="square-image mx-auto">
+                  <img src="/assets/mango.jpg" class="img-fluid" alt="" />
+                </div>
+                <div class="row p-4 gy-2"></div>
+              </div> */}
+              <div className="col">
                 {!_.isEmpty(displayedProduct) && (
                   <div className="row">
                     <h1>{displayedProduct.product_name}</h1>
@@ -160,10 +121,67 @@ const Dashboard = () => {
                 )}
                 <h3>Cost Data</h3>
                 <p>
-                  Product Unit Production Cost:{" "}
-                  <span class="badge rounded-pill bg-success">
-                    ${productAverageCost}
-                  </span>
+                  <div className="row">
+                    <div className="col">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Yield Per Recipe
+                      </label>
+                      <input
+                        type="number"
+                        class="form-control text-center"
+                        id="YPR"
+                        value={productYield}
+                        onChange={(e) => setProductYield(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="col">
+                      <label htmlFor="" class="form-label">
+                        Cost Per Unit
+                      </label>
+                      <input
+                        class="form-control text-center"
+                        type="text"
+                        value={`$${productAverageCost}`}
+                        aria-label="Product Unit Cost"
+                        readonly
+                        id="ProductCost"
+                      />
+                    </div>
+
+                    <div className="col">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Sales Price
+                      </label>
+                      <input
+                        type="number"
+                        class="form-control text-center"
+                        id="salesPrice"
+                        step="0.01"
+                        placeholder="0.00"
+                        value={productPrice}
+                        onChange={(e) => setProductPrice(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="col">
+                      <label htmlFor="" class="form-label">
+                        Profit Per Unit
+                      </label>
+                      <input
+                        class="form-control text-center"
+                        type="text"
+                        // value={`$${}`}
+                        aria-label="Product Unit Cost"
+                        readonly
+                        id="ProductCost"
+                      />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col"></div>
+                    <div className="col"></div>
+                  </div>
                 </p>
               </div>
             </div>

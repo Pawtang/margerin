@@ -1,6 +1,7 @@
 import { React, Fragment, useState, useEffect } from "react";
 import _ from "lodash";
 import dayjs from "dayjs";
+import AddPropModal from "./AddPropModal";
 import {
   getMaterials,
   getMaterialsForProduct,
@@ -382,67 +383,23 @@ const ProductHasMaterials = (props) => {
           </div>
         </div>
       </div>
-      {/* ----------------------------- Material Modal ----------------------------- */}
-      <div class="modal fade" tabindex="-1" id="newMaterialModal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add New Material</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={() => clearMaterialEntry()}
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form action="" onSubmit={handleNewMaterial}>
-                <label for="materialName" class="form-label">
-                  Material Name
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="materialName"
-                  value={newMaterialName}
-                  onChange={(e) => setNewMaterialName(e.target.value)}
-                />
-                <label for="materialDescription" class="form-label">
-                  Material Description
-                </label>
-                <textarea
-                  type="text"
-                  rows="3"
-                  class="form-control"
-                  id="materialDescription"
-                  value={newMaterialDescription}
-                  onChange={(e) => setNewMaterialDescription(e.target.value)}
-                />
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                    onClick={() => clearMaterialEntry()}
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    data-bs-dismiss="modal"
-                  >
-                    Add material
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* -------------------------------- End Modal
-      ------------------------------- */}
+
+      <AddPropModal
+        itemType="Material"
+        const
+        handleAddItem={handleNewMaterial}
+        const
+        newItemName={newMaterialName}
+        const
+        newItemDescription={newMaterialDescription}
+        const
+        setNewItemName={setNewMaterialName}
+        const
+        setNewItemDescription={setNewMaterialDescription}
+        const
+        clearEntry={clearMaterialEntry}
+      />
+
       <div className="row mx-auto pt-2 gx-0">
         <div className="row row-cols-6 pt-3 mx-auto gx-1 ">
           <div className="col-3">
