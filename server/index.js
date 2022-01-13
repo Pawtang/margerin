@@ -190,41 +190,22 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
   }
 });
 
-// // Get average cost of transaction for material
-// app.get(
-//   "/materialHasTransactions/averageCost/:materialID/:unitID",
-//   async (req, res) => {
-//     try {
-//       const { materialID, unitID } = req.params;
-//       console.log(materialID, unitID);
-//       const averageCost = await pool.query(
-//         `SELECT AVG(regexp_replace(cost::text, '[$,]', '', 'g')::numeric)::numeric(10,2) FROM transaction WHERE material_id = '${materialID}' AND unit_id = '${unitID}'`
-//       );
-//       console.log(averageCost.rows[0]);
-//       res.json(averageCost.rows[0]);
-//     } catch (err) {
-//       console.error(err.message);
-//     }
-//   }
-// );
-
 /* ----------------------------- UPDATE METHODS ----------------------------- */
 
-// //update a todo
-// app.put("/todos/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { description } = req.body;
-//     const updateTodo = await pool.query(
-//       "UPDATE todo SET description = $1 WHERE todo_id = $2",
-//       [description, id]
-//     );
-
-//     res.json("Todo was updated!");
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
+//Update price of an item
+app.put("product/:id"),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { price } = req.body;
+      const updatePrice = await pool.query(
+        `UPDATE product SET price = ${price} WHERE product_id = ${id}`
+      );
+    } catch (err) {
+      res.status(400).json({ errorCode: "1003", error: error.message });
+      console.error(err);
+    }
+  };
 
 /* ----------------------------- DELETE METHODS ----------------------------- */
 

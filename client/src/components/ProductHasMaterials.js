@@ -29,14 +29,14 @@ const ProductHasMaterials = (props) => {
   const [transactionsForMaterial, setTransactionsForMaterial] = useState([]);
   const [modalMaterial, setModalMaterial] = useState({});
   const [transactionSupplier, setTransactionSupplier] = useState("");
-  const [transactionUnit, setTransactionUnit] = useState("");
+  const [transactionUnit, setTransactionUnit] = useState("1");
   const [transactionCost, setTransactionCost] = useState("0.00");
   const [transactionQuantity, setTransactionQuantity] = useState("0");
   const [transactionDate, setTransactionDate] = useState(todayDate);
 
   //Product has materials
   const [addMaterial, setAddMaterial] = useState([]);
-  const [newUnit, setNewUnit] = useState();
+  const [newUnit, setNewUnit] = useState("1");
   const [newQuantity, setNewQuantity] = useState([]);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
 
@@ -272,6 +272,9 @@ const ProductHasMaterials = (props) => {
                       setTransactionUnit(e.target.value);
                     }}
                   >
+                    <option disabled selected value="" className="text-muted">
+                      Select Unit...
+                    </option>
                     {units.map((unit) => (
                       <option value={unit.unit_id} key={unit.unit_id}>
                         {unit.unit_name}
@@ -457,7 +460,8 @@ const ProductHasMaterials = (props) => {
             <input
               type="number"
               class="form-control"
-              placeholder="Quantity"
+              placeholder="0"
+              min="0"
               aria-label="Quantity"
               value={newQuantity}
               onChange={(e) => {
@@ -473,8 +477,8 @@ const ProductHasMaterials = (props) => {
               value={newUnit}
               onChange={(e) => setNewUnit(e.target.value)}
             >
-              <option disabled value="" className="text-muted">
-                Unit
+              <option disabled selected value="" className="text-muted">
+                Select Unit...
               </option>
               {units.map((unit) => (
                 <option value={unit.unit_id} key={unit.unit_id}>

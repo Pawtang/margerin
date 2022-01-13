@@ -8,6 +8,7 @@ import {
   addProduct,
   getProducts,
   deleteProduct,
+  updatePrice,
 } from "../middleware/DashboardUtils";
 import "../styles/Dashboard.css";
 
@@ -19,15 +20,6 @@ const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [productPrice, setProductPrice] = useState("");
   const [productAverageCost, setProductAverageCost] = useState("");
-
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-
-    // These options are needed to round to whole numbers if that's what you want.
-    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-  });
 
   /* ------------------------------ List Products ----------------------------- */
   useEffect(() => {
@@ -126,56 +118,77 @@ const Dashboard = () => {
                       <label for="exampleFormControlInput1" class="form-label">
                         Yield Per Recipe
                       </label>
-                      <input
-                        type="number"
-                        class="form-control text-center"
-                        id="YPR"
-                        value={productYield}
-                        onChange={(e) => setProductYield(e.target.value)}
-                      />
+                      <div className="input-group">
+                        <span className="input-group-text">#</span>
+                        <input
+                          type="number"
+                          class="form-control text-center"
+                          id="YPR"
+                          value={productYield}
+                          onChange={(e) => setProductYield(e.target.value)}
+                        />
+                      </div>
                     </div>
 
                     <div className="col">
                       <label htmlFor="" class="form-label">
                         Cost Per Unit
                       </label>
-                      <input
-                        class="form-control text-center"
-                        type="text"
-                        value={`$${productAverageCost}`}
-                        aria-label="Product Unit Cost"
-                        readonly
-                        id="ProductCost"
-                      />
+                      <div className="input-group">
+                        <span className="input-group-text">$</span>
+                        <input
+                          class="form-control text-center"
+                          type="text"
+                          value={productAverageCost}
+                          aria-label="Product Unit Cost"
+                          readonly
+                          id="ProductCost"
+                        />
+                      </div>
                     </div>
 
                     <div className="col">
                       <label for="exampleFormControlInput1" class="form-label">
                         Sales Price
                       </label>
-                      <input
-                        type="number"
-                        class="form-control text-center"
-                        id="salesPrice"
-                        step="0.01"
-                        placeholder="0.00"
-                        value={productPrice}
-                        onChange={(e) => setProductPrice(e.target.value)}
-                      />
+                      <div className="input-group">
+                        <span className="input-group-text">$</span>
+                        <input
+                          type="number"
+                          class="form-control text-center"
+                          id="salesPrice"
+                          step="0.01"
+                          placeholder="0.00"
+                          value={productPrice}
+                          onChange={(e) => setProductPrice(e.target.value)}
+                          onBlur={() => {
+                            setProductPrice(
+                              parseFloat(productPrice).toFixed(2)
+                            );
+                            console.log(
+                              displayedProduct.product_id,
+                              productPrice
+                            );
+                          }}
+                        />
+                      </div>
                     </div>
 
                     <div className="col">
                       <label htmlFor="" class="form-label">
                         Profit Per Unit
                       </label>
-                      <input
-                        class="form-control text-center"
-                        type="text"
-                        // value={`$${}`}
-                        aria-label="Product Unit Cost"
-                        readonly
-                        id="ProductCost"
-                      />
+                      <div className="input-group">
+                        <span className="input-group-text">$</span>
+                        <input
+                          class="form-control text-center"
+                          type="text"
+                          // value={`$${}`}
+                          aria-label="Product Unit Cost"
+                          readonly
+                          id="ProductCost"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="row">

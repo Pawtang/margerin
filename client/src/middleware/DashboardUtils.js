@@ -52,3 +52,16 @@ export const deleteProduct = async (id) => {
     console.error("deleteProduct DELETE /product error:", err.message);
   }
 };
+
+export const updatePrice = async (id, body) => {
+  try {
+    const response = await fetch(`${URL_SERVER}/product/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
+  } catch (error) {}
+};
