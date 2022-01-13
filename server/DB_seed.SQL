@@ -8,11 +8,11 @@ VALUES('Restaurant Depot', 'Teddy', '5555837463', '4'),
       ('Gidgets, Widgets, and More', 'Johnny', '84775778382', '5');
 
 
-INSERT INTO product (product_name, product_description, product_image_path)
-VALUES('Rio Verde', 'A mild, earthy, spiced blend of fermented jalapenos, garlic, ginger and serranos. A very versatile flavor.', ''),
-      ('Hot Like Me', 'A bright, fiery sauce with a forward, peppery fruitiness and a unique fermented flavor.', ''),
-      ('Mango Bolero', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', ''),
-      ('Hullabalooberry', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', '');
+INSERT INTO product (product_name, product_description, product_image_path, yield)
+VALUES('Rio Verde', 'A mild, earthy, spiced blend of fermented jalapenos, garlic, ginger and serranos. A very versatile flavor.', '', '120'),
+      ('Hot Like Me', 'A bright, fiery sauce with a forward, peppery fruitiness and a unique fermented flavor.', '', '90'),
+      ('Mango Bolero', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', '', '130'),
+      ('Hullabalooberry', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', '', '100');
       
 
 
@@ -23,7 +23,7 @@ VALUES('Habanero Peppers', '', ''),
       ('Jalapeno Peppers', '', ''),
       ('Serrano Peppers', ' ', ''),
       ('Arbol Peppers', '', ''),
-      ('Ancho Peppers', '', ''),
+      ('Ancho Peppers', '', ''), 
       ('Pulla Peppers', '', ''),
       ('Guajillo Peppers', '', ''),
       ('Fresno Peppers', '', ''),
@@ -45,7 +45,8 @@ VALUES('Habanero Peppers', '', ''),
       ('Salt', '', ''),
       ('Cumin', '', ''),
       ('Catering Kitchen Time', '', ''),
-      ('Xanthan Gum', '', '');
+      ('Xanthan Gum', '', '')
+      ON CONFLICT DO NOTHING;
 
 
 INSERT INTO unit (unit_name, unit_type)

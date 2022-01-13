@@ -9,10 +9,6 @@ const AppNav = () => {
           <button className="btn btn-outline-dark">Dashboard</button>
         </Link>
 
-        <Link to="/product">
-          <button className="btn btn-outline-dark">Products</button>
-        </Link>
-
         <Link to="/material">
           <button className="btn btn-outline-dark">Materials</button>
         </Link>

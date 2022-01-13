@@ -443,26 +443,29 @@ const ProductHasMaterials = (props) => {
       </div>
       {/* -------------------------------- End Modal
       ------------------------------- */}
-      <div className="row mx-auto pt-2">
-        <div className="row row-cols-5 mx-auto">
-          <div className="col">
+      <div className="row mx-auto pt-2 gx-0">
+        <div className="row row-cols-6 pt-3 mx-auto gx-1 ">
+          <div className="col-3">
             <h6 className="text-center">Material</h6>
           </div>
-          <div className="col">
+          <div className="col-1">
             <h6 className="text-center">Quantity</h6>
           </div>
-          <div className="col">
+          <div className="col-2">
             <h6 className="text-center">Unit</h6>
           </div>
-          <div className="col">
+          <div className="col-2">
+            <h6 className="text-center">Per Unit</h6>
+          </div>
+          <div className="col-2">
             <h6 className="text-center">Cost</h6>
           </div>
-          <div className="col">
-            <h6 className="text-center">Edit</h6>
+          <div className="col-2">
+            <h6 className="text-center"></h6>
           </div>
         </div>
 
-        <div className="row row-cols-5 pt-3 mx-auto gx-1">
+        <div className="row row-cols-6 pt-3 mx-auto gx-1 ">
           <div class="col-3">
             <div className="input-group">
               <select
@@ -492,7 +495,8 @@ const ProductHasMaterials = (props) => {
               </button>
             </div>
           </div>
-          <div class="col-2">
+
+          <div class="col-1">
             <input
               type="number"
               class="form-control"
@@ -522,10 +526,24 @@ const ProductHasMaterials = (props) => {
               ))}
             </select>
           </div>
-          <div className="col text-center text-muted mx-auto">
-            <p className="fw-light fst-italic py-2 mx-auto">Calculated field</p>
+
+          <div className="col-2 text-center">
+            <input
+              type="checkbox"
+              class="btn-check"
+              id="btn-check-outlined"
+              autocomplete="off"
+            />
+            <label class="btn btn-outline-primary" for="btn-check-outlined">
+              Per Unit
+            </label>
           </div>
-          <div className="col text-center">
+
+          <div className="col-2 text-center text-muted mx-auto ">
+            <p className="fw-light fst-italic py-1 mx-auto">Calculated field</p>
+          </div>
+
+          <div className="col-2 text-center">
             <button
               className="btn btn-outline-primary"
               onClick={() => handleAddMaterialToProduct()}
@@ -537,7 +555,7 @@ const ProductHasMaterials = (props) => {
 
         {materialsForProduct.map((material) => (
           <div
-            className="row row-cols-5 border-bottom py-1 mx-auto"
+            className="row row-cols-6 border-bottom py-1 mx-auto"
             key={material.phm_id}
           >
             <div className="col">
@@ -548,6 +566,10 @@ const ProductHasMaterials = (props) => {
             </div>
             <div className="col">
               <p className="text-center my-2">{material.unit_name}</p>
+            </div>
+
+            <div className="col-2">
+              <p className="text-center my-2">Yes</p>
             </div>
             <div className="col text-center">
               <button

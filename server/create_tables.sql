@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS transaction (
     FOREIGN KEY (unit_id) REFERENCES unit (unit_id),
     cost MONEY DEFAULT (0),
     quantity INT,
-    transaction_date date DEFAULT CURRENT_DATE;
+    transaction_date date DEFAULT CURRENT_DATE
 );
     
 CREATE TABLE IF NOT EXISTS product_has_material (
@@ -57,8 +57,16 @@ CREATE TABLE IF NOT EXISTS product_has_material (
     quantity INT
 );
     
+    
+    -- Alterations
+
+    -- 1/8/21 instantiate serial key instead of wide natural key for easier manipulation of records on front end
 ALTER TABLE product_has_material 
     DROP CONSTRAINT PK_product_ingredient,
     ADD phm_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     ADD CONSTRAINT material_uniqueness UNIQUE (product_id, material_id, unit_id)
 ;
+
+-- 1/11/21 Add support for batching and yield counts
+ALTER TABLE product_has_material ADD is_per_unit BOOLEAN;
+ALTER TABLE product ADD yield INTEGER;

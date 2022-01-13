@@ -6,12 +6,12 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Product from "./components/Product";
 import Material from "./components/Material";
 import Dashboard from "./components/Dashboard";
 import Suppliers from "./components/Suppliers";
 import Transactions from "./components/Transactions";
 import Navbar from "./components/Navbar";
+import "./styles/main.css";
 import "./styles/Styles.css";
 import "./styles/AppPage.css";
 
@@ -27,7 +27,7 @@ ReactDOM.render(
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
       <Route path="dashboard" element={<Dashboard />} />
-      <Route path="product" element={<Product />} />
+
       <Route path="material" element={<Material />} />
       <Route path="suppliers" element={<Suppliers />} />
       <Route path="transactions" element={<Transactions />} />
