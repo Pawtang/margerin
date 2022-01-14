@@ -55,11 +55,28 @@ export const deleteProduct = async (id) => {
 
 export const updatePrice = async (id, body) => {
   try {
-    const response = await fetch(`${URL_SERVER}/product/${id}`, {
+    console.log("Utilities updatePrice body, : ", body);
+    const response = await fetch(`${URL_SERVER}/product/price/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    console.log("updatePrice Response:", response.rows[0]);
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
+  } catch (error) {}
+};
+
+export const updateYield = async (id, body) => {
+  console.log("Utilities updateYield body, : ", body);
+  try {
+    const response = await fetch(`${URL_SERVER}/product/yield/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    console.log("updateYield Response:", response.rows[0]);
     if (response.status !== 200) {
       throw "response is not 200";
     }

@@ -9,6 +9,7 @@ import {
   getProducts,
   deleteProduct,
   updatePrice,
+  updateYield,
 } from "../middleware/DashboardUtils";
 import "../styles/Dashboard.css";
 
@@ -22,18 +23,19 @@ const Dashboard = () => {
   const [productAverageCost, setProductAverageCost] = useState("");
 
   /* ------------------------------ List Products ----------------------------- */
-  useEffect(() => {
-    renderProducts();
-  }, []);
 
   //How to trigger rendering?
   const renderProducts = async () => {
     const productArray = await getProducts();
     setProducts(productArray);
-    if (_.isEmpty(productArray)) console.log("isEmpty True");
     setDisplayedProduct(productArray[0]);
-    setProductYield(displayedProduct.yield);
+    setProductYield(productArray[0].yield);
+    setProductPrice(productArray[0].price);
   };
+
+  useEffect(() => {
+    renderProducts();
+  }, []);
 
   /* ------------------------------- Add Product ------------------------------ */
   const handleAddProduct = async (e) => {
@@ -47,6 +49,18 @@ const Dashboard = () => {
   const clearEntry = () => {
     setNewProductName("");
     setnewProductDescription("");
+  };
+
+  const updateProductYield = async () => {
+    const productID = displayedProduct.product_id;
+    const body = { productYield };
+    await updateYield(productID, body);
+  };
+
+  const updateProductPrice = async () => {
+    const productID = displayedProduct.product_id;
+    const body = { productPrice };
+    await updatePrice(productID, body);
   };
 
   return (
@@ -126,6 +140,7 @@ const Dashboard = () => {
                           id="YPR"
                           value={productYield}
                           onChange={(e) => setProductYield(e.target.value)}
+                          onBlur={updateProductYield}
                         />
                       </div>
                     </div>
@@ -165,10 +180,7 @@ const Dashboard = () => {
                             setProductPrice(
                               parseFloat(productPrice).toFixed(2)
                             );
-                            console.log(
-                              displayedProduct.product_id,
-                              productPrice
-                            );
+                            updateProductPrice();
                           }}
                         />
                       </div>

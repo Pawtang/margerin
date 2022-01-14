@@ -1,0 +1,7 @@
+docker run --name margerin -e POSTGRES_PASSWORD=passord -dp 5432:5432 postgres:alpine 
+
+docker ps
+
+docker exec -it margerin bash
+
+psql -h localhost -p 5432 -U postgres

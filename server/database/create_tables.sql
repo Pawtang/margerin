@@ -1,5 +1,7 @@
 CREATE DATABASE margerin;
 
+\c margerin
+
 CREATE TABLE IF NOT EXISTS product (
     product_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     product_name VARCHAR (100) UNIQUE NOT NULL,

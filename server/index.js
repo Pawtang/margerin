@@ -193,19 +193,35 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
 /* ----------------------------- UPDATE METHODS ----------------------------- */
 
 //Update price of an item
-app.put("product/:id"),
-  async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { price } = req.body;
-      const updatePrice = await pool.query(
-        `UPDATE product SET price = ${price} WHERE product_id = ${id}`
-      );
-    } catch (err) {
-      res.status(400).json({ errorCode: "1003", error: error.message });
-      console.error(err);
-    }
-  };
+app.put("/product/price/:id"), console.log("Accessed index price");
+async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { price } = req.body;
+    const updatePrice = await pool.query(
+      `UPDATE product SET price = ${price} WHERE product_id = ${id}`
+    );
+    res.json(updatePrice.rows);
+  } catch (err) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(err);
+  }
+};
+
+app.put("/product/yield/:id"), console.log("Accessed index yield");
+async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { yield } = req.body;
+    const updateYield = await pool.query(
+      `UPDATE product SET yield = ${yield} WHERE product_id = ${id}`
+    );
+    res.json(updateYield.rows);
+  } catch (err) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(err);
+  }
+};
 
 /* ----------------------------- DELETE METHODS ----------------------------- */
 
