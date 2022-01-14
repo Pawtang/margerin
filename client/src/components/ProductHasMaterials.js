@@ -1,7 +1,7 @@
 import { React, Fragment, useState, useEffect } from "react";
 import _ from "lodash";
-import dayjs from "dayjs";
 import AddPropModal from "./AddPropModal";
+import TransactionModal from "./TransactionModal";
 import {
   getMaterials,
   getMaterialsForProduct,
@@ -179,7 +179,28 @@ const ProductHasMaterials = (props) => {
   return (
     <Fragment>
       {/* ---------------------------- Transaction Modal --------------------------- */}
-      <div class="modal fade" tabindex="-1" id="materialTransactionModal">
+
+      <TransactionModal
+        units={units}
+        clearTransactionEntry={clearTransactionEntry}
+        handleAddTransactionForMaterial={handleAddTransactionForMaterial}
+        handleDeleteTransaction={handleDeleteTransaction}
+        modalMaterial={modalMaterial}
+        suppliers={suppliers}
+        transactionsForMaterial={transactionsForMaterial}
+        transactionSupplier={transactionSupplier}
+        setTransactionSupplier={setTransactionSupplier}
+        transactionQuantity={transactionQuantity}
+        setTransactionQuantity={setTransactionQuantity}
+        transactionUnit={transactionUnit}
+        setTransactionUnit={setTransactionUnit}
+        transactionCost={transactionCost}
+        setTransactionCost={setTransactionCost}
+        transactionDate={transactionDate}
+        setTransactionDate={setTransactionDate}
+      />
+
+      {/* <div class="modal fade" tabindex="-1" id="materialTransactionModal">
         <div class="modal-dialog modal-xl modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
@@ -218,8 +239,7 @@ const ProductHasMaterials = (props) => {
               </div>
 
               <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
-                {/* --------------------------------- Inputs --------------------------------- */}
-                {/* -------------------------------- Supplier -------------------------------- */}
+
                 <div className="col-3">
                   <div className="input-group">
                     <select
@@ -249,7 +269,7 @@ const ProductHasMaterials = (props) => {
                     </button>
                   </div>
                 </div>
-                {/* -------------------------------- Quantity -------------------------------- */}
+                
                 <div className="col-1">
                   <input
                     type="number"
@@ -262,7 +282,7 @@ const ProductHasMaterials = (props) => {
                     }}
                   />
                 </div>
-                {/* ---------------------------------- Unit ---------------------------------- */}
+                
                 <div className="col-2">
                   <select
                     id="inputUnits"
@@ -282,7 +302,7 @@ const ProductHasMaterials = (props) => {
                     ))}
                   </select>
                 </div>
-                {/* ---------------------------------- Cost ---------------------------------- */}
+                
                 <div className="col-2">
                   <div className="input-group">
                     <span className="input-group-text">$</span>
@@ -305,7 +325,7 @@ const ProductHasMaterials = (props) => {
                     />
                   </div>
                 </div>
-                {/* ---------------------------------- Date ---------------------------------- */}
+                
                 <div className="col-2">
                   <input
                     type="date"
@@ -315,7 +335,7 @@ const ProductHasMaterials = (props) => {
                   />
                 </div>
 
-                {/* --------------------------------- Buttons -------------------------------- */}
+                
                 <div className="col-2">
                   <button
                     className="btn btn-primary"
@@ -325,7 +345,7 @@ const ProductHasMaterials = (props) => {
                   </button>
                 </div>
               </div>
-              {/* --------------------------- Enumerated Existing -------------------------- */}
+              
               {!_.isEmpty(transactionsForMaterial) &&
                 transactionsForMaterial.map((transaction) => (
                   <div className="row row-cols-6 border-bottom py-2 mb-2 gx-0">
@@ -385,7 +405,7 @@ const ProductHasMaterials = (props) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <AddPropModal
         itemType="Material"

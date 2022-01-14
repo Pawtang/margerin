@@ -27,6 +27,7 @@ const Dashboard = () => {
   //How to trigger rendering?
   const renderProducts = async () => {
     const productArray = await getProducts();
+    if (_.isEmpty(productArray)) return; //Maybe?
     setProducts(productArray);
     setDisplayedProduct(productArray[0]);
     setProductYield(productArray[0].yield);

@@ -201,7 +201,7 @@ async (req, res) => {
     const updatePrice = await pool.query(
       `UPDATE product SET price = ${price} WHERE product_id = ${id}`
     );
-    res.json(updatePrice.rows);
+    res.status(200).json(updatePrice.rows);
   } catch (err) {
     res.status(400).json({ errorCode: "1003", error: error.message });
     console.error(err);
@@ -216,7 +216,7 @@ async (req, res) => {
     const updateYield = await pool.query(
       `UPDATE product SET yield = ${yield} WHERE product_id = ${id}`
     );
-    res.json(updateYield.rows);
+    res.status(200).json(updateYield.rows);
   } catch (err) {
     res.status(400).json({ errorCode: "1003", error: error.message });
     console.error(err);
