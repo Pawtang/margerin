@@ -39,7 +39,7 @@ const TransactionModal = (props) => {
               onClick={() => clearTransactionEntry()}
             ></button>
           </div>
-
+          {/* ------------------------------------ */}
           <div class="modal-body">
             <div className="row row-cols-6 gx-1">
               <div className="col-3">
@@ -224,6 +224,7 @@ const TransactionModal = (props) => {
                 </div>
               ))}
           </div>
+          {/* ------------------------------ */}
         </div>
       </div>
     </div>
