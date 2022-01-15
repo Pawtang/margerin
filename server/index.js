@@ -28,9 +28,7 @@ app.post("/product", async (req, res) => {
 //create a material
 app.post("/material", async (req, res) => {
   try {
-    console.log("--------------->BODY:", req.body);
     const { newMaterialName, newMaterialDescription } = req.body;
-    console.log("Back-end name, desc", newMaterialName, newMaterialDescription);
     const newMaterial = await pool.query(
       `INSERT INTO material (material_name, material_description) VALUES('${newMaterialName}', '${newMaterialDescription}') RETURNING *`
     );
@@ -40,16 +38,30 @@ app.post("/material", async (req, res) => {
   }
 });
 
+//create a supplier
+app.post("/supplier", async (req, res) => {
+  try {
+    const { newSupplierName } = req.body;
+    const newSupplier = await pool.query(
+      `INSERT INTO supplier (supplier_name) VALUES('${newSupplierName}') RETURNING *`
+    );
+    res.status(201).json(newSupplier.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Add a material to a product
 app.post("/productHasMaterial", async (req, res) => {
   try {
-    const { productID, addMaterial, newUnit, newQuantity } = req.body;
+    const { productID, addMaterial, newUnit, newQuantity, isPerUnit } =
+      req.body;
     const productHasMaterial = await pool.query(
-      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity) VALUES(${productID}, ${addMaterial}, ${newUnit}, ${newQuantity}) RETURNING *`
+      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity, is_per_unit) VALUES('${productID}', '${addMaterial}', '${newUnit}', '${newQuantity}', '${isPerUnit}') RETURNING *`
     );
     res.status(201).json(productHasMaterial.rows);
   } catch (err) {
-    console.error(err.message);
+    console.error("Index: productHasMaterial POST: ", err.message);
   }
 });
 
@@ -74,16 +86,38 @@ app.post("/materialHasTransaction", async (req, res) => {
   }
 });
 
-//create a supplier
-app.post("/suppliers", async (req, res) => {
+/* ----------------------------- UPDATE METHODS ----------------------------- */
+
+//Update price of an item
+app.put("/product/price/:id", async (req, res) => {
+  console.log("Accessed index price");
   try {
-    // const { description } = req.body;
-    const newSupplier = await pool.query(
-      `INSERT INTO supplier (supplier_name, supplier_description, supplier_rating, supplier_image_path) VALUES(${material_name}, ${material_description}, ${material_image_path}) RETURNING *`
+    const { id } = req.params;
+    const { productPrice } = req.body;
+    const updatePrice = await pool.query(
+      `UPDATE product SET price = '${productPrice}' WHERE product_id = ${id}`
     );
-    res.status(201).json(newSupplier.rows[0]);
-  } catch (err) {
-    console.error(err.message);
+    res.status(200).json(updatePrice.rows);
+  } catch (error) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(error);
+  }
+});
+
+app.put("/product/yield/:id", async (req, res) => {
+  console.log("Accessed index yield");
+  console.log(req.params, req.body);
+  try {
+    const { id } = req.params;
+    const { productYield } = req.body;
+    console.log("id, yield: ", id, productYield);
+    const updateYield = await pool.query(
+      `UPDATE product SET yield = '${productYield}' WHERE product_id = ${id}`
+    );
+    res.status(200).json(updateYield.rows);
+  } catch (error) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(error);
   }
 });
 
@@ -151,7 +185,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const relatedMaterials = await pool.query(
-      `SELECT  m.material_id, m.material_name, phm.quantity, u.unit_name, u.unit_id, phm.phm_id FROM material m 
+      `SELECT  m.material_id, m.material_name, phm.quantity, phm.is_per_unit, u.unit_name, u.unit_id, phm.phm_id FROM material m 
       INNER JOIN product_has_material phm ON (m.material_id = phm.material_id) 
       INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
     );
@@ -160,7 +194,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
         const returned = await pool.query(
           `SELECT SUM(cost::numeric / quantity::numeric) / COUNT(cost) AS avgcost FROM transaction WHERE material_id = '${material.material_id}' AND unit_id = '${material.unit_id}'`
         );
-        console.log("returned from ProductHasMats: ", returned.rows[0]);
+
         return {
           ...material,
           avgcost: Number(parseFloat(returned.rows[0].avgcost).toFixed(2)),
@@ -168,7 +202,6 @@ app.get("/productHasMaterials/:id", async (req, res) => {
       })
     );
     res.json(reformattedArray);
-    console.log("reformatted array:", reformattedArray);
   } catch (err) {
     console.error("Error source productHasMaterials", err.message);
   }
@@ -178,7 +211,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
 app.get("/materialHasTransactions/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("ID for transactions", id);
+
     const relatedTransactions = await pool.query(
       `SELECT  t.transaction_id, t.cost, t.quantity, t.transaction_date, s.supplier_name, u.unit_name FROM transaction t 
       INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) 
@@ -189,39 +222,6 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
     console.error("Get all transactions for materials", err.message);
   }
 });
-
-/* ----------------------------- UPDATE METHODS ----------------------------- */
-
-//Update price of an item
-app.put("/product/price/:id"), console.log("Accessed index price");
-async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { price } = req.body;
-    const updatePrice = await pool.query(
-      `UPDATE product SET price = ${price} WHERE product_id = ${id}`
-    );
-    res.status(200).json(updatePrice.rows);
-  } catch (err) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
-    console.error(err);
-  }
-};
-
-app.put("/product/yield/:id"), console.log("Accessed index yield");
-async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { yield } = req.body;
-    const updateYield = await pool.query(
-      `UPDATE product SET yield = ${yield} WHERE product_id = ${id}`
-    );
-    res.status(200).json(updateYield.rows);
-  } catch (err) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
-    console.error(err);
-  }
-};
 
 /* ----------------------------- DELETE METHODS ----------------------------- */
 
@@ -241,7 +241,6 @@ app.delete("/product/:id", async (req, res) => {
 });
 
 app.delete("/productHasMaterial/:phmID", async (req, res) => {
-  console.log("Back-end:", req.params);
   try {
     const { phmID } = req.params;
     const deleteMaterial = await pool.query(
@@ -256,7 +255,6 @@ app.delete("/productHasMaterial/:phmID", async (req, res) => {
 app.delete(
   "/materialHasTransaction/:materialID/:transactionID",
   async (req, res) => {
-    console.log("Back-end:", req.params);
     try {
       const { materialID, transactionID } = req.params;
       const deleteTransaction = await pool.query(

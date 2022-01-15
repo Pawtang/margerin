@@ -12,12 +12,14 @@ import {
   getUnits,
   getSuppliers,
   newMaterial,
+  newSupplier,
   getTransactionsForMaterial,
 } from "../middleware/ProductHasMaterialUtils";
 
 const ProductHasMaterials = (props) => {
   //General Purpose
   const productID = props.productID;
+  const productYield = props.productYield;
   const setProductAverageCost = props.setProductAverageCost;
   const todayDate = new Date().toISOString().split("T")[0];
 
@@ -37,12 +39,15 @@ const ProductHasMaterials = (props) => {
   //Product has materials
   const [addMaterial, setAddMaterial] = useState([]);
   const [newUnit, setNewUnit] = useState("1");
-  const [newQuantity, setNewQuantity] = useState([]);
+  const [newQuantity, setNewQuantity] = useState([0]);
+  const [isPerUnit, setIsPerUnit] = useState(false);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
 
   //Create new material
   const [newMaterialName, setNewMaterialName] = useState([]);
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
+
+  const [newSupplierName, setNewSupplierName] = useState([]);
 
   /* --------------------------- Transaction Methods -------------------------- */
 
@@ -89,7 +94,7 @@ const ProductHasMaterials = (props) => {
   /* ---------------------------- Material Methods ---------------------------- */
 
   const handleAddMaterialToProduct = async () => {
-    const body = { productID, addMaterial, newUnit, newQuantity };
+    const body = { productID, addMaterial, newUnit, newQuantity, isPerUnit };
     await addMaterialToProduct(body);
     const materialArray = await getMaterialsForProduct(productID);
     setMaterialsForProduct(materialArray);
@@ -105,6 +110,14 @@ const ProductHasMaterials = (props) => {
     await newMaterial(body);
     const materials = await getMaterials();
     setMaterials(materials);
+  };
+
+  const handleNewSupplier = async (e) => {
+    e.preventDefault();
+    const body = { newSupplierName };
+    await newSupplier(body);
+    const suppliers = await getSuppliers();
+    setSuppliers(suppliers);
   };
 
   const handleDeleteMaterial = async (phmID) => {
@@ -129,6 +142,10 @@ const ProductHasMaterials = (props) => {
     setTransactionDate(todayDate);
   };
 
+  const clearSupplierEntry = () => {
+    setNewSupplierName("");
+  };
+
   const loadLists = async () => {
     const allMaterials = await getMaterials();
     const unitList = await getUnits();
@@ -143,14 +160,41 @@ const ProductHasMaterials = (props) => {
       setProductAverageCost("No Cost Data");
       return;
     }
-    const accumulator = (acc, material) => {
-      return acc + Number(material.avgcost) * material.quantity;
+
+    const batchAccumulator = (acc, material) => {
+      if (material.is_per_unit == false) {
+        return acc + Number(material.avgcost) * material.quantity;
+      } else return acc;
     };
-    const calculatedCost = parseFloat(
-      materialsForProduct.reduce(accumulator, 0)
+
+    const perUnitAccumulator = (acc, material) => {
+      if (material.is_per_unit == true) {
+        return acc + Number(material.avgcost) * material.quantity;
+      } else return acc;
+    };
+
+    const batchCost = parseFloat(
+      materialsForProduct.reduce(batchAccumulator, 0)
     ).toFixed(2);
+
+    const perUnitCost = parseFloat(
+      materialsForProduct.reduce(perUnitAccumulator, 0)
+    ).toFixed(2);
+
+    console.log(
+      "batchCost, productYield, perUnitCost",
+      batchCost,
+      productYield,
+      perUnitCost
+    );
+
+    const calculatedCost = parseFloat(
+      Number(batchCost) / Number(productYield) + Number(perUnitCost)
+    ).toFixed(2);
+
     console.log("mat", materialsForProduct);
     console.log("CC", calculatedCost);
+
     setProductAverageCost(calculatedCost);
   };
 
@@ -173,8 +217,6 @@ const ProductHasMaterials = (props) => {
   useEffect(() => {
     calculateProductCost();
   }, [materialsForProduct]);
-
-  console.log("product's materials:", materialsForProduct);
 
   return (
     <Fragment>
@@ -200,227 +242,22 @@ const ProductHasMaterials = (props) => {
         setTransactionDate={setTransactionDate}
       />
 
-      {/* <div class="modal fade" tabindex="-1" id="materialTransactionModal">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">
-                Recent Transactions for {modalMaterial.material_name}
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={() => clearTransactionEntry()}
-              ></button>
-            </div>
-
-            <div class="modal-body">
-              <div className="row row-cols-6 gx-1">
-                <div className="col-3">
-                  <h6 className="text-center">Supplier</h6>
-                </div>
-                <div className="col-1">
-                  <h6 className="text-center">Quantity</h6>
-                </div>
-                <div className="col-2">
-                  <h6 className="text-center">Unit</h6>
-                </div>
-                <div className="col-2">
-                  <h6 className="text-center">Total Cost</h6>
-                </div>
-                <div className="col-2">
-                  <h6 className="text-center">Date</h6>
-                </div>
-                <div className="col-2">
-                  <h6 className="text-center"></h6>
-                </div>
-              </div>
-
-              <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
-
-                <div className="col-3">
-                  <div className="input-group">
-                    <select
-                      id="inputSupplier"
-                      class="form-select"
-                      value={transactionSupplier}
-                      onChange={(e) => setTransactionSupplier(e.target.value)}
-                    >
-                      <option disabled value="">
-                        Supplier
-                      </option>
-                      {suppliers.map((supplier) => (
-                        <option
-                          value={supplier.supplier_id}
-                          key={supplier.supplier_id}
-                        >
-                          {supplier.supplier_name}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      className="btn btn-outline-secondary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#newMaterialModal"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="col-1">
-                  <input
-                    type="number"
-                    class="form-control"
-                    placeholder="0"
-                    aria-label="Quantity"
-                    value={transactionQuantity}
-                    onChange={(e) => {
-                      setTransactionQuantity(e.target.value);
-                    }}
-                  />
-                </div>
-                
-                <div className="col-2">
-                  <select
-                    id="inputUnits"
-                    class="form-select"
-                    value={transactionUnit}
-                    onChange={(e) => {
-                      setTransactionUnit(e.target.value);
-                    }}
-                  >
-                    <option disabled selected value="" className="text-muted">
-                      Select Unit...
-                    </option>
-                    {units.map((unit) => (
-                      <option value={unit.unit_id} key={unit.unit_id}>
-                        {unit.unit_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div className="col-2">
-                  <div className="input-group">
-                    <span className="input-group-text">$</span>
-                    <input
-                      type="number"
-                      class="form-control user-select-all"
-                      placeholder="0.00"
-                      aria-label="cost"
-                      step="0.01"
-                      min="0"
-                      value={transactionCost}
-                      onChange={(e) => {
-                        setTransactionCost(e.target.value);
-                      }}
-                      onBlur={() =>
-                        setTransactionCost(
-                          parseFloat(transactionCost).toFixed(2)
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-                
-                <div className="col-2">
-                  <input
-                    type="date"
-                    className="form-control user-select-all"
-                    value={transactionDate}
-                    onChange={(e) => setTransactionDate(e.target.value)}
-                  />
-                </div>
-
-                
-                <div className="col-2">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => handleAddTransactionForMaterial()}
-                  >
-                    Add Transaction
-                  </button>
-                </div>
-              </div>
-              
-              {!_.isEmpty(transactionsForMaterial) &&
-                transactionsForMaterial.map((transaction) => (
-                  <div className="row row-cols-6 border-bottom py-2 mb-2 gx-0">
-                    <div className="col-3">
-                      <div className="col" key={transaction.transaction_id}>
-                        <p className="text-center">
-                          {transaction.supplier_name}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-1">
-                      <div className="col" key={transaction.transaction_id}>
-                        <p className="text-center">{transaction.quantity}</p>
-                      </div>
-                    </div>
-                    <div className="col-2">
-                      <div className="col" key={transaction.transaction_id}>
-                        <p className="text-center">{transaction.unit_name}</p>
-                      </div>
-                    </div>
-                    <div className="col-2">
-                      <div className="col" key={transaction.transaction_id}>
-                        <p className="text-center">{transaction.cost}</p>
-                      </div>
-                    </div>
-                    <div className="col-2">
-                      <div className="col" key={transaction.transaction_id}>
-                        <p className="text-center">
-                          {dayjs(transaction.transaction_date).format(
-                            "MMM D, YYYY"
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-2 text-center">
-                      <div
-                        className="btn-group"
-                        role="group"
-                        aria-label="update delete"
-                        key={transaction.transaction_id}
-                      >
-                        <button className="btn btn-outline-primary">
-                          <i class="bi bi-pencil-square"></i>
-                        </button>
-                        <button
-                          className="btn btn-outline-danger"
-                          onClick={() => {
-                            handleDeleteTransaction(transaction.transaction_id);
-                          }}
-                        >
-                          <i class="bi bi-trash-fill"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <AddPropModal
         itemType="Material"
-        const
         handleAddItem={handleNewMaterial}
-        const
         newItemName={newMaterialName}
-        const
         newItemDescription={newMaterialDescription}
-        const
         setNewItemName={setNewMaterialName}
-        const
         setNewItemDescription={setNewMaterialDescription}
-        const
         clearEntry={clearMaterialEntry}
+      />
+
+      <AddPropModal
+        itemType="Supplier"
+        handleAddItem={handleNewSupplier}
+        newItemName={newSupplierName}
+        setNewItemName={setNewSupplierName}
+        clearEntry={clearSupplierEntry}
       />
 
       <div className="row mx-auto pt-2 gx-0">
@@ -497,9 +334,6 @@ const ProductHasMaterials = (props) => {
               value={newUnit}
               onChange={(e) => setNewUnit(e.target.value)}
             >
-              <option disabled selected value="" className="text-muted">
-                Select Unit...
-              </option>
               {units.map((unit) => (
                 <option value={unit.unit_id} key={unit.unit_id}>
                   {unit.unit_name}
@@ -513,7 +347,11 @@ const ProductHasMaterials = (props) => {
               type="checkbox"
               class="btn-check"
               id="btn-check-outlined"
-              autocomplete="off"
+              autoComplete="off"
+              value={isPerUnit}
+              onClick={() => {
+                setIsPerUnit((prevCheck) => !prevCheck);
+              }}
             />
             <label class="btn btn-outline-primary" for="btn-check-outlined">
               Per Unit
@@ -550,7 +388,9 @@ const ProductHasMaterials = (props) => {
             </div>
 
             <div className="col-2">
-              <p className="text-center my-2">Yes</p>
+              <p className="text-center my-2">
+                {material.is_per_unit ? "Yes" : "No"}
+              </p>
             </div>
             <div className="col text-center">
               <button

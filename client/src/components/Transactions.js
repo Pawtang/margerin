@@ -1,7 +1,29 @@
 import { React, Fragment } from "react";
 import AppNav from "./AppNav";
+import _ from "lodash";
+import dayjs from "dayjs";
 
-const Transactions = () => {
+const Transactions = (props) => {
+  const {
+    units,
+    clearTransactionEntry,
+    handleAddTransactionForMaterial,
+    handleDeleteTransaction,
+    modalMaterial,
+    suppliers,
+    transactionsForMaterial,
+    transactionSupplier,
+    setTransactionSupplier,
+    transactionQuantity,
+    setTransactionQuantity,
+    transactionUnit,
+    setTransactionUnit,
+    transactionCost,
+    setTransactionCost,
+    transactionDate,
+    setTransactionDate,
+  } = props;
+
   const clearEntry = () => {};
 
   return (

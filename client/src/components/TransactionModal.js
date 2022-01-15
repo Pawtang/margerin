@@ -88,7 +88,7 @@ const TransactionModal = (props) => {
                   <button
                     className="btn btn-outline-secondary"
                     data-bs-toggle="modal"
-                    data-bs-target="#newMaterialModal"
+                    data-bs-target="#newSupplierModal"
                   >
                     +
                   </button>

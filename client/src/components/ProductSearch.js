@@ -67,6 +67,10 @@ export const ProductSearch = (props) => {
                     setDisplayedProduct(productData);
                     setProductYield(productData.yield);
                     setProductPrice(productData.price);
+                    console.log(
+                      "ProductSearch product price:",
+                      productData.price
+                    );
                     setSearch("");
                   }}
                 >

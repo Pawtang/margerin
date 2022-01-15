@@ -140,7 +140,10 @@ const Dashboard = () => {
                           class="form-control text-center"
                           id="YPR"
                           value={productYield}
-                          onChange={(e) => setProductYield(e.target.value)}
+                          onChange={(e) => {
+                            setProductYield(e.target.value);
+                            updateProductPrice();
+                          }}
                           onBlur={updateProductYield}
                         />
                       </div>
@@ -200,6 +203,13 @@ const Dashboard = () => {
                           aria-label="Product Unit Cost"
                           readonly
                           id="ProductCost"
+                          value={
+                            !isNaN(productAverageCost)
+                              ? parseFloat(
+                                  productPrice - productAverageCost
+                                ).toFixed(2)
+                              : "No Data"
+                          }
                         />
                       </div>
                     </div>
@@ -216,6 +226,7 @@ const Dashboard = () => {
               <ProductHasMaterials
                 productID={displayedProduct.product_id}
                 setProductAverageCost={setProductAverageCost}
+                productYield={productYield}
               />
             )}
           </div>

@@ -65,7 +65,7 @@ export const addMaterialToProduct = async (body) => {
       throw "response is not 200";
     }
   } catch (err) {
-    console.error("Failed to add material: ", err.message);
+    console.error(err.message);
   }
 };
 
@@ -145,6 +145,21 @@ export const deleteTransactionFromMaterial = async (
 export const newMaterial = async (body) => {
   try {
     const response = await fetch(`${URL_SERVER}/material`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (response.status !== 200) {
+      throw "response is not 200";
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+export const newSupplier = async (body) => {
+  try {
+    const response = await fetch(`${URL_SERVER}/supplier`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

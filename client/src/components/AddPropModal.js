@@ -33,17 +33,22 @@ const AddPropModal = (props) => {
                 value={newItemName}
                 onChange={(e) => setNewItemName(e.target.value)}
               />
-              <label for="productDescription" class="form-label">
-                {itemType} Description
-              </label>
-              <textarea
-                type="text"
-                rows="3"
-                class="form-control"
-                id="productDescription"
-                value={newItemDescription}
-                onChange={(e) => setNewItemDescription(e.target.value)}
-              />
+              {itemType != "Supplier" && (
+                <>
+                  <label for="productDescription" class="form-label">
+                    {itemType} Description
+                  </label>
+                  <textarea
+                    type="text"
+                    rows="3"
+                    class="form-control"
+                    id="productDescription"
+                    value={newItemDescription}
+                    onChange={(e) => setNewItemDescription(e.target.value)}
+                  />
+                </>
+              )}
+
               <div class="modal-footer">
                 <button
                   type="button"
@@ -59,7 +64,7 @@ const AddPropModal = (props) => {
                   data-bs-dismiss="modal"
                   // onClick={() => clearEntry()}
                 >
-                  Add product
+                  Add {itemType}
                 </button>
               </div>
             </form>
