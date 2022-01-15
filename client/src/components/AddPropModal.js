@@ -33,7 +33,7 @@ const AddPropModal = (props) => {
                 value={newItemName}
                 onChange={(e) => setNewItemName(e.target.value)}
               />
-              {itemType != "Supplier" && (
+              {itemType !== "Supplier" && (
                 <>
                   <label for="productDescription" class="form-label">
                     {itemType} Description

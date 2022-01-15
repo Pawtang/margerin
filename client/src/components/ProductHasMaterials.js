@@ -39,7 +39,7 @@ const ProductHasMaterials = (props) => {
   //Product has materials
   const [addMaterial, setAddMaterial] = useState([]);
   const [newUnit, setNewUnit] = useState("1");
-  const [newQuantity, setNewQuantity] = useState([0]);
+  const [newQuantity, setNewQuantity] = useState("0");
   const [isPerUnit, setIsPerUnit] = useState(false);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
 
@@ -52,7 +52,6 @@ const ProductHasMaterials = (props) => {
   /* --------------------------- Transaction Methods -------------------------- */
 
   const handleAddTransactionForMaterial = async () => {
-    console.log("Trying to add transaction");
     let materialID = modalMaterial.material_id;
     const body = {
       transactionSupplier,
@@ -63,10 +62,8 @@ const ProductHasMaterials = (props) => {
       transactionDate,
     };
     await addTransactionForMaterial(body);
-    const transactionArray = await retrieveTransactionsForMaterial();
-    console.log(transactionArray);
-    retrieveTransactionsForMaterial();
-    retrieveMaterialsForProduct();
+    await retrieveTransactionsForMaterial();
+    await retrieveMaterialsForProduct();
     clearTransactionEntry();
   };
 
@@ -99,9 +96,8 @@ const ProductHasMaterials = (props) => {
     const materialArray = await getMaterialsForProduct(productID);
     setMaterialsForProduct(materialArray);
     setAddMaterial("");
-    setNewUnit("");
-    setNewQuantity("");
-    clearMaterialEntry();
+    setNewUnit("1");
+    setNewQuantity("0");
   };
 
   const handleNewMaterial = async (e) => {
@@ -110,6 +106,7 @@ const ProductHasMaterials = (props) => {
     await newMaterial(body);
     const materials = await getMaterials();
     setMaterials(materials);
+    clearMaterialEntry();
   };
 
   const handleNewSupplier = async (e) => {
@@ -181,19 +178,9 @@ const ProductHasMaterials = (props) => {
       materialsForProduct.reduce(perUnitAccumulator, 0)
     ).toFixed(2);
 
-    console.log(
-      "batchCost, productYield, perUnitCost",
-      batchCost,
-      productYield,
-      perUnitCost
-    );
-
     const calculatedCost = parseFloat(
       Number(batchCost) / Number(productYield) + Number(perUnitCost)
     ).toFixed(2);
-
-    console.log("mat", materialsForProduct);
-    console.log("CC", calculatedCost);
 
     setProductAverageCost(calculatedCost);
   };
@@ -353,8 +340,8 @@ const ProductHasMaterials = (props) => {
                 setIsPerUnit((prevCheck) => !prevCheck);
               }}
             />
-            <label class="btn btn-outline-primary" for="btn-check-outlined">
-              Per Unit
+            <label class="btn btn-outline-secondary" for="btn-check-outlined">
+              {isPerUnit ? "Yes" : "No"}
             </label>
           </div>
 

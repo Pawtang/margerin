@@ -70,9 +70,7 @@ const Dashboard = () => {
         itemType="Product"
         handleAddItem={handleAddProduct}
         newItemName={newProductName}
-        setNewItemDescription={newProductDescription}
         setNewItemName={setNewProductName}
-        setNewItemDescription={setnewProductDescription}
         clearEntry={clearEntry}
       />
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
@@ -94,7 +92,7 @@ const Dashboard = () => {
           {/* --------------------------- End Product Search --------------------------- */}
           {/* /* ----------------------------- Product Profile ---------------------------- */}
 
-          <div className="col-7 col-md-9 p-4 gx-5">
+          <div className="col-12 col-md-9 p-4 gx-5">
             <div className="row mb-5 shadow-sm p-4 rounded-3 ">
               <div className="d-flex flex-row-reverse">
                 <div className="btn-group">
@@ -129,7 +127,7 @@ const Dashboard = () => {
                 <h3>Cost Data</h3>
                 <p>
                   <div className="row">
-                    <div className="col">
+                    <div className="col-12 col-md-3 col-sm-6">
                       <label for="exampleFormControlInput1" class="form-label">
                         Yield Per Recipe
                       </label>
@@ -149,7 +147,7 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    <div className="col">
+                    <div className="col-12 col-md-3 col-sm-6">
                       <label htmlFor="" class="form-label">
                         Cost Per Unit
                       </label>
@@ -166,7 +164,7 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    <div className="col">
+                    <div className="col-12 col-md-3 col-sm-6">
                       <label for="exampleFormControlInput1" class="form-label">
                         Sales Price
                       </label>
@@ -190,7 +188,7 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    <div className="col">
+                    <div className="col-12 col-md-3 col-sm-6">
                       <label htmlFor="" class="form-label">
                         Profit Per Unit
                       </label>

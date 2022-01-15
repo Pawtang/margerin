@@ -4,7 +4,7 @@ export const displayProduct = async (id) => {
   try {
     const response = await fetch(`${URL_SERVER}/product/${id}`);
     if (response.status !== 200) {
-      throw "response is not 200";
+      throw new Error("response is not 200");
     }
     return await response.json();
   } catch (err) {
@@ -21,7 +21,7 @@ export const addProduct = async (body) => {
       body: JSON.stringify(body),
     });
     if (response.status !== 200) {
-      throw "response is not 200";
+      throw new Error("response is not 200");
     }
   } catch (err) {
     console.error("addProduct POST /product error:", err.message);
@@ -32,7 +32,7 @@ export const getProducts = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/products`);
     if (response.status !== 200) {
-      throw "response is not 200";
+      throw new Error("response is not 200");
     }
     return await response.json();
   } catch (err) {
@@ -46,7 +46,7 @@ export const deleteProduct = async (id) => {
       method: "DELETE",
     });
     if (response.status !== 200) {
-      throw "response is not 200";
+      throw new Error("response is not 200");
     }
   } catch (err) {
     console.error("deleteProduct DELETE /product error:", err.message);
@@ -63,7 +63,7 @@ export const updatePrice = async (id, body) => {
     });
     console.log("updatePrice Response:", response.rows[0]);
     if (response.status !== 200) {
-      throw "response is not 200";
+      throw new Error("response is not 200");
     }
   } catch (error) {}
 };
@@ -78,7 +78,7 @@ export const updateYield = async (id, body) => {
     });
     console.log("updateYield Response:", response.rows[0]);
     if (response.status !== 200) {
-      throw "response is not 200";
+      throw new Error("response is not 200");
     }
   } catch (error) {}
 };

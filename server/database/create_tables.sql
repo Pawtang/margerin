@@ -74,3 +74,7 @@ ALTER TABLE product_has_material ADD is_per_unit BOOLEAN;
 ALTER TABLE product ADD yield INTEGER;
 -- 1/12/21 Add product sales cost
 ALTER TABLE product ADD price MONEY;
+--1/15/21
+ALTER TABLE product ALTER COLUMN price TYPE decimal(12,2);
+ALTER TABLE product ALTER COLUMN price SET DEFAULT 0;
+ALTER TABLE product ALTER COLUMN yield SET DEFAULT 1;

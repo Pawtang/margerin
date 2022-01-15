@@ -8,7 +8,7 @@ export const ProductSearch = (props) => {
     props;
 
   return (
-    <div className="col-5 col-md-3 border-end">
+    <div className="col-12 col-md-3 border-end">
       <div className="row my-4">
         <div className="col-11">
           <div class="input-group">
