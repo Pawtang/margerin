@@ -109,7 +109,7 @@ const ProductHasMaterials = (props) => {
     clearMaterialEntry();
   };
 
-  const handleNewSupplier = async (e) => {
+  const handleAddSupplier = async (e) => {
     e.preventDefault();
     const body = { newSupplierName };
     await newSupplier(body);
@@ -241,7 +241,7 @@ const ProductHasMaterials = (props) => {
 
       <AddPropModal
         itemType="Supplier"
-        handleAddItem={handleNewSupplier}
+        handleAddItem={handleAddSupplier}
         newItemName={newSupplierName}
         setNewItemName={setNewSupplierName}
         clearEntry={clearSupplierEntry}

@@ -1,27 +1,10 @@
 import React from "react";
 import _ from "lodash";
 import dayjs from "dayjs";
+import Transactions from "./Transactions";
 
 const TransactionModal = (props) => {
-  const {
-    units,
-    clearTransactionEntry,
-    handleAddTransactionForMaterial,
-    handleDeleteTransaction,
-    modalMaterial,
-    suppliers,
-    transactionsForMaterial,
-    transactionSupplier,
-    setTransactionSupplier,
-    transactionQuantity,
-    setTransactionQuantity,
-    transactionUnit,
-    setTransactionUnit,
-    transactionCost,
-    setTransactionCost,
-    transactionDate,
-    setTransactionDate,
-  } = props;
+  const { modalMaterial, clearTransactionEntry } = props;
 
   return (
     <div class="modal fade" tabindex="-1" id="materialTransactionModal">
@@ -41,7 +24,8 @@ const TransactionModal = (props) => {
           </div>
           {/* ------------------------------------ */}
           <div class="modal-body">
-            <div className="row row-cols-6 gx-1">
+            <Transactions {...props} />
+            {/* <div className="row row-cols-6 gx-1">
               <div className="col-3">
                 <h6 className="text-center">Supplier</h6>
               </div>
@@ -63,8 +47,7 @@ const TransactionModal = (props) => {
             </div>
 
             <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
-              {/* --------------------------------- Inputs --------------------------------- */}
-              {/* -------------------------------- Supplier -------------------------------- */}
+
               <div className="col-3">
                 <div className="input-group">
                   <select
@@ -94,7 +77,7 @@ const TransactionModal = (props) => {
                   </button>
                 </div>
               </div>
-              {/* -------------------------------- Quantity -------------------------------- */}
+
               <div className="col-1">
                 <input
                   type="number"
@@ -107,7 +90,7 @@ const TransactionModal = (props) => {
                   }}
                 />
               </div>
-              {/* ---------------------------------- Unit ---------------------------------- */}
+
               <div className="col-2">
                 <select
                   id="inputUnits"
@@ -127,7 +110,7 @@ const TransactionModal = (props) => {
                   ))}
                 </select>
               </div>
-              {/* ---------------------------------- Cost ---------------------------------- */}
+              {/* ---------------------------------- Cost ----------------------------------
               <div className="col-2">
                 <div className="input-group">
                   <span className="input-group-text">$</span>
@@ -148,7 +131,7 @@ const TransactionModal = (props) => {
                   />
                 </div>
               </div>
-              {/* ---------------------------------- Date ---------------------------------- */}
+              {/* ---------------------------------- Date ----------------------------------
               <div className="col-2">
                 <input
                   type="date"
@@ -158,7 +141,7 @@ const TransactionModal = (props) => {
                 />
               </div>
 
-              {/* --------------------------------- Buttons -------------------------------- */}
+              {/* --------------------------------- Buttons --------------------------------
               <div className="col-2">
                 <button
                   className="btn btn-primary"
@@ -168,7 +151,7 @@ const TransactionModal = (props) => {
                 </button>
               </div>
             </div>
-            {/* --------------------------- Enumerated Existing -------------------------- */}
+            {/* --------------------------- Enumerated Existing --------------------------
             {!_.isEmpty(transactionsForMaterial) &&
               transactionsForMaterial.map((transaction) => (
                 <div className="row row-cols-6 border-bottom py-2 mb-2 gx-0">
@@ -222,7 +205,7 @@ const TransactionModal = (props) => {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))} */}
           </div>
           {/* ------------------------------ */}
         </div>

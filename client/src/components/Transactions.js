@@ -6,10 +6,8 @@ import dayjs from "dayjs";
 const Transactions = (props) => {
   const {
     units,
-    clearTransactionEntry,
     handleAddTransactionForMaterial,
     handleDeleteTransaction,
-    modalMaterial,
     suppliers,
     transactionsForMaterial,
     transactionSupplier,
@@ -23,8 +21,6 @@ const Transactions = (props) => {
     transactionDate,
     setTransactionDate,
   } = props;
-
-  const clearEntry = () => {};
 
   return (
     <Fragment>

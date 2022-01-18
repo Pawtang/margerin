@@ -1,5 +1,6 @@
 import { React, Fragment } from "react";
 import AppNav from "./AppNav";
+import ResourceManager from "./ResourceManager";
 
 const Suppliers = () => {
   return (
@@ -9,10 +10,8 @@ const Suppliers = () => {
         <div className="row">
           <AppNav></AppNav>
         </div>
-        <div className="app-space">
-          <h1>Suppliers</h1>
-        </div>
       </div>
+      <ResourceManager />
     </Fragment>
   );
 };
