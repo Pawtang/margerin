@@ -6,7 +6,6 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Material from "./components/Material";
 import Dashboard from "./components/Dashboard";
 import Suppliers from "./components/Suppliers";
 import Transactions from "./components/Transactions";
@@ -27,7 +26,7 @@ ReactDOM.render(
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
       <Route path="dashboard" element={<Dashboard />} />
-      <Route path="material" element={<Material />} />
+
       <Route path="suppliers" element={<Suppliers />} />
       <Route path="transactions" element={<Transactions />} />
     </Routes>

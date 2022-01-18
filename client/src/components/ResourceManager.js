@@ -5,27 +5,47 @@ const ResourceManager = (props) => {
   const { resourceType, hasDate, hasRating } = props;
   return (
     <Fragment>
-      <div className="container-xxl">
-        <div className="row shadow rounded-3 bg-white">
-          <div className="row row-cols-6 gx-1">
-            <div className="col-3">
-              <h6 className="text-center">Supplier</h6>
+      <div className="container-xxl shadow rounded-3 bg-white">
+        <h1>Manage %Resource%</h1>
+        <div className="row">
+          <div className="col-4"></div>
+          <div className="col-4"></div>
+          <div className="col-4">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">
+                <i class="bi bi-search"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search products..."
+                aria-label="Search products..."
+                aria-describedby="search-products"
+                // value={}
+                onChange={(e) => {}}
+              />
             </div>
-            <div className="col-1">
-              <h6 className="text-center">Quantity</h6>
-            </div>
-            <div className="col-2">
-              <h6 className="text-center">Unit</h6>
-            </div>
-            <div className="col-2">
-              <h6 className="text-center">Total Cost</h6>
-            </div>
-            <div className="col-2">
-              <h6 className="text-center">Date</h6>
-            </div>
-            <div className="col-2">
-              <h6 className="text-center"></h6>
-            </div>
+          </div>
+        </div>
+
+        <div className="row row-cols-6 gx-1">
+          <div className="col-3">
+            <h6 className="text-center">Supplier</h6>
+          </div>
+          <div className="col-1">
+            <h6 className="text-center">Quantity</h6>
+          </div>
+          <div className="col-2">
+            <h6 className="text-center">Unit</h6>
+          </div>
+          <div className="col-2">
+            <h6 className="text-center">Total Cost</h6>
+          </div>
+          <div className="col-2">
+            <h6 className="text-center">Date</h6>
+          </div>
+          <div className="col-2">
+            <h6 className="text-center"></h6>
           </div>
         </div>
       </div>

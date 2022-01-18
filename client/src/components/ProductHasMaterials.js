@@ -252,13 +252,13 @@ const ProductHasMaterials = (props) => {
           <div className="col-3">
             <h6 className="text-center">Material</h6>
           </div>
-          <div className="col-1">
+          <div className="col-2">
             <h6 className="text-center">Quantity</h6>
           </div>
           <div className="col-2">
             <h6 className="text-center">Unit</h6>
           </div>
-          <div className="col-2">
+          <div className="col-1">
             <h6 className="text-center">Per Unit</h6>
           </div>
           <div className="col-2">
@@ -300,7 +300,7 @@ const ProductHasMaterials = (props) => {
             </div>
           </div>
 
-          <div class="col-1">
+          <div class="col-2">
             <input
               type="number"
               class="form-control"
@@ -329,7 +329,7 @@ const ProductHasMaterials = (props) => {
             </select>
           </div>
 
-          <div className="col-2 text-center">
+          <div className="col-1 text-center">
             <input
               type="checkbox"
               class="btn-check"
@@ -341,19 +341,15 @@ const ProductHasMaterials = (props) => {
               }}
             />
             <label class="btn btn-outline-secondary" for="btn-check-outlined">
-              {isPerUnit ? (
-                <i class="bi bi-check"></i>
-              ) : (
-                <i class="bi bi-dash-lg"></i>
-              )}
+              {isPerUnit ? <i class="bi bi-check"></i> : "--"}
             </label>
           </div>
           {/* Cost */}
           <div className="col-2 text-center text-muted mx-auto ">
-            <p className="fw-light fst-italic py-1 mx-auto">
+            <p className="py-1 mx-auto">
               <i
                 class="bi bi-currency-dollar"
-                style={{ fontSize: "1.5rem" }}
+                style={{ fontSize: "1.2rem" }}
               ></i>
             </p>
           </div>
@@ -376,14 +372,14 @@ const ProductHasMaterials = (props) => {
             <div className="col-3 ">
               <p className="text-left my-2">{material.material_name}</p>
             </div>
-            <div className="col-1">
+            <div className="col-2">
               <p className="text-center my-2">{material.quantity}</p>
             </div>
             <div className="col-2">
               <p className="text-center my-2">{material.unit_name}</p>
             </div>
 
-            <div className="col-2">
+            <div className="col-1">
               <p className="text-center my-2">
                 {material.is_per_unit ? "Yes" : "No"}
               </p>
