@@ -269,7 +269,7 @@ const ProductHasMaterials = (props) => {
           </div>
         </div>
 
-        <div className="row row-cols-6 pt-3 mx-auto gx-1 ">
+        <div className="row row-cols-6 pt-3 mx-auto gx-1 shadow-sm mb-2">
           <div class="col-3">
             <div className="input-group">
               <select
@@ -341,15 +341,24 @@ const ProductHasMaterials = (props) => {
               }}
             />
             <label class="btn btn-outline-secondary" for="btn-check-outlined">
-              {isPerUnit ? "Yes" : "No"}
+              {isPerUnit ? (
+                <i class="bi bi-check"></i>
+              ) : (
+                <i class="bi bi-dash-lg"></i>
+              )}
             </label>
           </div>
-
+          {/* Cost */}
           <div className="col-2 text-center text-muted mx-auto ">
-            <p className="fw-light fst-italic py-1 mx-auto">Calculated field</p>
+            <p className="fw-light fst-italic py-1 mx-auto">
+              <i
+                class="bi bi-currency-dollar"
+                style={{ fontSize: "1.5rem" }}
+              ></i>
+            </p>
           </div>
 
-          <div className="col-2 text-center">
+          <div className="col-2 text-center ">
             <button
               className="btn btn-outline-primary"
               onClick={() => handleAddMaterialToProduct()}
@@ -364,13 +373,13 @@ const ProductHasMaterials = (props) => {
             className="row row-cols-6 border-bottom py-1 mx-auto"
             key={material.phm_id}
           >
-            <div className="col">
-              <p className="text-center my-2">{material.material_name}</p>
+            <div className="col-3 ">
+              <p className="text-left my-2">{material.material_name}</p>
             </div>
-            <div className="col">
+            <div className="col-1">
               <p className="text-center my-2">{material.quantity}</p>
             </div>
-            <div className="col">
+            <div className="col-2">
               <p className="text-center my-2">{material.unit_name}</p>
             </div>
 
@@ -379,7 +388,7 @@ const ProductHasMaterials = (props) => {
                 {material.is_per_unit ? "Yes" : "No"}
               </p>
             </div>
-            <div className="col text-center">
+            <div className="col-2 d-grid  text-center ">
               <button
                 key="displayAverageCost"
                 className={
@@ -401,7 +410,7 @@ const ProductHasMaterials = (props) => {
                 <i class="bi bi-pencil-square"></i>
               </button>
             </div>
-            <div className="col text-center">
+            <div className="col-2  d-grid text-center">
               <div
                 className="btn-group"
                 role="group"
