@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const AppNav = () => {
   return (
-    <div class="row">
+    <div className="row">
       <Link to="/dashboard">
         <button className="btn btn-outline-dark">Dashboard</button>
       </Link>

@@ -270,11 +270,11 @@ const ProductHasMaterials = (props) => {
         </div>
 
         <div className="row row-cols-6 pt-3 mx-auto gx-1 shadow-sm mb-2">
-          <div class="col-3">
+          <div className="col-3">
             <div className="input-group">
               <select
                 id="inputMaterialName"
-                class="form-select"
+                className="form-select"
                 value={addMaterial}
                 onChange={(e) => setAddMaterial(e.target.value)}
               >
@@ -300,10 +300,10 @@ const ProductHasMaterials = (props) => {
             </div>
           </div>
 
-          <div class="col-2">
+          <div className="col-2">
             <input
               type="number"
-              class="form-control"
+              className="form-control"
               placeholder="0"
               min="0"
               aria-label="Quantity"
@@ -317,7 +317,7 @@ const ProductHasMaterials = (props) => {
           <div className="col-2">
             <select
               id="inputUnits"
-              class="form-select"
+              className="form-select"
               value={newUnit}
               onChange={(e) => setNewUnit(e.target.value)}
             >
@@ -332,7 +332,7 @@ const ProductHasMaterials = (props) => {
           <div className="col-1 text-center">
             <input
               type="checkbox"
-              class="btn-check"
+              className="btn-check"
               id="btn-check-outlined"
               autoComplete="off"
               value={isPerUnit}
@@ -340,15 +340,18 @@ const ProductHasMaterials = (props) => {
                 setIsPerUnit((prevCheck) => !prevCheck);
               }}
             />
-            <label class="btn btn-outline-secondary" for="btn-check-outlined">
-              {isPerUnit ? <i class="bi bi-check"></i> : "--"}
+            <label
+              className="btn btn-outline-secondary"
+              for="btn-check-outlined"
+            >
+              {isPerUnit ? <i className="bi bi-check"></i> : "--"}
             </label>
           </div>
           {/* Cost */}
           <div className="col-2 text-center text-muted mx-auto ">
             <p className="py-1 mx-auto">
               <i
-                class="bi bi-currency-dollar"
+                className="bi bi-currency-dollar"
                 style={{ fontSize: "1.2rem" }}
               ></i>
             </p>
@@ -403,7 +406,7 @@ const ProductHasMaterials = (props) => {
                       material.avgcost * material.quantity
                     ).toFixed(2)}`
                   : "$ --.--"}{" "}
-                <i class="bi bi-pencil-square"></i>
+                <i className="bi bi-pencil-square"></i>
               </button>
             </div>
             <div className="col-2  d-grid text-center">
@@ -413,13 +416,13 @@ const ProductHasMaterials = (props) => {
                 aria-label="update delete"
               >
                 <button className="btn btn-outline-primary">
-                  <i class="bi bi-pencil-square"></i>
+                  <i className="bi bi-pencil-square"></i>
                 </button>
                 <button
                   className="btn btn-outline-danger"
                   onClick={() => handleDeleteMaterial(material.phm_id)}
                 >
-                  <i class="bi bi-trash-fill"></i>
+                  <i className="bi bi-trash-fill"></i>
                 </button>
               </div>
             </div>

@@ -11,13 +11,13 @@ const ResourceManager = (props) => {
           <div className="col-4"></div>
           <div className="col-4"></div>
           <div className="col-4">
-            <div class="input-group">
-              <span class="input-group-text" id="basic-addon1">
-                <i class="bi bi-search"></i>
+            <div className="input-group">
+              <span className="input-group-text" id="basic-addon1">
+                <i className="bi bi-search"></i>
               </span>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 placeholder="Search products..."
                 aria-label="Search products..."
                 aria-describedby="search-products"

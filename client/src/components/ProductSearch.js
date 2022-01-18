@@ -11,13 +11,13 @@ export const ProductSearch = (props) => {
     <div className="col-12 col-md-3 border-end">
       <div className="row my-4">
         <div className="col-11">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1">
-              <i class="bi bi-search"></i>
+          <div className="input-group">
+            <span className="input-group-text" id="basic-addon1">
+              <i className="bi bi-search"></i>
             </span>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               placeholder="Search products..."
               aria-label="Search products..."
               aria-describedby="search-products"
@@ -75,7 +75,7 @@ export const ProductSearch = (props) => {
                         width="16"
                         height="16"
                         fill="currentColor"
-                        class="bi bi-arrow-right-circle"
+                        className="bi bi-arrow-right-circle"
                         viewBox="0 0 16 16"
                       >
                         <path

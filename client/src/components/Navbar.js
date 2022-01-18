@@ -5,13 +5,13 @@ const Navbar = () => {
   return (
     <nav className="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
       <div className="container">
-        <Link to="/" class="navbar-brand">
+        <Link to="/" className="navbar-brand">
           <div className="box">
-            <h3 class="white text-center">m</h3>
+            <h3 className="white text-center">m</h3>
           </div>
         </Link>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
@@ -19,7 +19,7 @@ const Navbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">

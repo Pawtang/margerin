@@ -52,7 +52,7 @@ const Transactions = (props) => {
           <div className="input-group">
             <select
               id="inputSupplier"
-              class="form-select"
+              className="form-select"
               value={transactionSupplier}
               onChange={(e) => setTransactionSupplier(e.target.value)}
             >
@@ -82,7 +82,7 @@ const Transactions = (props) => {
         <div className="col-1">
           <input
             type="number"
-            class="form-control"
+            className="form-control"
             placeholder="0"
             aria-label="Quantity"
             value={transactionQuantity}
@@ -95,7 +95,7 @@ const Transactions = (props) => {
         <div className="col-2">
           <select
             id="inputUnits"
-            class="form-select"
+            className="form-select"
             value={transactionUnit}
             onChange={(e) => {
               setTransactionUnit(e.target.value);
@@ -118,7 +118,7 @@ const Transactions = (props) => {
             <span className="input-group-text">$</span>
             <input
               type="number"
-              class="form-control user-select-all"
+              className="form-control user-select-all"
               placeholder="0.00"
               aria-label="cost"
               step="0.01"
@@ -192,7 +192,7 @@ const Transactions = (props) => {
                 key={transaction.transaction_id}
               >
                 <button className="btn btn-outline-primary">
-                  <i class="bi bi-pencil-square"></i>
+                  <i className="bi bi-pencil-square"></i>
                 </button>
                 <button
                   className="btn btn-outline-danger"
@@ -200,7 +200,7 @@ const Transactions = (props) => {
                     handleDeleteTransaction(transaction.transaction_id);
                   }}
                 >
-                  <i class="bi bi-trash-fill"></i>
+                  <i className="bi bi-trash-fill"></i>
                 </button>
               </div>
             </div>

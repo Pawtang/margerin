@@ -7,23 +7,23 @@ const TransactionModal = (props) => {
   const { modalMaterial, clearTransactionEntry } = props;
 
   return (
-    <div class="modal fade" tabindex="-1" id="materialTransactionModal">
-      <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
+    <div className="modal fade" tabindex="-1" id="materialTransactionModal">
+      <div className="modal-dialog modal-xl modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">
               Recent Transactions for {modalMaterial.material_name}
             </h5>
             <button
               type="button"
-              class="btn-close"
+              className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
               onClick={() => clearTransactionEntry()}
             ></button>
           </div>
           {/* ------------------------------------ */}
-          <div class="modal-body">
+          <div className="modal-body">
             <Transactions {...props} />
             {/* <div className="row row-cols-6 gx-1">
               <div className="col-3">
@@ -52,7 +52,7 @@ const TransactionModal = (props) => {
                 <div className="input-group">
                   <select
                     id="inputSupplier"
-                    class="form-select"
+                    className="form-select"
                     value={transactionSupplier}
                     onChange={(e) => setTransactionSupplier(e.target.value)}
                   >
@@ -81,7 +81,7 @@ const TransactionModal = (props) => {
               <div className="col-1">
                 <input
                   type="number"
-                  class="form-control"
+                  className="form-control"
                   placeholder="0"
                   aria-label="Quantity"
                   value={transactionQuantity}
@@ -94,7 +94,7 @@ const TransactionModal = (props) => {
               <div className="col-2">
                 <select
                   id="inputUnits"
-                  class="form-select"
+                  className="form-select"
                   value={transactionUnit}
                   onChange={(e) => {
                     setTransactionUnit(e.target.value);
@@ -116,7 +116,7 @@ const TransactionModal = (props) => {
                   <span className="input-group-text">$</span>
                   <input
                     type="number"
-                    class="form-control user-select-all"
+                    className="form-control user-select-all"
                     placeholder="0.00"
                     aria-label="cost"
                     step="0.01"
@@ -192,7 +192,7 @@ const TransactionModal = (props) => {
                       key={transaction.transaction_id}
                     >
                       <button className="btn btn-outline-primary">
-                        <i class="bi bi-pencil-square"></i>
+                        <i className="bi bi-pencil-square"></i>
                       </button>
                       <button
                         className="btn btn-outline-danger"
@@ -200,7 +200,7 @@ const TransactionModal = (props) => {
                           handleDeleteTransaction(transaction.transaction_id);
                         }}
                       >
-                        <i class="bi bi-trash-fill"></i>
+                        <i className="bi bi-trash-fill"></i>
                       </button>
                     </div>
                   </div>
