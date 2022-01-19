@@ -16,9 +16,9 @@ import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const [displayedProduct, setDisplayedProduct] = useState({});
-  const [newProductName, setNewProductName] = useState([]);
+  const [newProductName, setNewProductName] = useState("");
   const [productYield, setProductYield] = useState("");
-  const [newProductDescription, setnewProductDescription] = useState([]);
+  const [newProductDescription, setnewProductDescription] = useState("");
   const [products, setProducts] = useState([]);
   const [productPrice, setProductPrice] = useState("");
   const [productAverageCost, setProductAverageCost] = useState("");

@@ -1,6 +1,7 @@
 import { React, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 import "../styles/Styles.css";
 import "../styles/main.css";
 

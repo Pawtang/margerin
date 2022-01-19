@@ -86,7 +86,7 @@ const ProductProfile = (props) => {
                 <div className="input-group">
                   <span className="input-group-text">$</span>
                   <input
-                    className="form-control text-center"
+                    className="form-control text-center "
                     type="text"
                     value={productAverageCost}
                     aria-label="Product Unit Cost"

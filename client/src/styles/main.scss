@@ -8,6 +8,8 @@ $danger: #ea6161;
 $info: #1a1149;
 $muted: #1a1149;
 
+$input-disabled-bg: $success;
+
 // Include any default variable overrides here (though functions won't be available)
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
