@@ -9,6 +9,7 @@
       rgba(226, 120, 59, 0.3)
     ),
     url(noise.svg);
+  margin-bottom: 100px;
 }
 
 .app-space {

@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import _ from "lodash";
 import ProductHasMaterials from "./ProductHasMaterials";
+import AppNav from "./AppNav";
 
 const ProductProfile = (props) => {
   const {
@@ -19,6 +20,8 @@ const ProductProfile = (props) => {
   return (
     <Fragment>
       <div className="col-12 col-md-9 p-4 gx-5">
+        <AppNav />
+
         <div className="row mb-5 shadow-sm p-4 rounded-3 ">
           <div className="d-flex flex-row-reverse">
             <div className="btn-group">

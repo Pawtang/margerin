@@ -28,6 +28,7 @@ ReactDOM.render(
       <Route path="dashboard" element={<Dashboard />} />
 
       <Route path="suppliers" element={<Suppliers />} />
+      <Route path="suppliers" element={<Suppliers />} />
       <Route path="transactions" element={<Transactions />} />
     </Routes>
   </BrowserRouter>,

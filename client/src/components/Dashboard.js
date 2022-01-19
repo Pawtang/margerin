@@ -78,9 +78,6 @@ const Dashboard = () => {
 
       <div className="navbar-clearance"></div>
       <div className="container-xxl">
-        <div className="row ">
-          <AppNav></AppNav>
-        </div>
         <div className="row shadow rounded-3 bg-white">
           <ProductSearch
             setDisplayedProduct={setDisplayedProduct}
