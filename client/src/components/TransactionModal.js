@@ -6,7 +6,7 @@ const TransactionModal = (props) => {
   const { modalMaterial, clearTransactionEntry } = props;
 
   return (
-    <div className="modal fade" tabindex="-1" id="materialTransactionModal">
+    <div className="modal fade" tabIndex="-1" id="materialTransactionModal">
       <div className="modal-dialog modal-xl modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">

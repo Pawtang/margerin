@@ -1,18 +1,17 @@
 INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating)
 VALUES('Restaurant Depot', 'Teddy', '5555837463', '4'),
-      ('Toys R Us', 'Johnny', '84775778382', '5'),
-      ('Military Surplus', 'Johnny', '84775778382', '5'),
-      ('Cat Toys Inc', 'Johnny', '84775778382', '5'),
-      ('Steel and Aluminum Company', 'Johnny', '84775778382', '5'),
-      ('Small Ball Co.', 'Johnny', '84775778382', '5'),
-      ('Gidgets, Widgets, and More', 'Johnny', '84775778382', '5');
+      ('Jewel Osco', 'Johnny', '84775778382', '5'),
+      ('Amazon', 'Johnny', '84775778382', '5'),
+      ('Pete''s Grocery', 'Johnny', '84775778382', '5') 
+      ON CONFLICT DO NOTHING;
 
 
 INSERT INTO product (product_name, product_description, product_image_path, yield)
 VALUES('Rio Verde', 'A mild, earthy, spiced blend of fermented jalapenos, garlic, ginger and serranos. A very versatile flavor.', '', '120'),
       ('Hot Like Me', 'A bright, fiery sauce with a forward, peppery fruitiness and a unique fermented flavor.', '', '90'),
       ('Mango Bolero', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', '', '130'),
-      ('Hullabalooberry', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', '', '100');
+      ('Hullabalooberry', 'A bold, sweet heat - a simple marriage of fermented mangos and habaneros. Excellent on proteins.', '', '100')
+      ON CONFLICT DO NOTHING;
       
 
 

@@ -72,7 +72,7 @@ const Transactions = (props) => {
             <button
               className="btn btn-outline-secondary"
               data-bs-toggle="modal"
-              data-bs-target="#newMaterialModal"
+              data-bs-target="#newSupplierModal"
             >
               +
             </button>
@@ -101,7 +101,7 @@ const Transactions = (props) => {
               setTransactionUnit(e.target.value);
             }}
           >
-            <option disabled selected value="" className="text-muted">
+            <option disabled value="" className="text-muted">
               Select Unit...
             </option>
             {!_.isEmpty(units) &&

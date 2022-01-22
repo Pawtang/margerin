@@ -25,7 +25,7 @@ const ProductProfile = (props) => {
         <div className="row mb-5 shadow-sm p-4 rounded-3 ">
           <div className="d-flex flex-row-reverse">
             <div className="btn-group">
-              <button className="btn btn-primary" type="button">
+              <button className="btn btn-outline-primary" type="button">
                 Edit <i className="bi bi-pencil-square"></i>
               </button>
               <button
@@ -90,7 +90,7 @@ const ProductProfile = (props) => {
                     type="text"
                     value={productAverageCost}
                     aria-label="Product Unit Cost"
-                    readOnly
+                    // readOnly
                     id="ProductCost"
                   />
                 </div>
@@ -132,9 +132,9 @@ const ProductProfile = (props) => {
                     type="text"
                     // value={`$${}`}
                     aria-label="Product Unit Cost"
-                    readOnly
+                    // readOnly
                     id="ProductCost"
-                    defaultValue={
+                    value={
                       !isNaN(productAverageCost)
                         ? parseFloat(productPrice - productAverageCost).toFixed(
                             2

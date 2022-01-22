@@ -8,7 +8,11 @@ $danger: #ea6161;
 $info: #1a1149;
 $muted: #1a1149;
 
-$input-disabled-bg: $success;
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: white;
+  opacity: 1;
+}
 
 // Include any default variable overrides here (though functions won't be available)
 

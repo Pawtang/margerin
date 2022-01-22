@@ -37,7 +37,7 @@ const ProductHasMaterials = (props) => {
   const [transactionDate, setTransactionDate] = useState(todayDate);
 
   //Product has materials
-  const [addMaterial, setAddMaterial] = useState([]);
+  const [addMaterial, setAddMaterial] = useState("");
   const [newUnit, setNewUnit] = useState("1");
   const [newQuantity, setNewQuantity] = useState("0");
   const [isPerUnit, setIsPerUnit] = useState(false);
@@ -203,7 +203,7 @@ const ProductHasMaterials = (props) => {
 
   useEffect(() => {
     calculateProductCost();
-  }, [materialsForProduct]);
+  }, [materialsForProduct, productYield]);
 
   return (
     <Fragment>
@@ -278,9 +278,6 @@ const ProductHasMaterials = (props) => {
                 value={addMaterial}
                 onChange={(e) => setAddMaterial(e.target.value)}
               >
-                <option disabled value="" className="text-muted">
-                  Add Material...
-                </option>
                 {materials.map((material) => (
                   <option
                     value={material.material_id}
@@ -342,7 +339,7 @@ const ProductHasMaterials = (props) => {
             />
             <label
               className="btn btn-outline-secondary"
-              for="btn-check-outlined"
+              htmlFor="btn-check-outlined"
             >
               {isPerUnit ? <i className="bi bi-check"></i> : "--"}
             </label>
