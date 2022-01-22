@@ -6,7 +6,7 @@ const AppNav = () => {
     <>
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <div className="container-fluid">
+          <div className="container-fluid ">
             <a className="navbar-brand" href="#">
               Resource Manager
             </a>

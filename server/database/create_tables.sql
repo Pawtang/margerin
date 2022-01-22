@@ -69,12 +69,16 @@ ALTER TABLE product_has_material
     ADD CONSTRAINT material_uniqueness UNIQUE (product_id, material_id, unit_id)
 ;
 
--- 1/11/21 Add support for batching and yield counts
+-- 1/11/22 Add support for batching and yield counts
 ALTER TABLE product_has_material ADD is_per_unit BOOLEAN;
 ALTER TABLE product ADD yield INTEGER;
--- 1/12/21 Add product sales cost
+-- 1/12/22 Add product sales cost
 ALTER TABLE product ADD price MONEY;
---1/15/21
+--1/15/22
 ALTER TABLE product ALTER COLUMN price TYPE decimal(12,2);
 ALTER TABLE product ALTER COLUMN price SET DEFAULT 0;
 ALTER TABLE product ALTER COLUMN yield SET DEFAULT 1;
+-- 1/22/22
+ALTER TABLE transaction ALTER COLUMN quantity TYPE decimal(12,3);
+ALTER TABLE product_has_material ALTER COLUMN quantity TYPE decimal(12,3);
+ALTER TABLE supplier ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);

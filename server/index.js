@@ -51,6 +51,24 @@ app.post("/supplier", async (req, res) => {
   }
 });
 
+//create a supplier detailed
+app.post("/newsupplier", async (req, res) => {
+  try {
+    const {
+      newSupplierName,
+      newSupplierContactName,
+      newSupplierphone,
+      newSupplierRating,
+    } = req.body;
+    const newSupplier = await pool.query(
+      `INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating) VALUES('${newSupplierName}', '${newSupplierContactName}', '${newSupplierphone}', '${newSupplierRating}') RETURNING *`
+    );
+    res.status(201).json(newSupplier.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 //Add a material to a product
 app.post("/productHasMaterial", async (req, res) => {
   try {
@@ -245,6 +263,30 @@ app.delete("/productHasMaterial/:phmID", async (req, res) => {
     const { phmID } = req.params;
     const deleteMaterial = await pool.query(
       `DELETE FROM product_has_material WHERE phm_id = ${phmID}`
+    );
+    res.json("Material deleted!");
+  } catch (error) {
+    console.error("DELETE error in Index", error);
+  }
+});
+
+app.delete("/supplier/:supplierID", async (req, res) => {
+  try {
+    const { supplierID } = req.params;
+    const deleteSupplier = await pool.query(
+      `DELETE FROM supplier WHERE supplier_id = ${supplierID}`
+    );
+    res.json("Supplier deleted!");
+  } catch (error) {
+    console.error("DELETE error in Index", error);
+  }
+});
+
+app.delete("/material/:materialID", async (req, res) => {
+  try {
+    const { materialID } = req.params;
+    const deleteMaterial = await pool.query(
+      `DELETE FROM material WHERE phm_id = ${materialID}`
     );
     res.json("Material deleted!");
   } catch (error) {
