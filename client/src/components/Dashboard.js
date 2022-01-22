@@ -77,6 +77,7 @@ const Dashboard = () => {
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
 
       <div className="navbar-clearance"></div>
+      <AppNav />
       <div className="container-xxl">
         <div className="row shadow rounded-3 bg-white">
           <ProductSearch

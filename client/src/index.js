@@ -26,8 +26,6 @@ ReactDOM.render(
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
       <Route path="dashboard" element={<Dashboard />} />
-
-      <Route path="suppliers" element={<Suppliers />} />
       <Route path="suppliers" element={<Suppliers />} />
       <Route path="transactions" element={<Transactions />} />
     </Routes>
