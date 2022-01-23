@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import Suppliers from "./components/Suppliers";
-import Transactions from "./components/Transactions";
+import TransactionManager from "./components/TransactionManager";
 import Navbar from "./components/Navbar";
 import "./styles/main.css";
 import "./styles/Styles.css";
@@ -27,7 +27,7 @@ ReactDOM.render(
       <Route path="login" element={<Login />} />
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="suppliers" element={<Suppliers />} />
-      <Route path="transactions" element={<Transactions />} />
+      <Route path="transactions" element={<TransactionManager />} />
     </Routes>
   </BrowserRouter>,
   // </React.StrictMode>,

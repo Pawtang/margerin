@@ -14,6 +14,19 @@ $muted: #1a1149;
   opacity: 1;
 }
 
+.text-link {
+  color: inherit;
+  text-decoration: none;
+  margin: 10px;
+  padding: 5px;
+}
+
+.text-link:hover {
+  background-color: $success;
+  color: white;
+  border-radius: 5px;
+}
+
 // Include any default variable overrides here (though functions won't be available)
 
 @import "../../node_modules/bootstrap/scss/bootstrap";

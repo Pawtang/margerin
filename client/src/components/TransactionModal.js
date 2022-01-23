@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 import Transactions from "./Transactions";
 
 const TransactionModal = (props) => {

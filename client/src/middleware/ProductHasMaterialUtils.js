@@ -19,7 +19,7 @@ export const getMaterialsForProduct = async (id) => {
       throw new Error("response is not 200");
     }
     const res = await response.json();
-    console.log("get materials response: ", res);
+
     return res;
   } catch (err) {
     console.error(err.message);

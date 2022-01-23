@@ -1,6 +1,9 @@
 import { React, Fragment, useState, useEffect } from "react";
 import AppNav from "./AppNav";
-import ResourceManager from "./ResourceManager";
+import HeaderColumn from "./HeaderColumn";
+import DisplayColumn from "./DisplayColumn";
+import ButtonsColumn from "./ButtonsColumn";
+import EditColumn from "./EditColumn";
 import { getSuppliers } from "../middleware/ProductHasMaterialUtils";
 import { deleteSupplier, newSupplier } from "../middleware/ResourceUtils";
 import _ from "lodash";
@@ -52,73 +55,47 @@ const Suppliers = () => {
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white px-4">
           <div className="row row-cols-5 gx-1 mt-4">
-            <div className="col-3">
-              <h6 className="text-center">Supplier Name</h6>
-            </div>
-            <div className="col-3">
-              <h6 className="text-center">Contact Name</h6>
-            </div>
-            <div className="col-3">
-              <h6 className="text-center">Contact Number</h6>
-            </div>
-            <div className="col-2">
-              <h6 className="text-center">Rating</h6>
-            </div>
-            <div className="col-1">
-              <h6 className="text-center"></h6>
-            </div>
+            <HeaderColumn colWidth={"col-3"} headerText={"Supplier Name"} />
+            <HeaderColumn colWidth={"col-3"} headerText={"Contact Name"} />
+            <HeaderColumn colWidth={"col-3"} headerText={"Contact Phone"} />
+            <HeaderColumn colWidth={"col-2"} headerText={"Supplier Rating"} />
+            <HeaderColumn colWidth={"col-1"} headerText={""} />
           </div>
 
           <div className="row row-cols-6 border-bottom py-2 mb-2 gx-2">
-            <div className="col-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Supplier Name"
-                aria-label="Name"
-                value={newSupplierName}
-                onChange={(e) => {
-                  setNewSupplierName(e.target.value);
-                }}
-              />
-            </div>
-            <div className="col-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Contact Name"
-                aria-label="Name"
-                value={newSupplierContactName}
-                onChange={(e) => {
-                  setNewSupplierContactName(e.target.value);
-                }}
-              />
-            </div>
-            <div className="col-3">
-              <input
-                type="tel"
-                className="form-control"
-                placeholder="000-000-0000"
-                aria-label="Name"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                value={newSupplierPhone}
-                onChange={(e) => {
-                  setNewSupplierPhone(e.target.value);
-                }}
-              />
-            </div>
-            <div className="col-2">
-              <input
-                type="quantity"
-                className="form-control text-center"
-                placeholder="Rating"
-                aria-label="Name"
-                value={newSupplierRating}
-                onChange={(e) => {
-                  setNewSupplierRating(e.target.value);
-                }}
-              />
-            </div>
+            <EditColumn
+              colWidth={"col-3"}
+              type={"text"}
+              label={"Name"}
+              newValue={newSupplierName}
+              setNewValue={setNewSupplierName}
+              placeholder={"Supplier Name"}
+            />
+            <EditColumn
+              colWidth={"col-3"}
+              type={"text"}
+              label={"Contact"}
+              newValue={newSupplierContactName}
+              setNewValue={setNewSupplierContactName}
+              placeholder={"Contact Name"}
+            />
+            <EditColumn
+              colWidth={"col-3"}
+              type={"tel"}
+              label={"Tel"}
+              newValue={newSupplierPhone}
+              setNewValue={setNewSupplierPhone}
+              placeholder={"000-000-0000"}
+              pattern={"[0-9]{3}-[0-9]{3}-[0-9]{4}"}
+            />
+            <EditColumn
+              colWidth={"col-2"}
+              type={"quantity"}
+              label={"Rating"}
+              newValue={newSupplierRating}
+              setNewValue={setNewSupplierRating}
+              placeholder={"Rating"}
+            />
 
             <div className="col-1 text-center">
               <button
@@ -132,48 +109,31 @@ const Suppliers = () => {
           {/* --------------------------- Enumerated Existing -------------------------- */}
           {!_.isEmpty(suppliers) &&
             suppliers.map((supplier) => (
-              <div className="row row-cols-5 border-bottom py-2 mb-2 gx-0">
-                <div className="col-3">
-                  <div className="col" key={supplier.supplier_id}>
-                    <p className="text-center">{supplier.supplier_name}</p>
-                  </div>
-                </div>
-                <div className="col-3">
-                  <div className="col" key={supplier.supplier_id}>
-                    <p className="text-center">{supplier.contact_name}</p>
-                  </div>
-                </div>
-                <div className="col-3">
-                  <div className="col" key={supplier.supplier_id}>
-                    <p className="text-center">{supplier.supplier_phone}</p>
-                  </div>
-                </div>
-                <div className="col-2">
-                  <div className="col" key={supplier.supplier_id}>
-                    <p className="text-center">{supplier.supplier_rating}</p>
-                  </div>
-                </div>
-                <div className="col-1 text-center">
-                  <div
-                    className="btn-group"
-                    role="group"
-                    aria-label="update delete"
-                    key={supplier.supplier_id}
-                  >
-                    <button className="btn btn-outline-primary">
-                      <i className="bi bi-pencil-square"></i>
-                    </button>
-                    <button
-                      className="btn btn-outline-danger"
-                      key={supplier.supplier_id}
-                      onClick={() => {
-                        handleDeleteSupplier(supplier.supplier_id);
-                      }}
-                    >
-                      <i className="bi bi-trash-fill"></i>
-                    </button>
-                  </div>
-                </div>
+              <div
+                className="row row-cols-5 border-bottom py-2 mb-2 gx-0"
+                key={supplier.supplier_id}
+              >
+                <DisplayColumn
+                  colWidth={"col-3"}
+                  content={supplier.supplier_name}
+                />
+                <DisplayColumn
+                  colWidth={"col-3"}
+                  content={supplier.contact_name}
+                />
+                <DisplayColumn
+                  colWidth={"col-3"}
+                  content={supplier.supplier_phone}
+                />
+                <DisplayColumn
+                  colWidth={"col-2"}
+                  content={supplier.supplier_rating}
+                />
+                <ButtonsColumn
+                  display={"col-1 text-center"}
+                  ID={supplier.supplier_id}
+                  handleDeleteSupplier={handleDeleteSupplier}
+                />
               </div>
             ))}
 
