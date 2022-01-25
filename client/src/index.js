@@ -7,8 +7,10 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
-import Suppliers from "./components/Suppliers";
-import TransactionManager from "./components/TransactionManager";
+import ManagerSuppliers from "./components/ManagerSuppliers";
+import ManagerMaterials from "./components/ManagerMaterials";
+import ManagerTransactions from "./components/ManagerTransactions";
+// import TransactionManager from "./components/TransactionManager";
 import Navbar from "./components/Navbar";
 import "./styles/main.css";
 import "./styles/Styles.css";
@@ -26,8 +28,9 @@ ReactDOM.render(
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
       <Route path="dashboard" element={<Dashboard />} />
-      <Route path="suppliers" element={<Suppliers />} />
-      <Route path="transactions" element={<TransactionManager />} />
+      <Route path="suppliers" element={<ManagerSuppliers />} />
+      <Route path="materials" element={<ManagerMaterials />} />
+      <Route path="transactions" element={<ManagerTransactions />} />
     </Routes>
   </BrowserRouter>,
   // </React.StrictMode>,

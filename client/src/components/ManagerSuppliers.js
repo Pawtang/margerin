@@ -8,7 +8,7 @@ import { getSuppliers } from "../middleware/ProductHasMaterialUtils";
 import { deleteSupplier, newSupplier } from "../middleware/ResourceUtils";
 import _ from "lodash";
 
-const Suppliers = () => {
+const ManagerSuppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [newSupplierName, setNewSupplierName] = useState("");
   const [newSupplierContactName, setNewSupplierContactName] = useState("");
@@ -54,6 +54,7 @@ const Suppliers = () => {
 
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white px-4">
+          <h1 className="my-3">Supplier Manager</h1>
           <div className="row row-cols-5 gx-1 mt-4">
             <HeaderColumn colWidth={"col-3"} headerText={"Supplier Name"} />
             <HeaderColumn colWidth={"col-3"} headerText={"Contact Name"} />
@@ -144,4 +145,4 @@ const Suppliers = () => {
   );
 };
 
-export default Suppliers;
+export default ManagerSuppliers;

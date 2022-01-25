@@ -1,5 +1,5 @@
 const ButtonsColumn = (props) => {
-  const { display, ID, handleDeleteSupplier } = props;
+  const { display, ID, handleDeleteResource } = props;
   return (
     <div className={display}>
       <div className="btn-group" role="group" aria-label="update delete">
@@ -9,7 +9,7 @@ const ButtonsColumn = (props) => {
         <button
           className="btn btn-outline-danger"
           onClick={() => {
-            handleDeleteSupplier(ID);
+            handleDeleteResource(ID);
           }}
         >
           <i className="bi bi-trash-fill"></i>

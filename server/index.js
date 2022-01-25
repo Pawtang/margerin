@@ -104,6 +104,27 @@ app.post("/materialHasTransaction", async (req, res) => {
   }
 });
 
+//add a transaction to a material
+app.post("/materialHasTransaction", async (req, res) => {
+  try {
+    console.log("Request body for materialHasTransaction:", req.body);
+    const {
+      transactionSupplier,
+      materialID,
+      transactionUnit,
+      transactionCost,
+      transactionQuantity,
+      transactionDate,
+    } = req.body;
+    const productHasMaterial = await pool.query(
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplier}, ${materialID}, ${transactionUnit}, ${transactionCost},${transactionQuantity}, TO_DATE('${transactionDate}', 'YYYY-MM-DD') ) RETURNING *`
+    );
+    res.status(201).json(productHasMaterial.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 /* ----------------------------- UPDATE METHODS ----------------------------- */
 
 //Update price of an item
@@ -241,6 +262,17 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
   }
 });
 
+app.get("/transaction", async (req, res) => {
+  try {
+    const transactionData = await pool.query(
+      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_name, s.supplier_name INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id)`
+    );
+    res.json(transactionData.rows);
+  } catch (err) {
+    console.error("Get all transaction data", err.message);
+  }
+});
+
 /* ----------------------------- DELETE METHODS ----------------------------- */
 
 //TODO: Delete all product_id's from phm table
@@ -286,7 +318,7 @@ app.delete("/material/:materialID", async (req, res) => {
   try {
     const { materialID } = req.params;
     const deleteMaterial = await pool.query(
-      `DELETE FROM material WHERE phm_id = ${materialID}`
+      `DELETE FROM material WHERE material_id = ${materialID}`
     );
     res.json("Material deleted!");
   } catch (error) {
@@ -308,6 +340,18 @@ app.delete(
     }
   }
 );
+
+app.delete("/transaction/:transactionID", async (req, res) => {
+  try {
+    const { transactionID } = req.params;
+    const deleteTransaction = await pool.query(
+      `DELETE FROM transaction WHERE transaction_id = ${transactionID}`
+    );
+    res.json("Transaction deleted!");
+  } catch (error) {
+    console.error("DELETE error in Index", error);
+  }
+});
 
 /* ------------------------------- END METHODS ------------------------------ */
 

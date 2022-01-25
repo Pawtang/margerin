@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const AppNav = () => {
   return (
     <>
-      <div className="container">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container ">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light ">
           <div className="container-fluid ">
             <a className="navbar-brand" href="#">
               Resource Manager
@@ -31,6 +31,11 @@ const AppNav = () => {
                 <div className="">
                   <Link className="text-link" to="/suppliers">
                     Suppliers
+                  </Link>
+                </div>
+                <div className="">
+                  <Link className="text-link" to="/materials">
+                    Materials
                   </Link>
                 </div>
                 <div className="">

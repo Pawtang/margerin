@@ -49,47 +49,6 @@ body {
       rgba(226, 120, 59, 0.3)
     ),
     url(noise.svg);
-
-  /* background: linear-gradient(231deg, #5d157a, #3420af, #efe844), url(noise.svg);
-  background-size: 600% 600%;
-
-  -webkit-animation: AnimationName 8s ease infinite;
-  -moz-animation: AnimationName 8s ease infinite;
-  animation: AnimationName 8s ease infinite;
-}
-
-@-webkit-keyframes AnimationName {
-  0% {
-    background-position: 0% 13%;
-  }
-  50% {
-    background-position: 100% 88%;
-  }
-  100% {
-    background-position: 0% 13%;
-  }
-}
-@-moz-keyframes AnimationName {
-  0% {
-    background-position: 0% 13%;
-  }
-  50% {
-    background-position: 100% 88%;
-  }
-  100% {
-    background-position: 0% 13%;
-  }
-}
-@keyframes AnimationName {
-  0% {
-    background-position: 0% 13%;
-  }
-  50% {
-    background-position: 100% 88%;
-  }
-  100% {
-    background-position: 0% 13%;
-  } */
 }
 
 .hero {
