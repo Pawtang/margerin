@@ -1,9 +1,12 @@
 const ButtonsColumn = (props) => {
-  const { display, ID, handleDeleteResource } = props;
+  const { display, ID, handleDeleteResource, setRowToEdit } = props;
   return (
     <div className={display}>
       <div className="btn-group" role="group" aria-label="update delete">
-        <button className="btn btn-outline-primary">
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => setRowToEdit(ID)}
+        >
           <i className="bi bi-pencil-square"></i>
         </button>
         <button
