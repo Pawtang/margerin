@@ -7,6 +7,7 @@ import EditColumn from "./EditColumn";
 import { getSuppliers } from "../middleware/ProductHasMaterialUtils";
 import { deleteSupplier, newSupplier } from "../middleware/ResourceUtils";
 import _ from "lodash";
+import ButtonAcceptColumn from "./ButtonAcceptColumn";
 
 const ManagerSuppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -113,7 +114,7 @@ const ManagerSuppliers = () => {
             suppliers.map((supplier) => {
               return supplier.supplier_id != rowToEdit ? (
                 <div
-                  className="row row-cols-5 border-bottom py-2 mb-2 gx-0"
+                  className="row row-cols-5 border-bottom py-2 mb-2 gx-2"
                   key={supplier.supplier_id}
                 >
                   <DisplayColumn
@@ -133,7 +134,7 @@ const ManagerSuppliers = () => {
                     content={supplier.supplier_rating}
                   />
                   <ButtonsColumn
-                    display={"col-1 text-center"}
+                    display={"col-1 text-center d-grid"}
                     ID={supplier.supplier_id}
                     handleDeleteSupplier={handleDeleteSupplier}
                     setRowToEdit={setRowToEdit}
@@ -141,7 +142,7 @@ const ManagerSuppliers = () => {
                 </div>
               ) : (
                 <div
-                  className="row row-cols-5 border-bottom py-2 mb-2 gx-0"
+                  className="row row-cols-5 border-bottom py-2 mb-2 gx-2"
                   key={supplier.supplier_id}
                 >
                   <EditColumn
@@ -151,6 +152,7 @@ const ManagerSuppliers = () => {
                     newValue={newSupplierName}
                     setNewValue={setNewSupplierName}
                     placeholder={"Supplier Name"}
+                    currentState={supplier.supplier_name}
                   />
                   <EditColumn
                     colWidth={"col-3"}
@@ -159,6 +161,7 @@ const ManagerSuppliers = () => {
                     newValue={newSupplierContactName}
                     setNewValue={setNewSupplierContactName}
                     placeholder={"Contact Name"}
+                    currentState={supplier.contact_name}
                   />
                   <EditColumn
                     colWidth={"col-3"}
@@ -168,6 +171,7 @@ const ManagerSuppliers = () => {
                     setNewValue={setNewSupplierPhone}
                     placeholder={"000-000-0000"}
                     pattern={"[0-9]{3}-[0-9]{3}-[0-9]{4}"}
+                    currentState={supplier.supplier_phone}
                   />
                   <EditColumn
                     colWidth={"col-2"}
@@ -176,13 +180,9 @@ const ManagerSuppliers = () => {
                     newValue={newSupplierRating}
                     setNewValue={setNewSupplierRating}
                     placeholder={"Rating"}
+                    currentState={supplier.supplier_rating}
                   />
-                  <ButtonsColumn
-                    display={"col-1 text-center"}
-                    ID={supplier.supplier_id}
-                    handleDeleteSupplier={handleDeleteSupplier}
-                    setRowToEdit={setRowToEdit}
-                  />
+                  <ButtonAcceptColumn />
                 </div>
               );
             })}

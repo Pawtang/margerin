@@ -1,6 +1,21 @@
+import { useEffect, useState } from "react";
+
 const EditColumn = (props) => {
-  const { colWidth, type, label, newValue, setNewValue, placeholder, pattern } =
-    props;
+  const {
+    colWidth,
+    type,
+    label,
+    newValue,
+    setNewValue,
+    placeholder,
+    pattern,
+    currentState,
+  } = props;
+
+  useEffect(() => {
+    setNewValue(currentState);
+  }, []);
+
   return (
     <div className={colWidth}>
       <input
