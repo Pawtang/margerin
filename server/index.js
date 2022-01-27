@@ -216,7 +216,9 @@ app.get("/units", async (req, res) => {
 //Get all suppliers
 app.get("/suppliers", async (req, res) => {
   try {
-    const getAllSuppliers = await pool.query(`SELECT * FROM supplier`);
+    const getAllSuppliers = await pool.query(
+      `SELECT * FROM supplier ORDER BY supplier_name ASC`
+    );
     res.status(200).json(getAllSuppliers.rows);
   } catch (err) {
     console.error("Get all suppliers", err.message);

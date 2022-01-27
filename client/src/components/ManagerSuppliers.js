@@ -165,7 +165,7 @@ const ManagerSuppliers = () => {
                   <ButtonsColumn
                     display={"col-1 text-center d-grid"}
                     ID={supplier.supplier_id}
-                    handleDeleteSupplier={handleDeleteSupplier}
+                    handleDeleteResource={handleDeleteSupplier}
                     setRowToEdit={setRowToEdit}
                   />
                 </div>
