@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import _ from "lodash";
 
 const EditColumn = (props) => {
   const {
@@ -13,7 +14,7 @@ const EditColumn = (props) => {
   } = props;
 
   useEffect(() => {
-    setNewValue(currentState);
+    !_.isEmpty(currentState) && setNewValue(currentState);
   }, []);
 
   return (

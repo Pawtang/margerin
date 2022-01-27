@@ -27,11 +27,27 @@ export const getSuppliers = async () => {
 
 export const newSupplier = async (body) => {
   try {
-    const response = await fetch(`${URL_SERVER}/newsupplier`, {
+    const response = await fetch(`${URL_SERVER}/supplier/new`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    if (response.status !== 200) {
+      throw new Error("response is not 200");
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+export const editSupplier = async (supplierID, body) => {
+  try {
+    const response = await fetch(`${URL_SERVER}/supplier/edit/${supplierID}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    console.log("");
     if (response.status !== 200) {
       throw new Error("response is not 200");
     }

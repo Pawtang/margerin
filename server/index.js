@@ -52,7 +52,7 @@ app.post("/supplier", async (req, res) => {
 });
 
 //create a supplier detailed
-app.post("/newsupplier", async (req, res) => {
+app.post("/supplier/new", async (req, res) => {
   try {
     const {
       newSupplierName,
@@ -144,8 +144,6 @@ app.put("/product/price/:id", async (req, res) => {
 });
 
 app.put("/product/yield/:id", async (req, res) => {
-  console.log("Accessed index yield");
-  console.log(req.params, req.body);
   try {
     const { id } = req.params;
     const { productYield } = req.body;
@@ -154,6 +152,26 @@ app.put("/product/yield/:id", async (req, res) => {
       `UPDATE product SET yield = '${productYield}' WHERE product_id = ${id}`
     );
     res.status(200).json(updateYield.rows);
+  } catch (error) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(error);
+  }
+});
+
+app.put("/supplier/edit/:id", async (req, res) => {
+  console.log("index req, body:", req.params, req.body);
+  try {
+    const { id } = req.params;
+    const {
+      editSupplierName,
+      editSupplierContactName,
+      editSupplierPhone,
+      editSupplierRating,
+    } = req.body;
+    const updateSupplier = await pool.query(
+      `UPDATE supplier SET supplier_name = '${editSupplierName}', contact_name = '${editSupplierContactName}', supplier_phone = '${editSupplierPhone}', supplier_rating = '${editSupplierRating}' WHERE supplier_id = ${id}`
+    );
+    res.status(200).json(updateSupplier.rows);
   } catch (error) {
     res.status(400).json({ errorCode: "1003", error: error.message });
     console.error(error);

@@ -5,17 +5,29 @@ import DisplayColumn from "./DisplayColumn";
 import ButtonsColumn from "./ButtonsColumn";
 import EditColumn from "./EditColumn";
 import { getSuppliers } from "../middleware/ProductHasMaterialUtils";
-import { deleteSupplier, newSupplier } from "../middleware/ResourceUtils";
+import {
+  deleteSupplier,
+  newSupplier,
+  editSupplier,
+} from "../middleware/SupplierUtils";
 import _ from "lodash";
 import ButtonAcceptColumn from "./ButtonAcceptColumn";
 
 const ManagerSuppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
+
+  /* ------------------------------- Adding New ------------------------------- */
   const [newSupplierName, setNewSupplierName] = useState("");
   const [newSupplierContactName, setNewSupplierContactName] = useState("");
   const [newSupplierPhone, setNewSupplierPhone] = useState("");
   const [newSupplierRating, setNewSupplierRating] = useState(5);
+
+  /* ------------------------------ Edit Exiting ------------------------------ */
   const [rowToEdit, setRowToEdit] = useState("");
+  const [editSupplierName, setEditSupplierName] = useState("");
+  const [editSupplierContactName, setEditSupplierContactName] = useState("");
+  const [editSupplierPhone, setEditSupplierPhone] = useState("");
+  const [editSupplierRating, setEditSupplierRating] = useState("");
 
   const retrieveSuppliers = async () => {
     const array = await getSuppliers();
@@ -33,6 +45,16 @@ const ManagerSuppliers = () => {
     retrieveSuppliers();
   };
 
+  const handleEditSupplier = async (id) => {
+    const body = {
+      editSupplierName,
+      editSupplierContactName,
+      editSupplierPhone,
+      editSupplierRating,
+    };
+    await editSupplier(id, body);
+  };
+
   const handleDeleteSupplier = async (supplierID) => {
     await deleteSupplier(supplierID);
     setSuppliers(
@@ -41,9 +63,16 @@ const ManagerSuppliers = () => {
     retrieveSuppliers();
   };
 
+  const clearEdit = () => {
+    setEditSupplierContactName("");
+    setEditSupplierName("");
+    setEditSupplierPhone("");
+    setEditSupplierRating(5);
+  };
+
   useEffect(() => {
     retrieveSuppliers();
-  }, []);
+  }, [rowToEdit]);
 
   return (
     <Fragment>
@@ -112,7 +141,7 @@ const ManagerSuppliers = () => {
           {/* --------------------------- Enumerated Existing -------------------------- */}
           {!_.isEmpty(suppliers) &&
             suppliers.map((supplier) => {
-              return supplier.supplier_id != rowToEdit ? (
+              return supplier.supplier_id !== rowToEdit ? (
                 <div
                   className="row row-cols-5 border-bottom py-2 mb-2 gx-2"
                   key={supplier.supplier_id}
@@ -149,8 +178,8 @@ const ManagerSuppliers = () => {
                     colWidth={"col-3"}
                     type={"text"}
                     label={"Name"}
-                    newValue={newSupplierName}
-                    setNewValue={setNewSupplierName}
+                    newValue={editSupplierName}
+                    setNewValue={setEditSupplierName}
                     placeholder={"Supplier Name"}
                     currentState={supplier.supplier_name}
                   />
@@ -158,8 +187,8 @@ const ManagerSuppliers = () => {
                     colWidth={"col-3"}
                     type={"text"}
                     label={"Contact"}
-                    newValue={newSupplierContactName}
-                    setNewValue={setNewSupplierContactName}
+                    newValue={editSupplierContactName}
+                    setNewValue={setEditSupplierContactName}
                     placeholder={"Contact Name"}
                     currentState={supplier.contact_name}
                   />
@@ -167,8 +196,8 @@ const ManagerSuppliers = () => {
                     colWidth={"col-3"}
                     type={"tel"}
                     label={"Tel"}
-                    newValue={newSupplierPhone}
-                    setNewValue={setNewSupplierPhone}
+                    newValue={editSupplierPhone}
+                    setNewValue={setEditSupplierPhone}
                     placeholder={"000-000-0000"}
                     pattern={"[0-9]{3}-[0-9]{3}-[0-9]{4}"}
                     currentState={supplier.supplier_phone}
@@ -177,12 +206,18 @@ const ManagerSuppliers = () => {
                     colWidth={"col-2"}
                     type={"quantity"}
                     label={"Rating"}
-                    newValue={newSupplierRating}
-                    setNewValue={setNewSupplierRating}
+                    newValue={editSupplierRating}
+                    setNewValue={setEditSupplierRating}
                     placeholder={"Rating"}
                     currentState={supplier.supplier_rating}
                   />
-                  <ButtonAcceptColumn />
+                  <ButtonAcceptColumn
+                    setRowToEdit={setRowToEdit}
+                    supplierID={supplier.supplier_id}
+                    handleEditSupplier={handleEditSupplier}
+                    clearEdit={clearEdit}
+                    retrieveSuppliers={retrieveSuppliers}
+                  />
                 </div>
               );
             })}
