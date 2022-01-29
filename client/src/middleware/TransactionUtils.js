@@ -39,3 +39,22 @@ export const newTransaction = async (body) => {
     console.error(err.message);
   }
 };
+
+export const editTransaction = async (transactionID, body) => {
+  try {
+    const response = await fetch(
+      `${URL_SERVER}/transaction/edit/${transactionID}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
+    console.log("");
+    if (response.status !== 200) {
+      throw new Error("response is not 200");
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+};

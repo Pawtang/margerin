@@ -40,13 +40,14 @@ body {
   width: 100vw;
   min-height: 400px;
   height: 60vh;
+
   filter: contrast(150%) brightness(100%);
   background: radial-gradient(
       circle at 0% 0%,
-      rgba(12, 6, 68, 0.9),
-      rgba(13, 0, 134, 0.7),
-      rgba(112, 34, 184, 0.4),
-      rgba(226, 120, 59, 0.3)
+      #0c0644e6,
+      #0d0086b3,
+      #7022b866,
+      #e2783b4d
     ),
     url(noise.svg);
 }
@@ -91,4 +92,13 @@ h2 {
 
 .footer {
   height: 200px;
+}
+
+.highlight:hover {
+  background-color: rgb(238, 238, 238);
+  transition: all 200ms ease-out;
+}
+
+.highlight {
+  transition: all 200ms ease-out;
 }

@@ -7,7 +7,7 @@ const ButtonAcceptColumn = (props) => {
     retrieveSuppliers,
   } = props;
   return (
-    <div className="col-1 text-center d-grid">
+    <div className="col-2 text-center d-grid">
       <button
         className="btn btn-outline-secondary"
         onClick={() => {

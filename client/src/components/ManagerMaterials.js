@@ -3,16 +3,41 @@ import AppNav from "./AppNav";
 import HeaderColumn from "./HeaderColumn";
 import DisplayColumn from "./DisplayColumn";
 import ButtonsColumn from "./ButtonsColumn";
+import ButtonAcceptColumn from "./ButtonAcceptColumn";
 import EditColumn from "./EditColumn";
 import { getMaterials } from "../middleware/ProductHasMaterialUtils";
-import { deleteMaterial } from "../middleware/MaterialUtils";
+import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
 import _ from "lodash";
 
 const ManagerMaterials = () => {
   const [materials, setMaterials] = useState([]);
+  /* ------------------------------ New Material ------------------------------ */
   const [newMaterialName, setNewMaterialName] = useState("");
   const [newMaterialDescription, setNewMaterialDescription] = useState("");
+
+  /* ------------------------------ Edit Existing ----------------------------- */
+  const [rowToEdit, setRowToEdit] = useState("");
+  const [editMaterialName, setEditMaterialName] = useState("");
+  const [editMaterialDescription, setEditMaterialDescription] = useState("");
+
+  const clearEdit = () => {
+    setEditMaterialName("");
+    setEditMaterialDescription("");
+  };
+
+  const clearInput = () => {
+    setNewMaterialName("");
+    setNewMaterialDescription("");
+  };
+
+  const handleEditMaterial = async (id) => {
+    const body = {
+      editMaterialName,
+      editMaterialDescription,
+    };
+    await editMaterial(id, body);
+  };
 
   const retrieveMaterials = async () => {
     const array = await getMaterials();
@@ -25,6 +50,7 @@ const ManagerMaterials = () => {
       newMaterialDescription,
     };
     await newMaterial(body);
+    clearInput();
     retrieveMaterials();
   };
 
@@ -38,7 +64,7 @@ const ManagerMaterials = () => {
 
   useEffect(() => {
     retrieveMaterials();
-  }, []);
+  }, [rowToEdit]);
 
   return (
     <Fragment>
@@ -79,7 +105,7 @@ const ManagerMaterials = () => {
               placeholder={"Contact Name"}
             />
 
-            <div className="col-2 text-center">
+            <div className="col-2 text-center d-grid">
               <button
                 className="btn btn-outline-primary"
                 onClick={handleAddMaterial}
@@ -90,26 +116,60 @@ const ManagerMaterials = () => {
           </div>
           {/* --------------------------- Enumerated Existing -------------------------- */}
           {!_.isEmpty(materials) &&
-            materials.map((material) => (
-              <div
-                className="row row-cols-3 border-bottom py-2 mb-2 gx-0"
-                key={material.material_id}
-              >
-                <DisplayColumn
-                  colWidth={"col-5"}
-                  content={material.material_name}
-                />
-                <DisplayColumn
-                  colWidth={"col-5"}
-                  content={material.material_description}
-                />
-                <ButtonsColumn
-                  display={"col-2 text-center"}
-                  ID={material.material_id}
-                  handleDeleteResource={handleDeleteMaterial}
-                />
-              </div>
-            ))}
+            materials.map((material) => {
+              return material.material_id !== rowToEdit ? (
+                <div
+                  className="row row-cols-3 border-bottom py-2 gx-2 highlight"
+                  key={material.material_id}
+                >
+                  <DisplayColumn
+                    colWidth={"col-5"}
+                    content={material.material_name}
+                  />
+                  <DisplayColumn
+                    colWidth={"col-5"}
+                    content={material.material_description}
+                  />
+                  <ButtonsColumn
+                    display={"col-2 text-center d-grid"}
+                    ID={material.material_id}
+                    handleDeleteResource={handleDeleteMaterial}
+                    setRowToEdit={setRowToEdit}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="row row-cols-5 border-bottom py-2 mb-2 gx-2"
+                  key={material.material_id}
+                >
+                  <EditColumn
+                    colWidth={"col-5"}
+                    type={"text"}
+                    label={"Name"}
+                    newValue={editMaterialName}
+                    setNewValue={setEditMaterialName}
+                    placeholder={"Material Name"}
+                    currentState={material.material_name}
+                  />
+                  <EditColumn
+                    colWidth={"col-5"}
+                    type={"text"}
+                    label={"Description"}
+                    newValue={editMaterialDescription}
+                    setNewValue={setEditMaterialDescription}
+                    placeholder={"Material Description"}
+                    currentState={material.material_description}
+                  />
+                  <ButtonAcceptColumn
+                    setRowToEdit={setRowToEdit}
+                    supplierID={material.material_id}
+                    handleEditSupplier={handleEditMaterial}
+                    clearEdit={clearEdit}
+                    retrieveSuppliers={retrieveMaterials}
+                  />
+                </div>
+              );
+            })}
 
           {/* ----------------------------------- End ---------------------------------- */}
         </div>

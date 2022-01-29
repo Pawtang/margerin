@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import _ from "lodash";
 import ProductHasMaterials from "./ProductHasMaterials";
-import AppNav from "./AppNav";
 
 const ProductProfile = (props) => {
   const {
@@ -17,6 +16,7 @@ const ProductProfile = (props) => {
     productAverageCost,
     setProductAverageCost,
   } = props;
+
   return (
     <Fragment>
       <div className="col-12 col-md-9 p-4 gx-5">

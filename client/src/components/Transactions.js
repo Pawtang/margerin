@@ -84,6 +84,7 @@ const Transactions = (props) => {
             type="number"
             className="form-control"
             placeholder="0"
+            min="0"
             aria-label="Quantity"
             value={transactionQuantity}
             onChange={(e) => {

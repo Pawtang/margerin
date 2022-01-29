@@ -18,6 +18,7 @@ import {
 
 const ProductHasMaterials = (props) => {
   //General Purpose
+
   const productID = props.productID;
   const productYield = props.productYield;
   const setProductAverageCost = props.setProductAverageCost;
@@ -363,10 +364,10 @@ const ProductHasMaterials = (props) => {
             </button>
           </div>
         </div>
-
+        {/* --------------------------- Enumerated Existing -------------------------- */}
         {materialsForProduct.map((material) => (
           <div
-            className="row row-cols-6 border-bottom py-1 mx-auto"
+            className="row row-cols-6 border-bottom py-1 mx-auto highlight"
             key={material.phm_id}
           >
             <div className="col-3 ">

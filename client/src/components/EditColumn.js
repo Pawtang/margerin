@@ -10,7 +10,12 @@ const EditColumn = (props) => {
     setNewValue,
     placeholder,
     pattern,
+    min,
+    step,
+    maxlength,
+    minlength,
     currentState,
+    onBlur,
   } = props;
 
   useEffect(() => {
@@ -26,9 +31,14 @@ const EditColumn = (props) => {
         aria-label={label}
         value={newValue}
         pattern={pattern}
+        maxlength={maxlength}
+        minlength={minlength}
+        min={min}
+        step={step}
         onChange={(e) => {
           setNewValue(e.target.value);
         }}
+        onBlur={onBlur}
       />
     </div>
   );

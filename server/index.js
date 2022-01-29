@@ -162,16 +162,49 @@ app.put("/supplier/edit/:id", async (req, res) => {
   console.log("index req, body:", req.params, req.body);
   try {
     const { id } = req.params;
-    const {
-      editSupplierName,
-      editSupplierContactName,
-      editSupplierPhone,
-      editSupplierRating,
-    } = req.body;
+    const { editSupplierName, editSupplierContactName, editSupplierPhone } =
+      req.body;
     const updateSupplier = await pool.query(
-      `UPDATE supplier SET supplier_name = '${editSupplierName}', contact_name = '${editSupplierContactName}', supplier_phone = '${editSupplierPhone}', supplier_rating = '${editSupplierRating}' WHERE supplier_id = ${id}`
+      `UPDATE supplier SET supplier_name = '${editSupplierName}', contact_name = '${editSupplierContactName}', supplier_phone = '${editSupplierPhone}' WHERE supplier_id = ${id}`
     );
     res.status(200).json(updateSupplier.rows);
+  } catch (error) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(error);
+  }
+});
+
+app.put("/transaction/edit/:id", async (req, res) => {
+  console.log("index req, body:", req.params, req.body);
+  try {
+    const { id } = req.params;
+    const {
+      editTransactionMaterial,
+      editTransactionSupplier,
+      editTransactionUnit,
+      editTransactionCost,
+      editTransactionQuantity,
+      editTransactionDate,
+    } = req.body;
+    const updateTransaction = await pool.query(
+      `UPDATE transaction SET material_id = '${editTransactionMaterial}', supplier_id = '${editTransactionSupplier}', unit_id = '${editTransactionUnit}', cost = '${editTransactionCost}', quantity = '${editTransactionQuantity}', transaction_date = '${editTransactionDate}' WHERE transaction_id = ${id}`
+    );
+    res.status(200).json(updateTransaction.rows);
+  } catch (error) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(error);
+  }
+});
+
+app.put("/material/edit/:id", async (req, res) => {
+  console.log("index req, body:", req.params, req.body);
+  try {
+    const { id } = req.params;
+    const { editMaterialName, editMaterialDescription } = req.body;
+    const updateMaterial = await pool.query(
+      `UPDATE material SET material_name = '${editMaterialName}', material_description = '${editMaterialDescription}' WHERE material_id = ${id}`
+    );
+    res.status(200).json(updateMaterial.rows);
   } catch (error) {
     res.status(400).json({ errorCode: "1003", error: error.message });
     console.error(error);
@@ -285,7 +318,7 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
 app.get("/transaction", async (req, res) => {
   try {
     const transactionData = await pool.query(
-      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_name, s.supplier_name INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id)`
+      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_name, s.supplier_name, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id)`
     );
     res.json(transactionData.rows);
   } catch (err) {
