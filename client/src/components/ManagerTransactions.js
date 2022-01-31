@@ -139,8 +139,8 @@ const TransactionManager = () => {
             <HeaderColumn colWidth={"col-2"} headerText={"Transaction Date"} />
             <HeaderColumn colWidth={"col-2"} headerText={"Material"} />
             <HeaderColumn colWidth={"col-2"} headerText={"Supplier"} />
-            <HeaderColumn colWidth={"col-2"} headerText={"Unit"} />
             <HeaderColumn colWidth={"col-1"} headerText={"Quantity"} />
+            <HeaderColumn colWidth={"col-2"} headerText={"Unit"} />
             <HeaderColumn colWidth={"col-1"} headerText={"Total Cost"} />
             <HeaderColumn colWidth={"col-2"} headerText={""} />
           </div>
@@ -173,6 +173,15 @@ const TransactionManager = () => {
               newValue={newTransactionSupplier}
               setNewValue={setNewTransactionSupplier}
             />
+            <EditColumn
+              colWidth={"col-1"}
+              type={"number"}
+              label={"Quantity"}
+              min={0}
+              newValue={newTransactionQuantity}
+              setNewValue={setNewTransactionQuantity}
+              placeholder={"0"}
+            />
             <SelectColumn
               colWidth={"col-2"}
               id={"selectUnit"}
@@ -182,15 +191,6 @@ const TransactionManager = () => {
               id={"unit_id"}
               newValue={newTransactionUnit}
               setNewValue={setNewTransactionUnit}
-            />
-            <EditColumn
-              colWidth={"col-1"}
-              type={"number"}
-              label={"Quantity"}
-              min={0}
-              newValue={newTransactionQuantity}
-              setNewValue={setNewTransactionQuantity}
-              placeholder={"Qty"}
             />
             <EditColumn
               colWidth={"col-1"}

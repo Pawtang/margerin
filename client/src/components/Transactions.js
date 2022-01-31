@@ -1,6 +1,8 @@
 import { React, Fragment } from "react";
-import AppNav from "./AppNav";
-import _ from "lodash";
+import _, { endsWith } from "lodash";
+import SelectWithToggleColumn from "./SelectWithToggleColumn";
+import EditColumn from "./EditColumn";
+import HeaderColumn from "./HeaderColumn";
 import dayjs from "dayjs";
 
 const Transactions = (props) => {
@@ -25,95 +27,67 @@ const Transactions = (props) => {
   return (
     <Fragment>
       <div className="row row-cols-6 gx-1">
-        <div className="col-3">
-          <h6 className="text-center">Supplier</h6>
-        </div>
-        <div className="col-1">
-          <h6 className="text-center">Quantity</h6>
-        </div>
-        <div className="col-2">
-          <h6 className="text-center">Unit</h6>
-        </div>
-        <div className="col-2">
-          <h6 className="text-center">Total Cost</h6>
-        </div>
-        <div className="col-2">
-          <h6 className="text-center">Date</h6>
-        </div>
-        <div className="col-2">
-          <h6 className="text-center"></h6>
-        </div>
+        <HeaderColumn colWidth={"col-3"} headerText={"Supplier"} />
+        <HeaderColumn colWidth={"col-1"} headerText={"Quantity"} />
+        <HeaderColumn colWidth={"col-2"} headerText={"Unit"} />
+        <HeaderColumn colWidth={"col-2"} headerText={"Total Cost"} />
+        <HeaderColumn colWidth={"col-2"} headerText={"Transaction Date"} />
+        <HeaderColumn colWidth={"col-2"} headerText={""} />
       </div>
 
       <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
         {/* --------------------------------- Inputs --------------------------------- */}
         {/* -------------------------------- Supplier -------------------------------- */}
-        <div className="col-3">
-          <div className="input-group">
-            <select
-              id="inputSupplier"
-              className="form-select"
-              value={transactionSupplier}
-              onChange={(e) => setTransactionSupplier(e.target.value)}
-            >
-              <option disabled value="">
-                Supplier
-              </option>
-              {!_.isEmpty(suppliers) &&
-                suppliers.map((supplier) => (
-                  <option
-                    value={supplier.supplier_id}
-                    key={supplier.supplier_id}
-                  >
-                    {supplier.supplier_name}
-                  </option>
-                ))}
-            </select>
-            <button
-              className="btn btn-outline-secondary"
-              data-bs-toggle="modal"
-              data-bs-target="#newSupplierModal"
-            >
-              +
-            </button>
-          </div>
-        </div>
+
+        <SelectWithToggleColumn
+          classes={"col-3"}
+          label={"Supplier"}
+          list={suppliers}
+          itemkey={"supplier_name"}
+          id={"supplier_id"}
+          newValue={transactionSupplier}
+          setNewValue={setTransactionSupplier}
+          modalID={"#newSupplierModal"}
+        />
+
         {/* -------------------------------- Quantity -------------------------------- */}
-        <div className="col-1">
-          <input
-            type="number"
-            className="form-control"
-            placeholder="0"
-            min="0"
-            aria-label="Quantity"
-            value={transactionQuantity}
-            onChange={(e) => {
-              setTransactionQuantity(e.target.value);
-            }}
-          />
-        </div>
+        <EditColumn
+          colWidth={"col-1"}
+          type={"number"}
+          label={"Quantity"}
+          min={0}
+          newValue={transactionQuantity}
+          setNewValue={setTransactionQuantity}
+          placeholder={"0"}
+        />
+
         {/* ---------------------------------- Unit ---------------------------------- */}
-        <div className="col-2">
-          <select
-            id="inputUnits"
-            className="form-select"
-            value={transactionUnit}
-            onChange={(e) => {
-              setTransactionUnit(e.target.value);
-            }}
-          >
-            <option disabled value="" className="text-muted">
-              Select Unit...
-            </option>
-            {!_.isEmpty(units) &&
-              units.map((unit) => (
-                <option value={unit.unit_id} key={unit.unit_id}>
-                  {unit.unit_name}
-                </option>
-              ))}
-          </select>
-        </div>
+        <SelectColumn
+          colWidth={"col-2"}
+          id={"selectUnit"}
+          label={"Unit"}
+          list={units}
+          itemkey={"unit_name"}
+          id={"unit_id"}
+          newValue={transactionUnit}
+          setNewValue={setTransactionUnit}
+        />
         {/* ---------------------------------- Cost ---------------------------------- */}
+        <EditColumn
+          colWidth={"col-2"}
+          type={"number"}
+          step={"0.01"}
+          min={0}
+          label={"Rating"}
+          newValue={transactionCost}
+          setNewValue={setTransactionCost}
+          onBlur={() => {
+            !isNaN(transactionCost) &&
+              setNewTransactionCost(parseFloat(transactionCost).toFixed(2));
+          }}
+          placeholder={"0.00"}
+        />
+        {/*         
         <div className="col-2">
           <div className="input-group">
             <span className="input-group-text">$</span>
@@ -133,7 +107,7 @@ const Transactions = (props) => {
               }
             />
           </div>
-        </div>
+        </div> */}
         {/* ---------------------------------- Date ---------------------------------- */}
         <div className="col-2">
           <input

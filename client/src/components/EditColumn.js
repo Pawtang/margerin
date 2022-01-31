@@ -26,7 +26,7 @@ const EditColumn = (props) => {
     <div className={colWidth}>
       <input
         type={type}
-        className="form-control"
+        className="form-control user-select-all"
         placeholder={placeholder}
         aria-label={label}
         value={newValue}
