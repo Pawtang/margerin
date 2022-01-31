@@ -37,6 +37,7 @@ const ManagerMaterials = () => {
       editMaterialDescription,
     };
     await editMaterial(id, body);
+    retrieveMaterials();
   };
 
   const retrieveMaterials = async () => {
@@ -99,10 +100,10 @@ const ManagerMaterials = () => {
             <EditColumn
               colWidth={"col-5"}
               type={"text"}
-              label={"Contact"}
+              label={"Description"}
               newValue={newMaterialDescription}
               setNewValue={setNewMaterialDescription}
-              placeholder={"Contact Name"}
+              placeholder={"Description"}
             />
 
             <div className="col-2 text-center d-grid">
@@ -162,10 +163,9 @@ const ManagerMaterials = () => {
                   />
                   <ButtonAcceptColumn
                     setRowToEdit={setRowToEdit}
-                    supplierID={material.material_id}
-                    handleEditSupplier={handleEditMaterial}
+                    resourceID={material.material_id}
+                    editHandler={handleEditMaterial}
                     clearEdit={clearEdit}
-                    retrieveSuppliers={retrieveMaterials}
                   />
                 </div>
               );

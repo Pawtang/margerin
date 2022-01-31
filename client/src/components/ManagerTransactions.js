@@ -6,6 +6,7 @@ import DisplayColumn from "./DisplayColumn";
 import ButtonsColumn from "./ButtonsColumn";
 import EditColumn from "./EditColumn";
 import SelectColumn from "./SelectColumn";
+import ButtonAcceptColumn from "./ButtonAcceptColumn";
 import _ from "lodash";
 import {
   getMaterials,
@@ -20,14 +21,15 @@ import {
 } from "../middleware/TransactionUtils";
 
 const TransactionManager = () => {
+  const todayDate = new Date().toISOString().split("T")[0];
   /* ----------------------------- New Transaction ---------------------------- */
   const [transactions, setTransactions] = useState([]);
   const [newTransactionMaterial, setNewTransactionMaterial] = useState("");
   const [newTransactionSupplier, setNewTransactionSupplier] = useState("");
-  const [newTransactionUnit, setNewTransactionUnit] = useState("");
-  const [newTransactionQuantity, setNewTransactionQuantity] = useState("");
-  const [newTransactionCost, setNewTransactionCost] = useState("");
-  const [newTransactionDate, setNewTransactionDate] = useState("");
+  const [newTransactionUnit, setNewTransactionUnit] = useState("1");
+  const [newTransactionQuantity, setNewTransactionQuantity] = useState("0");
+  const [newTransactionCost, setNewTransactionCost] = useState("0.00");
+  const [newTransactionDate, setNewTransactionDate] = useState(todayDate);
   /* ---------------------------- Edit Transactions --------------------------- */
   const [editTransactionMaterial, setEditTransactionMaterial] = useState("");
   const [editTransactionSupplier, setEditTransactionSupplier] = useState("");
@@ -42,6 +44,15 @@ const TransactionManager = () => {
   const [suppliers, setSuppliers] = useState([]);
   /* -------------------------------- Utilities ------------------------------- */
   const [rowToEdit, setRowToEdit] = useState("");
+
+  const loadLists = async () => {
+    const allMaterials = await getMaterials();
+    const unitList = await getUnits();
+    const supplierList = await getSuppliers();
+    setMaterials(allMaterials);
+    setUnits(unitList);
+    setSuppliers(supplierList);
+  };
 
   const retrieveTransactions = async () => {
     const array = await getTransactionData();
@@ -59,9 +70,10 @@ const TransactionManager = () => {
     };
     await newTransaction(body);
     retrieveTransactions();
+    clearNew();
   };
 
-  const handleEditTransaction = async () => {
+  const handleEditTransaction = async (id) => {
     const body = {
       editTransactionMaterial,
       editTransactionSupplier,
@@ -70,8 +82,9 @@ const TransactionManager = () => {
       editTransactionQuantity,
       editTransactionDate,
     };
-    await editTransaction(body);
+    await editTransaction(id, body);
     retrieveTransactions();
+    clearEdit();
   };
 
   const handleDeleteTransaction = async (transactionID) => {
@@ -83,6 +96,28 @@ const TransactionManager = () => {
     );
     retrieveTransactions();
   };
+
+  const clearEdit = () => {
+    setEditTransactionCost("");
+    setEditTransactionDate("");
+    setEditTransactionMaterial("");
+    setEditTransactionQuantity("");
+    setEditTransactionSupplier("");
+    setEditTransactionUnit("");
+  };
+
+  const clearNew = () => {
+    setNewTransactionCost("0.00");
+    setNewTransactionDate(todayDate);
+    setNewTransactionMaterial("");
+    setNewTransactionQuantity("0");
+    setNewTransactionSupplier("");
+    setNewTransactionUnit("1");
+  };
+
+  useEffect(() => {
+    loadLists();
+  }, []);
 
   useEffect(() => {
     retrieveTransactions();
@@ -99,6 +134,7 @@ const TransactionManager = () => {
 
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white px-4">
+          <h1 className="my-3">Transaction Manager</h1>
           <div className="row row-cols-7 gx-1 mt-4">
             <HeaderColumn colWidth={"col-2"} headerText={"Transaction Date"} />
             <HeaderColumn colWidth={"col-2"} headerText={"Material"} />
@@ -120,8 +156,10 @@ const TransactionManager = () => {
             />
             <SelectColumn
               colWidth={"col-2"}
-              type={"text"}
               label={"Material"}
+              list={materials}
+              itemkey={"material_name"}
+              id={"material_id"}
               newValue={newTransactionMaterial}
               setNewValue={setNewTransactionMaterial}
             />
@@ -129,6 +167,9 @@ const TransactionManager = () => {
               colWidth={"col-2"}
               id={"selectSupplier"}
               label={"Supplier"}
+              list={suppliers}
+              itemkey={"supplier_name"}
+              id={"supplier_id"}
               newValue={newTransactionSupplier}
               setNewValue={setNewTransactionSupplier}
             />
@@ -136,6 +177,9 @@ const TransactionManager = () => {
               colWidth={"col-2"}
               id={"selectUnit"}
               label={"Unit"}
+              list={units}
+              itemkey={"unit_name"}
+              id={"unit_id"}
               newValue={newTransactionUnit}
               setNewValue={setNewTransactionUnit}
             />
@@ -179,7 +223,7 @@ const TransactionManager = () => {
             transactions.map((transaction) => {
               return transaction.transaction_id !== rowToEdit ? (
                 <div
-                  className="row row-cols-5 border-bottom py-2 mb-2 gx-0"
+                  className="row row-cols-5 border-bottom py-2 gx-2 highlight"
                   key={transaction.transaction_id}
                 >
                   <DisplayColumn
@@ -211,12 +255,88 @@ const TransactionManager = () => {
                   <ButtonsColumn
                     display={"col-2 d-grid"}
                     ID={transaction.transaction_id}
-                    handleDeletetransaction={handleDeleteTransaction}
+                    handleDeleteResource={handleDeleteTransaction}
                     setRowToEdit={setRowToEdit}
                   />
                 </div>
               ) : (
-                <div className="test">Enumerate Edits</div>
+                <div className="row row-cols-6 border-bottom py-2 gx-2">
+                  <EditColumn
+                    colWidth={"col-2"}
+                    type={"date"}
+                    label={"Name"}
+                    currentState={transaction.transaction_date}
+                    newValue={editTransactionDate}
+                    setNewValue={setEditTransactionDate}
+                    placeholder={"Transaction Name"}
+                  />
+                  <SelectColumn
+                    colWidth={"col-2"}
+                    label={"Material"}
+                    list={materials}
+                    itemkey={"material_name"}
+                    id={"material_id"}
+                    currentState={transaction.material_id}
+                    newValue={editTransactionMaterial}
+                    setNewValue={setEditTransactionMaterial}
+                  />
+                  <SelectColumn
+                    colWidth={"col-2"}
+                    id={"selectSupplier"}
+                    label={"Supplier"}
+                    list={suppliers}
+                    itemkey={"supplier_name"}
+                    id={"supplier_id"}
+                    currentState={transaction.supplier_id}
+                    newValue={editTransactionSupplier}
+                    setNewValue={setNewTransactionSupplier}
+                  />
+                  <SelectColumn
+                    colWidth={"col-2"}
+                    id={"selectUnit"}
+                    label={"Unit"}
+                    list={units}
+                    itemkey={"unit_name"}
+                    id={"unit_id"}
+                    currentState={transaction.unit_id}
+                    newValue={editTransactionUnit}
+                    setNewValue={setEditTransactionUnit}
+                  />
+                  <EditColumn
+                    colWidth={"col-1"}
+                    type={"number"}
+                    label={"Quantity"}
+                    min={0}
+                    currentState={transaction.quantity}
+                    newValue={editTransactionQuantity}
+                    setNewValue={setEditTransactionQuantity}
+                    placeholder={"Qty"}
+                  />
+                  <EditColumn
+                    colWidth={"col-1"}
+                    type={"number"}
+                    step={"0.01"}
+                    min={0}
+                    label={"Rating"}
+                    currentState={transaction.cost}
+                    newValue={editTransactionCost}
+                    setNewValue={setEditTransactionCost}
+                    onBlur={() => {
+                      !isNaN(editTransactionCost) &&
+                        setEditTransactionCost(
+                          parseFloat(newTransactionCost).toFixed(2)
+                        );
+                    }}
+                    placeholder={"0.00"}
+                  />
+
+                  <ButtonAcceptColumn
+                    setRowToEdit={setRowToEdit}
+                    resourceID={transaction.transaction_id}
+                    editHandler={handleEditTransaction}
+                    clearEdit={clearEdit}
+                  />
+                </div>
               );
             })}
 

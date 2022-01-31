@@ -27,7 +27,7 @@ export const deleteTransaction = async (transactionID) => {
 
 export const newTransaction = async (body) => {
   try {
-    const response = await fetch(`${URL_SERVER}/newsupplier`, {
+    const response = await fetch(`${URL_SERVER}/transaction`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

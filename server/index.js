@@ -105,21 +105,21 @@ app.post("/materialHasTransaction", async (req, res) => {
 });
 
 //add a transaction to a material
-app.post("/materialHasTransaction", async (req, res) => {
+app.post("/transaction", async (req, res) => {
   try {
     console.log("Request body for materialHasTransaction:", req.body);
     const {
-      transactionSupplier,
-      materialID,
-      transactionUnit,
-      transactionCost,
-      transactionQuantity,
-      transactionDate,
+      newTransactionDate,
+      newTransactionMaterial,
+      newTransactionSupplier,
+      newTransactionUnit,
+      newTransactionCost,
+      newTransactionQuantity,
     } = req.body;
-    const productHasMaterial = await pool.query(
-      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplier}, ${materialID}, ${transactionUnit}, ${transactionCost},${transactionQuantity}, TO_DATE('${transactionDate}', 'YYYY-MM-DD') ) RETURNING *`
+    const newTransaction = await pool.query(
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${newTransactionSupplier}, ${newTransactionMaterial}, ${newTransactionUnit}, ${newTransactionCost},${newTransactionQuantity}, TO_DATE('${newTransactionDate}', 'YYYY-MM-DD') ) RETURNING *`
     );
-    res.status(201).json(productHasMaterial.rows);
+    res.status(201).json(newTransaction.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -318,7 +318,7 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
 app.get("/transaction", async (req, res) => {
   try {
     const transactionData = await pool.query(
-      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_name, s.supplier_name, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id)`
+      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_name, s.supplier_name, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) ORDER BY t.transaction_date DESC`
     );
     res.json(transactionData.rows);
   } catch (err) {

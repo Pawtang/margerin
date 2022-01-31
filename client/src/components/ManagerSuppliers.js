@@ -53,6 +53,7 @@ const ManagerSuppliers = () => {
       // editSupplierRating,
     };
     await editSupplier(id, body);
+    retrieveSuppliers();
   };
 
   const handleDeleteSupplier = async (supplierID) => {
@@ -195,10 +196,9 @@ const ManagerSuppliers = () => {
 
                   <ButtonAcceptColumn
                     setRowToEdit={setRowToEdit}
-                    supplierID={supplier.supplier_id}
-                    handleEditSupplier={handleEditSupplier}
+                    resourceID={supplier.supplier_id}
+                    editHandler={handleEditSupplier}
                     clearEdit={clearEdit}
-                    retrieveSuppliers={retrieveSuppliers}
                   />
                 </div>
               );

@@ -95,10 +95,14 @@ h2 {
 }
 
 .highlight:hover {
-  background-color: rgb(238, 238, 238);
+  background-color: rgb(231, 231, 231);
   transition: all 200ms ease-out;
 }
 
 .highlight {
+  transition: all 200ms ease-out;
+}
+
+.transition {
   transition: all 200ms ease-out;
 }

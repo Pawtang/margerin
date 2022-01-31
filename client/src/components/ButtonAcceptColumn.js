@@ -1,17 +1,11 @@
 const ButtonAcceptColumn = (props) => {
-  const {
-    handleEditSupplier,
-    supplierID,
-    setRowToEdit,
-    clearEdit,
-    retrieveSuppliers,
-  } = props;
+  const { editHandler, resourceID, setRowToEdit, clearEdit } = props;
   return (
     <div className="col-2 text-center d-grid">
       <button
         className="btn btn-outline-secondary"
         onClick={() => {
-          handleEditSupplier(supplierID);
+          editHandler(resourceID);
           setRowToEdit("");
           clearEdit();
         }}

@@ -2,8 +2,16 @@ import { useEffect } from "react";
 import _ from "lodash";
 
 const SelectColumn = (props) => {
-  const { colWidth, label, newValue, setNewValue, currentState, id, content } =
-    props;
+  const {
+    colWidth,
+    label,
+    list,
+    itemkey,
+    newValue,
+    setNewValue,
+    currentState,
+    id,
+  } = props;
 
   useEffect(() => {
     !_.isEmpty(currentState) && setNewValue(currentState);
@@ -19,9 +27,14 @@ const SelectColumn = (props) => {
           setNewValue(e.target.value);
         }}
       >
-        <option value={id} key={id}>
-          {content}
-        </option>
+        {!_.isEmpty(list) &&
+          list.map((item) => {
+            return (
+              <option value={item[id]} key={item[id]}>
+                {item[itemkey]}
+              </option>
+            );
+          })}
       </select>
     </div>
   );
