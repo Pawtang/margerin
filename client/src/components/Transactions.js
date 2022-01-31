@@ -1,8 +1,10 @@
 import { React, Fragment } from "react";
-import _, { endsWith } from "lodash";
-import SelectWithToggleColumn from "./SelectWithToggleColumn";
-import EditColumn from "./EditColumn";
-import HeaderColumn from "./HeaderColumn";
+import _ from "lodash";
+import SelectWithToggleColumn from "./elements/SelectWithToggleColumn";
+import EditColumn from "./elements/EditColumn";
+import InputCost from "./elements/InputCost";
+import SelectColumn from "./elements/SelectColumn";
+import HeaderColumn from "./elements/HeaderColumn";
 import dayjs from "dayjs";
 
 const Transactions = (props) => {
@@ -73,6 +75,12 @@ const Transactions = (props) => {
           setNewValue={setTransactionUnit}
         />
         {/* ---------------------------------- Cost ---------------------------------- */}
+        <InputCost
+          display={"col-2"}
+          value={transactionCost}
+          setter={setTransactionCost}
+        />
+        {/* 
         <EditColumn
           colWidth={"col-2"}
           type={"number"}
@@ -83,31 +91,11 @@ const Transactions = (props) => {
           setNewValue={setTransactionCost}
           onBlur={() => {
             !isNaN(transactionCost) &&
-              setNewTransactionCost(parseFloat(transactionCost).toFixed(2));
+              setTransactionCost(parseFloat(transactionCost).toFixed(2));
           }}
           placeholder={"0.00"}
-        />
-        {/*         
-        <div className="col-2">
-          <div className="input-group">
-            <span className="input-group-text">$</span>
-            <input
-              type="number"
-              className="form-control user-select-all"
-              placeholder="0.00"
-              aria-label="cost"
-              step="0.01"
-              min="0"
-              value={transactionCost}
-              onChange={(e) => {
-                setTransactionCost(e.target.value);
-              }}
-              onBlur={() =>
-                setTransactionCost(parseFloat(transactionCost).toFixed(2))
-              }
-            />
-          </div>
-        </div> */}
+        /> */}
+
         {/* ---------------------------------- Date ---------------------------------- */}
         <div className="col-2">
           <input

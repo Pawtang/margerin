@@ -1,12 +1,13 @@
 import { React, Fragment, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import AppNav from "./AppNav";
-import HeaderColumn from "./HeaderColumn";
-import DisplayColumn from "./DisplayColumn";
-import ButtonsColumn from "./ButtonsColumn";
-import EditColumn from "./EditColumn";
-import SelectColumn from "./SelectColumn";
-import ButtonAcceptColumn from "./ButtonAcceptColumn";
+import HeaderColumn from "./elements/HeaderColumn";
+import DisplayColumn from "./elements/DisplayColumn";
+import ButtonsColumn from "./elements/ButtonsColumn";
+import EditColumn from "./elements/EditColumn";
+import InputCost from "./elements/InputCost";
+import SelectColumn from "./elements/SelectColumn";
+import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
 import _ from "lodash";
 import {
   getMaterials,
@@ -192,7 +193,13 @@ const TransactionManager = () => {
               newValue={newTransactionUnit}
               setNewValue={setNewTransactionUnit}
             />
-            <EditColumn
+
+            <InputCost
+              display={"col-2"}
+              value={newTransactionCost}
+              setter={setNewTransactionCost}
+            />
+            {/* <EditColumn
               colWidth={"col-1"}
               type={"number"}
               step={"0.01"}
@@ -207,9 +214,9 @@ const TransactionManager = () => {
                   );
               }}
               placeholder={"0.00"}
-            />
+            /> */}
 
-            <div className="col-2 text-center d-grid">
+            <div className="col-1 text-center d-grid">
               <button
                 className="btn btn-outline-primary"
                 onClick={handleAddTransaction}

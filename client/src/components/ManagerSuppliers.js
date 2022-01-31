@@ -1,9 +1,10 @@
 import { React, Fragment, useState, useEffect } from "react";
 import AppNav from "./AppNav";
-import HeaderColumn from "./HeaderColumn";
-import DisplayColumn from "./DisplayColumn";
-import ButtonsColumn from "./ButtonsColumn";
-import EditColumn from "./EditColumn";
+import HeaderColumn from "./elements/HeaderColumn";
+import DisplayColumn from "./elements/DisplayColumn";
+import ButtonsColumn from "./elements/ButtonsColumn";
+import EditColumn from "./elements/EditColumn";
+import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
 import { getSuppliers } from "../middleware/ProductHasMaterialUtils";
 import {
   deleteSupplier,
@@ -11,7 +12,6 @@ import {
   editSupplier,
 } from "../middleware/SupplierUtils";
 import _ from "lodash";
-import ButtonAcceptColumn from "./ButtonAcceptColumn";
 
 const ManagerSuppliers = () => {
   const [suppliers, setSuppliers] = useState([]);

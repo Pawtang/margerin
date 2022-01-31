@@ -1,10 +1,10 @@
 import { React, Fragment, useState, useEffect } from "react";
 import AppNav from "./AppNav";
-import HeaderColumn from "./HeaderColumn";
-import DisplayColumn from "./DisplayColumn";
-import ButtonsColumn from "./ButtonsColumn";
-import ButtonAcceptColumn from "./ButtonAcceptColumn";
-import EditColumn from "./EditColumn";
+import HeaderColumn from "./elements/HeaderColumn";
+import DisplayColumn from "./elements/DisplayColumn";
+import ButtonsColumn from "./elements/ButtonsColumn";
+import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
+import EditColumn from "./elements/EditColumn";
 import { getMaterials } from "../middleware/ProductHasMaterialUtils";
 import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
