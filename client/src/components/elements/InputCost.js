@@ -1,7 +1,12 @@
 import _ from "lodash";
+import { useEffect } from "react";
 
 const InputCost = (props) => {
-  const { display, value, setter } = props;
+  const { display, value, setter, currentState } = props;
+  useEffect(() => {
+    !_.isEmpty(currentState) && setter(currentState);
+  }, []);
+
   return (
     <div className={display}>
       <div className="input-group">

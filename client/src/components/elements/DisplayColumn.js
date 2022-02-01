@@ -1,7 +1,7 @@
 const DisplayColumn = (props) => {
-  const { colWidth, content } = props;
+  const { display, content } = props;
   return (
-    <div className={colWidth}>
+    <div className={display}>
       <p className="">{content}</p>
     </div>
   );

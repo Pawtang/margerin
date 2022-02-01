@@ -82,3 +82,5 @@ ALTER TABLE product ALTER COLUMN yield SET DEFAULT 1;
 ALTER TABLE transaction ALTER COLUMN quantity TYPE decimal(12,3);
 ALTER TABLE product_has_material ALTER COLUMN quantity TYPE decimal(12,3);
 ALTER TABLE supplier ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);
+-- 1/31/22
+ALTER TABLE transaction ALTER COLUMN cost TYPE decimal(12,2);

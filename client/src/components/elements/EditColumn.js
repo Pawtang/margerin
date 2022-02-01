@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const EditColumn = (props) => {
   const {
-    colWidth,
+    display,
     type,
     label,
     newValue,
@@ -23,7 +23,7 @@ const EditColumn = (props) => {
   }, []);
 
   return (
-    <div className={colWidth}>
+    <div className={display}>
       <input
         type={type}
         className="form-control user-select-all"

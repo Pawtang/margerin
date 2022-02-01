@@ -1,7 +1,7 @@
 const HeaderColumn = (props) => {
-  const { colWidth, headerText } = props;
+  const { display, headerText } = props;
   return (
-    <div className={colWidth}>
+    <div className={display}>
       <h6 className="text-center">{headerText}</h6>
     </div>
   );

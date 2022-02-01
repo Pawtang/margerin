@@ -1,11 +1,15 @@
-import { React, Fragment } from "react";
+import { React, Fragment, useState } from "react";
 import _ from "lodash";
+import DisplayColumn from "./elements/DisplayColumn";
+import ButtonsColumn from "./elements/ButtonsColumn";
 import SelectWithToggleColumn from "./elements/SelectWithToggleColumn";
 import EditColumn from "./elements/EditColumn";
 import InputCost from "./elements/InputCost";
 import SelectColumn from "./elements/SelectColumn";
 import HeaderColumn from "./elements/HeaderColumn";
 import dayjs from "dayjs";
+import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
+import { editTransaction } from "../middleware/TransactionUtils";
 
 const Transactions = (props) => {
   const {
@@ -26,15 +30,45 @@ const Transactions = (props) => {
     setTransactionDate,
   } = props;
 
+  const [rowToEdit, setRowToEdit] = useState("");
+  const [editTransactionSupplier, setEditTransactionSupplier] = useState("");
+  const [editTransactionUnit, setEditTransactionUnit] = useState("");
+  const [editTransactionQuantity, setEditTransactionQuantity] = useState("");
+  const [editTransactionCost, setEditTransactionCost] = useState("");
+  const [editTransactionDate, setEditTransactionDate] = useState("");
+
+
+  const clearEdit = () => {
+    setEditTransactionCost("");
+    setEditTransactionDate("");
+    setEditTransactionQuantity("");
+    setEditTransactionSupplier("");
+    setEditTransactionUnit("");
+  };
+
+  const handleEditTransaction = async (id) => {
+    const body = {
+      editTransactionMaterial,
+      editTransactionSupplier,
+      editTransactionUnit,
+      editTransactionCost,
+      editTransactionQuantity,
+      editTransactionDate,
+    };
+    await editTransaction(id, body);
+    retrieveTransactions();
+    clearEdit();
+  };
+
   return (
     <Fragment>
       <div className="row row-cols-6 gx-1">
-        <HeaderColumn colWidth={"col-3"} headerText={"Supplier"} />
-        <HeaderColumn colWidth={"col-1"} headerText={"Quantity"} />
-        <HeaderColumn colWidth={"col-2"} headerText={"Unit"} />
-        <HeaderColumn colWidth={"col-2"} headerText={"Total Cost"} />
-        <HeaderColumn colWidth={"col-2"} headerText={"Transaction Date"} />
-        <HeaderColumn colWidth={"col-2"} headerText={""} />
+        <HeaderColumn display={"col-3"} headerText={"Supplier"} />
+        <HeaderColumn display={"col-1"} headerText={"Quantity"} />
+        <HeaderColumn display={"col-2"} headerText={"Unit"} />
+        <HeaderColumn display={"col-2"} headerText={"Total Cost"} />
+        <HeaderColumn display={"col-2"} headerText={"Transaction Date"} />
+        <HeaderColumn display={"col-2"} headerText={""} />
       </div>
 
       <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
@@ -54,7 +88,7 @@ const Transactions = (props) => {
 
         {/* -------------------------------- Quantity -------------------------------- */}
         <EditColumn
-          colWidth={"col-1"}
+          display={"col-1"}
           type={"number"}
           label={"Quantity"}
           min={0}
@@ -65,7 +99,7 @@ const Transactions = (props) => {
 
         {/* ---------------------------------- Unit ---------------------------------- */}
         <SelectColumn
-          colWidth={"col-2"}
+          display={"col-2"}
           id={"selectUnit"}
           label={"Unit"}
           list={units}
@@ -80,34 +114,20 @@ const Transactions = (props) => {
           value={transactionCost}
           setter={setTransactionCost}
         />
-        {/* 
-        <EditColumn
-          colWidth={"col-2"}
-          type={"number"}
-          step={"0.01"}
-          min={0}
-          label={"Rating"}
-          newValue={transactionCost}
-          setNewValue={setTransactionCost}
-          onBlur={() => {
-            !isNaN(transactionCost) &&
-              setTransactionCost(parseFloat(transactionCost).toFixed(2));
-          }}
-          placeholder={"0.00"}
-        /> */}
 
         {/* ---------------------------------- Date ---------------------------------- */}
-        <div className="col-2">
-          <input
-            type="date"
-            className="form-control user-select-all"
-            value={transactionDate}
-            onChange={(e) => setTransactionDate(e.target.value)}
-          />
-        </div>
+        <EditColumn
+          display={"col-2"}
+          type={"date"}
+          label={"Date"}
+          newValue={transactionDate}
+          setNewValue={setTransactionDate}
+          placeholder={"Transaction Date"}
+        />
 
         {/* --------------------------------- Buttons -------------------------------- */}
-        <div className="col-2">
+
+        <div className="col-2 d-grid">
           <button
             className="btn btn-primary"
             onClick={() => handleAddTransactionForMaterial()}
@@ -118,57 +138,100 @@ const Transactions = (props) => {
       </div>
       {/* --------------------------- Enumerated Existing -------------------------- */}
       {!_.isEmpty(transactionsForMaterial) &&
-        transactionsForMaterial.map((transaction) => (
-          <div className="row row-cols-6 border-bottom py-2 mb-2 gx-0">
-            <div className="col-3">
-              <div className="col" key={transaction.transaction_id}>
-                <p className="text-center">{transaction.supplier_name}</p>
-              </div>
+        transactionsForMaterial.map((transaction) => {
+          return transaction.transaction_id !== rowToEdit ? (
+            <div
+              className="row row-cols-6 border-bottom py-2 mb-2 gx-0"
+              key={transaction.transaction_id}
+            >
+              <DisplayColumn
+                display={"col-3 text-center"}
+                content={transaction.supplier_name}
+              />
+              <DisplayColumn
+                display={"col-1 text-center"}
+                content={transaction.quantity}
+              />
+              <DisplayColumn
+                display={"col-2 text-center"}
+                content={transaction.unit_name}
+              />
+              <DisplayColumn
+                display={"col-2 text-center"}
+                content={transaction.cost}
+              />
+              <DisplayColumn
+                display={"col-2 text-center"}
+                content={dayjs(transaction.transaction_date).format(
+                  "MMM D, YYYY"
+                )}
+              />
+              <ButtonsColumn
+                display={"col-2 d-grid"}
+                ID={transaction.transaction_id}
+                handleDeleteResource={handleDeleteTransaction}
+                setRowToEdit={setRowToEdit}
+              />
             </div>
-            <div className="col-1">
-              <div className="col" key={transaction.transaction_id}>
-                <p className="text-center">{transaction.quantity}</p>
-              </div>
+          ) : (
+            <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
+              <SelectWithToggleColumn
+                classes={"col-3"}
+                label={"Supplier"}
+                list={suppliers}
+                itemkey={"supplier_name"}
+                id={"supplier_id"}
+                newValue={transactionSupplier}
+                setNewValue={setTransactionSupplier}
+                modalID={"#newSupplierModal"}
+              />
+
+              <EditColumn
+                display={"col-1"}
+                type={"number"}
+                label={"Quantity"}
+                min={0}
+                newValue={transactionQuantity}
+                setNewValue={setTransactionQuantity}
+                placeholder={"0"}
+              />
+
+              <SelectColumn
+                display={"col-2"}
+                id={"selectUnit"}
+                label={"Unit"}
+                list={units}
+                itemkey={"unit_name"}
+                id={"unit_id"}
+                newValue={transactionUnit}
+                setNewValue={setTransactionUnit}
+              />
+
+              <InputCost
+                display={"col-2"}
+                value={transactionCost}
+                setter={setTransactionCost}
+              />
+
+              <EditColumn
+                display={"col-2"}
+                type={"date"}
+                label={"Date"}
+                newValue={transactionDate}
+                setNewValue={setTransactionDate}
+                placeholder={"Transaction Date"}
+              />
+
+              <ButtonAcceptColumn
+                display={"col-2 d-grid"}
+                editHandler={}
+                resourceID={transaction.transaction_id}
+                setRowToEdit={setRowToEdit}
+                clearEdit={clearEdit}
+              />
             </div>
-            <div className="col-2">
-              <div className="col" key={transaction.transaction_id}>
-                <p className="text-center">{transaction.unit_name}</p>
-              </div>
-            </div>
-            <div className="col-2">
-              <div className="col" key={transaction.transaction_id}>
-                <p className="text-center">{transaction.cost}</p>
-              </div>
-            </div>
-            <div className="col-2">
-              <div className="col" key={transaction.transaction_id}>
-                <p className="text-center">
-                  {dayjs(transaction.transaction_date).format("MMM D, YYYY")}
-                </p>
-              </div>
-            </div>
-            <div className="col-2 text-center">
-              <div
-                className="btn-group"
-                role="group"
-                aria-label="update delete"
-                key={transaction.transaction_id}
-              >
-                <button className="btn btn-outline-primary">
-                  <i className="bi bi-pencil-square"></i>
-                </button>
-                <button
-                  className="btn btn-outline-danger"
-                  onClick={() => {
-                    handleDeleteTransaction(transaction.transaction_id);
-                  }}
-                >
-                  <i className="bi bi-trash-fill"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
     </Fragment>
   );
 };

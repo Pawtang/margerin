@@ -1,7 +1,7 @@
 const ButtonAcceptColumn = (props) => {
-  const { editHandler, resourceID, setRowToEdit, clearEdit } = props;
+  const { display, editHandler, resourceID, setRowToEdit, clearEdit } = props;
   return (
-    <div className="col-2 text-center d-grid">
+    <div className={display}>
       <button
         className="btn btn-outline-secondary"
         onClick={() => {

@@ -80,17 +80,17 @@ const ManagerMaterials = () => {
         <div className="row shadow rounded-3 bg-white px-4">
           <h1 className="my-3">Material Manager</h1>
           <div className="row row-cols-5 gx-1 mt-4">
-            <HeaderColumn colWidth={"col-5"} headerText={"Material Name"} />
+            <HeaderColumn display={"col-5"} headerText={"Material Name"} />
             <HeaderColumn
-              colWidth={"col-5"}
+              display={"col-5"}
               headerText={"Material Description"}
             />
-            <HeaderColumn colWidth={"col-2"} headerText={""} />
+            <HeaderColumn display={"col-2"} headerText={""} />
           </div>
 
           <div className="row row-cols-3 border-bottom py-2 mb-2 gx-2">
             <EditColumn
-              colWidth={"col-5"}
+              display={"col-5"}
               type={"text"}
               label={"Name"}
               newValue={newMaterialName}
@@ -98,7 +98,7 @@ const ManagerMaterials = () => {
               placeholder={"Material Name"}
             />
             <EditColumn
-              colWidth={"col-5"}
+              display={"col-5"}
               type={"text"}
               label={"Description"}
               newValue={newMaterialDescription}
@@ -124,11 +124,11 @@ const ManagerMaterials = () => {
                   key={material.material_id}
                 >
                   <DisplayColumn
-                    colWidth={"col-5"}
+                    display={"col-5"}
                     content={material.material_name}
                   />
                   <DisplayColumn
-                    colWidth={"col-5"}
+                    display={"col-5"}
                     content={material.material_description}
                   />
                   <ButtonsColumn
@@ -144,7 +144,7 @@ const ManagerMaterials = () => {
                   key={material.material_id}
                 >
                   <EditColumn
-                    colWidth={"col-5"}
+                    display={"col-5"}
                     type={"text"}
                     label={"Name"}
                     newValue={editMaterialName}
@@ -153,7 +153,7 @@ const ManagerMaterials = () => {
                     currentState={material.material_name}
                   />
                   <EditColumn
-                    colWidth={"col-5"}
+                    display={"col-5"}
                     type={"text"}
                     label={"Description"}
                     newValue={editMaterialDescription}
@@ -162,6 +162,7 @@ const ManagerMaterials = () => {
                     currentState={material.material_description}
                   />
                   <ButtonAcceptColumn
+                    display={"col-2 d-grid"}
                     setRowToEdit={setRowToEdit}
                     resourceID={material.material_id}
                     editHandler={handleEditMaterial}

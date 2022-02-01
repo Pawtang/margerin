@@ -50,7 +50,6 @@ export const editTransaction = async (transactionID, body) => {
         body: JSON.stringify(body),
       }
     );
-    console.log("");
     if (response.status !== 200) {
       throw new Error("response is not 200");
     }

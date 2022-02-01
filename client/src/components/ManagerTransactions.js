@@ -137,26 +137,26 @@ const TransactionManager = () => {
         <div className="row shadow rounded-3 bg-white px-4">
           <h1 className="my-3">Transaction Manager</h1>
           <div className="row row-cols-7 gx-1 mt-4">
-            <HeaderColumn colWidth={"col-2"} headerText={"Transaction Date"} />
-            <HeaderColumn colWidth={"col-2"} headerText={"Material"} />
-            <HeaderColumn colWidth={"col-2"} headerText={"Supplier"} />
-            <HeaderColumn colWidth={"col-1"} headerText={"Quantity"} />
-            <HeaderColumn colWidth={"col-2"} headerText={"Unit"} />
-            <HeaderColumn colWidth={"col-1"} headerText={"Total Cost"} />
-            <HeaderColumn colWidth={"col-2"} headerText={""} />
+            <HeaderColumn display={"col-2"} headerText={"Transaction Date"} />
+            <HeaderColumn display={"col-2"} headerText={"Material"} />
+            <HeaderColumn display={"col-2"} headerText={"Supplier"} />
+            <HeaderColumn display={"col-1"} headerText={"Quantity"} />
+            <HeaderColumn display={"col-2"} headerText={"Unit"} />
+            <HeaderColumn display={"col-1"} headerText={"Total Cost"} />
+            <HeaderColumn display={"col-2"} headerText={""} />
           </div>
 
           <div className="row row-cols-6 border-bottom py-2 mb-2 gx-2">
             <EditColumn
-              colWidth={"col-2"}
+              display={"col-2"}
               type={"date"}
-              label={"Name"}
+              label={"Date"}
               newValue={newTransactionDate}
               setNewValue={setNewTransactionDate}
-              placeholder={"Transaction Name"}
+              placeholder={"Transaction Date"}
             />
             <SelectColumn
-              colWidth={"col-2"}
+              display={"col-2"}
               label={"Material"}
               list={materials}
               itemkey={"material_name"}
@@ -165,7 +165,7 @@ const TransactionManager = () => {
               setNewValue={setNewTransactionMaterial}
             />
             <SelectColumn
-              colWidth={"col-2"}
+              display={"col-2"}
               id={"selectSupplier"}
               label={"Supplier"}
               list={suppliers}
@@ -175,7 +175,7 @@ const TransactionManager = () => {
               setNewValue={setNewTransactionSupplier}
             />
             <EditColumn
-              colWidth={"col-1"}
+              display={"col-1"}
               type={"number"}
               label={"Quantity"}
               min={0}
@@ -184,7 +184,7 @@ const TransactionManager = () => {
               placeholder={"0"}
             />
             <SelectColumn
-              colWidth={"col-2"}
+              display={"col-2"}
               id={"selectUnit"}
               label={"Unit"}
               list={units}
@@ -199,22 +199,6 @@ const TransactionManager = () => {
               value={newTransactionCost}
               setter={setNewTransactionCost}
             />
-            {/* <EditColumn
-              colWidth={"col-1"}
-              type={"number"}
-              step={"0.01"}
-              min={0}
-              label={"Rating"}
-              newValue={newTransactionCost}
-              setNewValue={setNewTransactionCost}
-              onBlur={() => {
-                !isNaN(newTransactionCost) &&
-                  setNewTransactionCost(
-                    parseFloat(newTransactionCost).toFixed(2)
-                  );
-              }}
-              placeholder={"0.00"}
-            /> */}
 
             <div className="col-1 text-center d-grid">
               <button
@@ -234,33 +218,33 @@ const TransactionManager = () => {
                   key={transaction.transaction_id}
                 >
                   <DisplayColumn
-                    colWidth={"col-2 text-center"}
+                    display={"col-2 text-center"}
                     content={dayjs(transaction.transaction_date).format(
                       "MMM D, YYYY"
                     )}
                   />
                   <DisplayColumn
-                    colWidth={"col-2 text-center"}
+                    display={"col-2 "}
                     content={transaction.material_name}
                   />
                   <DisplayColumn
-                    colWidth={"col-2 text-center"}
+                    display={"col-2 "}
                     content={transaction.supplier_name}
                   />
                   <DisplayColumn
-                    colWidth={"col-2 text-center"}
-                    content={transaction.unit_name}
-                  />
-                  <DisplayColumn
-                    colWidth={"col-1 text-center"}
+                    display={"col-1 text-center"}
                     content={transaction.quantity}
                   />
                   <DisplayColumn
-                    colWidth={"col-1 text-center"}
+                    display={"col-2 text-center"}
+                    content={transaction.unit_name}
+                  />
+                  <DisplayColumn
+                    display={"col-2 text-center"}
                     content={transaction.cost}
                   />
                   <ButtonsColumn
-                    display={"col-2 d-grid"}
+                    display={"col-1 d-grid"}
                     ID={transaction.transaction_id}
                     handleDeleteResource={handleDeleteTransaction}
                     setRowToEdit={setRowToEdit}
@@ -269,16 +253,18 @@ const TransactionManager = () => {
               ) : (
                 <div className="row row-cols-6 border-bottom py-2 gx-2">
                   <EditColumn
-                    colWidth={"col-2"}
+                    display={"col-2"}
                     type={"date"}
-                    label={"Name"}
-                    currentState={transaction.transaction_date}
+                    label={"Date"}
+                    currentState={dayjs(transaction.transaction_date).format(
+                      "YYYY-MM-DD"
+                    )}
                     newValue={editTransactionDate}
                     setNewValue={setEditTransactionDate}
                     placeholder={"Transaction Name"}
                   />
                   <SelectColumn
-                    colWidth={"col-2"}
+                    display={"col-2"}
                     label={"Material"}
                     list={materials}
                     itemkey={"material_name"}
@@ -288,7 +274,7 @@ const TransactionManager = () => {
                     setNewValue={setEditTransactionMaterial}
                   />
                   <SelectColumn
-                    colWidth={"col-2"}
+                    display={"col-2"}
                     id={"selectSupplier"}
                     label={"Supplier"}
                     list={suppliers}
@@ -296,10 +282,20 @@ const TransactionManager = () => {
                     id={"supplier_id"}
                     currentState={transaction.supplier_id}
                     newValue={editTransactionSupplier}
-                    setNewValue={setNewTransactionSupplier}
+                    setNewValue={setEditTransactionSupplier}
+                  />
+                  <EditColumn
+                    display={"col-1"}
+                    type={"number"}
+                    label={"Quantity"}
+                    min={0}
+                    currentState={transaction.quantity}
+                    newValue={editTransactionQuantity}
+                    setNewValue={setEditTransactionQuantity}
+                    placeholder={"Qty"}
                   />
                   <SelectColumn
-                    colWidth={"col-2"}
+                    display={"col-2"}
                     id={"selectUnit"}
                     label={"Unit"}
                     list={units}
@@ -309,35 +305,16 @@ const TransactionManager = () => {
                     newValue={editTransactionUnit}
                     setNewValue={setEditTransactionUnit}
                   />
-                  <EditColumn
-                    colWidth={"col-1"}
-                    type={"number"}
-                    label={"Quantity"}
-                    min={0}
-                    currentState={transaction.quantity}
-                    newValue={editTransactionQuantity}
-                    setNewValue={setEditTransactionQuantity}
-                    placeholder={"Qty"}
-                  />
-                  <EditColumn
-                    colWidth={"col-1"}
-                    type={"number"}
-                    step={"0.01"}
-                    min={0}
-                    label={"Rating"}
+
+                  <InputCost
+                    display={"col-2"}
                     currentState={transaction.cost}
-                    newValue={editTransactionCost}
-                    setNewValue={setEditTransactionCost}
-                    onBlur={() => {
-                      !isNaN(editTransactionCost) &&
-                        setEditTransactionCost(
-                          parseFloat(newTransactionCost).toFixed(2)
-                        );
-                    }}
-                    placeholder={"0.00"}
+                    value={editTransactionCost}
+                    setter={setEditTransactionCost}
                   />
 
                   <ButtonAcceptColumn
+                    display={"col-1 text-center d-grid"}
                     setRowToEdit={setRowToEdit}
                     resourceID={transaction.transaction_id}
                     editHandler={handleEditTransaction}

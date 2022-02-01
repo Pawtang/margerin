@@ -88,16 +88,16 @@ const ManagerSuppliers = () => {
         <div className="row shadow rounded-3 bg-white px-4">
           <h1 className="my-3">Supplier Manager</h1>
           <div className="row row-cols-5 gx-1 mt-4">
-            <HeaderColumn colWidth={"col-4"} headerText={"Supplier Name"} />
-            <HeaderColumn colWidth={"col-3"} headerText={"Contact Name"} />
-            <HeaderColumn colWidth={"col-3"} headerText={"Contact Phone"} />
-            {/* <HeaderColumn colWidth={"col-2"} headerText={"Supplier Rating"} /> */}
-            <HeaderColumn colWidth={"col-2"} headerText={""} />
+            <HeaderColumn display={"col-4"} headerText={"Supplier Name"} />
+            <HeaderColumn display={"col-3"} headerText={"Contact Name"} />
+            <HeaderColumn display={"col-3"} headerText={"Contact Phone"} />
+            {/* <HeaderColumn display={"col-2"} headerText={"Supplier Rating"} /> */}
+            <HeaderColumn display={"col-2"} headerText={""} />
           </div>
 
           <div className="row row-cols-6 border-bottom py-2 mb-2 gx-2">
             <EditColumn
-              colWidth={"col-4"}
+              display={"col-4"}
               type={"text"}
               label={"Name"}
               newValue={newSupplierName}
@@ -105,7 +105,7 @@ const ManagerSuppliers = () => {
               placeholder={"Supplier Name"}
             />
             <EditColumn
-              colWidth={"col-3"}
+              display={"col-3"}
               type={"text"}
               label={"Contact"}
               newValue={newSupplierContactName}
@@ -113,7 +113,7 @@ const ManagerSuppliers = () => {
               placeholder={"Contact Name"}
             />
             <EditColumn
-              colWidth={"col-3"}
+              display={"col-3"}
               type={"tel"}
               label={"Tel"}
               newValue={newSupplierPhone}
@@ -140,15 +140,15 @@ const ManagerSuppliers = () => {
                   key={supplier.supplier_id}
                 >
                   <DisplayColumn
-                    colWidth={"col-4"}
+                    display={"col-4"}
                     content={supplier.supplier_name}
                   />
                   <DisplayColumn
-                    colWidth={"col-3"}
+                    display={"col-3"}
                     content={supplier.contact_name}
                   />
                   <DisplayColumn
-                    colWidth={"col-3"}
+                    display={"col-3"}
                     content={supplier.supplier_phone}
                   />
                   <ButtonsColumn
@@ -164,7 +164,7 @@ const ManagerSuppliers = () => {
                   key={supplier.supplier_id}
                 >
                   <EditColumn
-                    colWidth={"col-4"}
+                    display={"col-4"}
                     type={"text"}
                     label={"Name"}
                     newValue={editSupplierName}
@@ -173,7 +173,7 @@ const ManagerSuppliers = () => {
                     currentState={supplier.supplier_name}
                   />
                   <EditColumn
-                    colWidth={"col-3"}
+                    display={"col-3"}
                     type={"text"}
                     label={"Contact"}
                     newValue={editSupplierContactName}
@@ -182,7 +182,7 @@ const ManagerSuppliers = () => {
                     currentState={supplier.contact_name}
                   />
                   <EditColumn
-                    colWidth={"col-3"}
+                    display={"col-3"}
                     type={"tel"}
                     label={"Tel"}
                     newValue={editSupplierPhone}
@@ -195,6 +195,7 @@ const ManagerSuppliers = () => {
                   />
 
                   <ButtonAcceptColumn
+                    display={"col-2 d-grid"}
                     setRowToEdit={setRowToEdit}
                     resourceID={supplier.supplier_id}
                     editHandler={handleEditSupplier}

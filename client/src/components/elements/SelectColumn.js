@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const SelectColumn = (props) => {
   const {
-    colWidth,
+    display,
     label,
     list,
     itemkey,
@@ -14,11 +14,11 @@ const SelectColumn = (props) => {
   } = props;
 
   useEffect(() => {
-    !_.isEmpty(currentState) && setNewValue(currentState);
+    setNewValue(currentState);
   }, []);
 
   return (
-    <div className={colWidth}>
+    <div className={display}>
       <select
         className="form-select"
         aria-label={label}

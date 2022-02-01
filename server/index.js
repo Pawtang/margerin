@@ -318,7 +318,7 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
 app.get("/transaction", async (req, res) => {
   try {
     const transactionData = await pool.query(
-      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_name, s.supplier_name, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) ORDER BY t.transaction_date DESC`
+      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_id, u.unit_name, s.supplier_id, s.supplier_name, m.material_id, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) ORDER BY t.transaction_date DESC`
     );
     res.json(transactionData.rows);
   } catch (err) {
