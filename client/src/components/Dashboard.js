@@ -12,7 +12,7 @@ import {
   updatePrice,
   updateYield,
 } from "../middleware/DashboardUtils";
-import "../styles/Dashboard.css";
+// import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const [displayedProduct, setDisplayedProduct] = useState({});
@@ -77,7 +77,11 @@ const Dashboard = () => {
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
 
       <div className="navbar-clearance"></div>
-      <AppNav />
+      <div className="container">
+        <div className="row">
+          <AppNav></AppNav>
+        </div>
+      </div>
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white">
           <ProductSearch

@@ -78,9 +78,9 @@ ALTER TABLE product ADD price MONEY;
 ALTER TABLE product ALTER COLUMN price TYPE decimal(12,2);
 ALTER TABLE product ALTER COLUMN price SET DEFAULT 0;
 ALTER TABLE product ALTER COLUMN yield SET DEFAULT 1;
--- 1/22/22
+-- 1/22/22 need to support fractional quantities and supplier name uniqueness
 ALTER TABLE transaction ALTER COLUMN quantity TYPE decimal(12,3);
 ALTER TABLE product_has_material ALTER COLUMN quantity TYPE decimal(12,3);
 ALTER TABLE supplier ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);
--- 1/31/22
+-- 1/31/22 no reason to use money type, it confuses the front end
 ALTER TABLE transaction ALTER COLUMN cost TYPE decimal(12,2);

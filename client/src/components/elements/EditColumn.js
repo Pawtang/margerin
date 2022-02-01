@@ -9,7 +9,7 @@ const EditColumn = (props) => {
     newValue,
     setNewValue,
     placeholder,
-    pattern,
+
     min,
     step,
     maxlength,
@@ -30,7 +30,6 @@ const EditColumn = (props) => {
         placeholder={placeholder}
         aria-label={label}
         value={newValue}
-        pattern={pattern}
         maxlength={maxlength}
         minlength={minlength}
         min={min}

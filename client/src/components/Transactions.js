@@ -28,15 +28,17 @@ const Transactions = (props) => {
     setTransactionCost,
     transactionDate,
     setTransactionDate,
+    modalMaterial,
+    retrieveTransactionsForMaterial,
   } = props;
 
   const [rowToEdit, setRowToEdit] = useState("");
+  const editTransactionMaterial = modalMaterial.material_id;
   const [editTransactionSupplier, setEditTransactionSupplier] = useState("");
   const [editTransactionUnit, setEditTransactionUnit] = useState("");
   const [editTransactionQuantity, setEditTransactionQuantity] = useState("");
   const [editTransactionCost, setEditTransactionCost] = useState("");
   const [editTransactionDate, setEditTransactionDate] = useState("");
-
 
   const clearEdit = () => {
     setEditTransactionCost("");
@@ -56,7 +58,7 @@ const Transactions = (props) => {
       editTransactionDate,
     };
     await editTransaction(id, body);
-    retrieveTransactions();
+    retrieveTransactionsForMaterial();
     clearEdit();
   };
 
@@ -224,7 +226,7 @@ const Transactions = (props) => {
 
               <ButtonAcceptColumn
                 display={"col-2 d-grid"}
-                editHandler={}
+                editHandler={handleEditTransaction}
                 resourceID={transaction.transaction_id}
                 setRowToEdit={setRowToEdit}
                 clearEdit={clearEdit}

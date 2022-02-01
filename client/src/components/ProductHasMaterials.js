@@ -228,6 +228,7 @@ const ProductHasMaterials = (props) => {
         setTransactionCost={setTransactionCost}
         transactionDate={transactionDate}
         setTransactionDate={setTransactionDate}
+        retrieveTransactionsForMaterial={retrieveTransactionsForMaterial}
       />
 
       <AddPropModal

@@ -114,12 +114,11 @@ const ManagerSuppliers = () => {
             />
             <EditColumn
               display={"col-3"}
-              type={"tel"}
               label={"Tel"}
+              type={"tel"}
               newValue={newSupplierPhone}
               setNewValue={setNewSupplierPhone}
               placeholder={"000-000-0000"}
-              pattern={"[0-9]{3}-[0-9]{3}-[0-9]{4}"}
             />
 
             <div className="col-2 text-center d-grid">
