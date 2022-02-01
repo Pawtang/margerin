@@ -110,3 +110,7 @@ h2 {
 .transition {
   transition: all 200ms ease-out;
 }
+
+.custom-toast {
+  background-color: white;
+}

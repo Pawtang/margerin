@@ -1,18 +1,26 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import ToastContainer from "./elements/ToastContainer";
+import Alert from "./elements/Alert";
 import _ from "lodash";
 
 const Login = () => {
   const [toasts, setToasts] = useState([]);
   //Toasts should be a queue structure, FIFO
+
+  const popToast = () => {
+    console.log("pop toast: ", toasts);
+    setTimeout(() => {
+      setToasts([toasts.shift()]);
+    }, 5000);
+  };
+
   const pushToast = (type, content) => {
     setToasts([...toasts, { type: type, content: content, id: toasts.length }]);
-    console.log(toasts);
-    setTimeout(() => {
-      !_.isEmpty(toasts) && setToasts([toasts.shift()]);
-    }, 5000);
-    console.log(toasts);
   };
+
+  useEffect(() => {
+    !_.isEmpty(toasts) && popToast();
+  }, [toasts]);
 
   return (
     <Fragment>

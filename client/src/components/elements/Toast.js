@@ -4,18 +4,17 @@ const Toast = (props) => {
   const { type, content, key } = props;
   console.log("I'm a toast in Toasts.js");
   return (
-    <div className="" style={{ zIndex: 11, width: "300px" }}>
+    <div className="shadow-sm" style={{ zIndex: 11, width: "300px" }}>
       <div
         id={key}
-        className="toast"
+        className="custom-toast"
         role="alert"
         aria-live="assertive"
         aria-atomic="true"
-        data-bs-delay="5000"
       >
         <div className="toast-header">
-          <img src="..." className="rounded me-2" alt="..." />
-          <strong className="me-auto">{alert}!</strong>
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <strong className="me-auto"> Alert</strong>
         </div>
         <div className="toast-body">{content}</div>
       </div>
