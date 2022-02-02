@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import _ from "lodash";
 
 const EditColumn = (props) => {
@@ -9,7 +9,6 @@ const EditColumn = (props) => {
     newValue,
     setNewValue,
     placeholder,
-
     min,
     step,
     maxlength,

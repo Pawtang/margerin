@@ -1,5 +1,13 @@
+import { useEffect } from "react";
+import _ from "lodash";
+
 const IsPerUnitCheck = (props) => {
-  const { isPerUnit, setIsPerUnit } = props;
+  const { currentState, isPerUnit, setIsPerUnit } = props;
+
+  useEffect(() => {
+    !_.isEmpty(currentState) && setIsPerUnit(currentState);
+  }, []);
+
   return (
     <div className="col-1 text-center">
       <input

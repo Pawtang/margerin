@@ -54,6 +54,12 @@ const ProductHasMaterials = (props) => {
   const [isPerUnit, setIsPerUnit] = useState(false);
   const [materialsForProduct, setMaterialsForProduct] = useState([]);
 
+  //Edit materials for product
+  const [editMaterial, setEditMaterial] = useState("");
+  const [editUnit, setEditUnit] = useState("1");
+  const [editQuantity, setEditQuantity] = useState("0");
+  const [editIsPerUnit, setEditIsPerUnit] = useState(false);
+
   //Create new material
   const [newMaterialName, setNewMaterialName] = useState([]);
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
@@ -62,6 +68,11 @@ const ProductHasMaterials = (props) => {
   const [rowToEdit, setRowToEdit] = useState("");
 
   /* --------------------------- Transaction Methods -------------------------- */
+  const retrieveTransactionsForMaterial = async () => {
+    if (_.isEmpty(modalMaterial)) return;
+    const array = await getTransactionsForMaterial(modalMaterial.material_id);
+    setTransactionsForMaterial(array);
+  };
 
   const handleAddTransactionForMaterial = async () => {
     let materialID = modalMaterial.material_id;
@@ -77,12 +88,6 @@ const ProductHasMaterials = (props) => {
     await retrieveTransactionsForMaterial();
     await retrieveMaterialsForProduct();
     clearTransactionEntry();
-  };
-
-  const retrieveTransactionsForMaterial = async () => {
-    if (_.isEmpty(modalMaterial)) return;
-    const array = await getTransactionsForMaterial(modalMaterial.material_id);
-    setTransactionsForMaterial(array);
   };
 
   const handleDeleteTransaction = async (transactionID) => {
@@ -113,10 +118,16 @@ const ProductHasMaterials = (props) => {
   };
 
   const handleEditProductHasMaterial = async (phmID) => {
-    const body = await editProductHasMaterial(phmID);
+    const body = { editMaterial, editQuantity, editUnit, editIsPerUnit };
+    await editProductHasMaterial(phmID, body);
   };
 
-  const clearEdit = () => {};
+  const clearEdit = () => {
+    setEditMaterial("");
+    setEditQuantity("");
+    setEditUnit("");
+    setEditIsPerUnit(false);
+  };
 
   const handleNewMaterial = async (e) => {
     e.preventDefault();
@@ -407,8 +418,9 @@ const ProductHasMaterials = (props) => {
                   label={"Material"}
                   list={materials}
                   itemkey={"material_name"}
-                  newValue={addMaterial}
-                  setNewValue={setAddMaterial}
+                  currentState={material.material_id}
+                  newValue={editMaterial}
+                  setNewValue={setEditMaterial}
                   id={"material_id"}
                   modalID={"#newMaterialModal"}
                 />
@@ -416,8 +428,9 @@ const ProductHasMaterials = (props) => {
                   display={"col-2"}
                   type={"number"}
                   label={"Quantity"}
-                  newValue={newQuantity}
-                  setNewValue={setNewQuantity}
+                  currentState={material.quantity}
+                  newValue={editQuantity}
+                  setNewValue={setEditQuantity}
                   placeholder={"0"}
                   min={0}
                   step={1}
@@ -427,14 +440,16 @@ const ProductHasMaterials = (props) => {
                   label={"Units"}
                   list={units}
                   itemkey={"unit_name"}
-                  newValue={newUnit}
-                  setNewValue={setNewUnit}
+                  currentState={material.unit_id}
+                  newValue={editUnit}
+                  setNewValue={setEditUnit}
                   id={"unit_id"}
                 />
 
                 <IsPerUnitCheck
-                  isPerUnit={isPerUnit}
-                  setIsPerUnit={setIsPerUnit}
+                  currentState={material.isPerUnit}
+                  isPerUnit={editIsPerUnit}
+                  setIsPerUnit={setEditIsPerUnit}
                 />
                 <DisplayColumn display={"col-2"} />
                 <ButtonAcceptColumn
