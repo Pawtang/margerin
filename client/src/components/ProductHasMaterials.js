@@ -9,6 +9,7 @@ import EditColumn from "./elements/EditColumn";
 import SelectColumn from "./elements/SelectColumn";
 import HeaderColumn from "./elements/HeaderColumn";
 import SelectWithToggleColumn from "./elements/SelectWithToggleColumn";
+import IsPerUnitCheck from "./elements/IsPerUnitCheck";
 
 import {
   getMaterials,
@@ -22,6 +23,7 @@ import {
   newMaterial,
   newSupplier,
   getTransactionsForMaterial,
+  editProductHasMaterial,
 } from "../middleware/ProductHasMaterialUtils";
 
 const ProductHasMaterials = (props) => {
@@ -109,6 +111,12 @@ const ProductHasMaterials = (props) => {
     setNewUnit("1");
     setNewQuantity("0");
   };
+
+  const handleEditProductHasMaterial = async (phmID) => {
+    const body = await editProductHasMaterial(phmID);
+  };
+
+  const clearEdit = () => {};
 
   const handleNewMaterial = async (e) => {
     e.preventDefault();
@@ -338,67 +346,101 @@ const ProductHasMaterials = (props) => {
           </div>
         </div>
         {/* --------------------------- Enumerated Existing -------------------------- */}
-        {materialsForProduct.map((material) => (
-          <div
-            className="row row-cols-6 border-bottom py-1 mx-auto highlight"
-            key={material.phm_id}
-          >
-            <div className="col-3 ">
-              <p className="text-left my-2">{material.material_name}</p>
-            </div>
-            <div className="col-2">
-              <p className="text-center my-2">{material.quantity}</p>
-            </div>
-            <div className="col-2">
-              <p className="text-center my-2">{material.unit_name}</p>
-            </div>
-
-            <div className="col-1">
-              <p className="text-center my-2">
-                {material.is_per_unit ? "Yes" : "No"}
-              </p>
-            </div>
-            <div className="col-2 d-grid  text-center ">
-              <button
-                key="displayAverageCost"
-                className={
-                  material.avgcost
-                    ? `btn btn-outline-success`
-                    : `btn btn-outline-secondary`
-                }
-                data-bs-toggle="modal"
-                data-bs-target="#materialTransactionModal"
-                onClick={() => {
-                  setModalMaterial(material);
-                }}
-              >
-                {material.avgcost
-                  ? `$${parseFloat(
-                      material.avgcost * material.quantity
-                    ).toFixed(2)}`
-                  : "$ --.--"}{" "}
-                <i className="bi bi-pencil-square"></i>
-              </button>
-            </div>
-            <div className="col-2  d-grid text-center">
+        {!_.isEmpty(materialsForProduct) &&
+          materialsForProduct.map((material) => {
+            return material.phm_id !== rowToEdit ? (
               <div
-                className="btn-group"
-                role="group"
-                aria-label="update delete"
+                className="row row-cols-6 border-bottom py-1 mx-auto gx-1 highlight"
+                key={material.phm_id}
               >
-                <button className="btn btn-outline-primary">
-                  <i className="bi bi-pencil-square"></i>
-                </button>
-                <button
-                  className="btn btn-outline-danger"
-                  onClick={() => handleDeleteMaterial(material.phm_id)}
-                >
-                  <i className="bi bi-trash-fill"></i>
-                </button>
+                <DisplayColumn
+                  display={"col-3"}
+                  content={material.material_name}
+                />
+                <DisplayColumn display={"col-2"} content={material.quantity} />
+                <DisplayColumn display={"col-2"} content={material.unit_name} />
+                <DisplayColumn
+                  display={"col-1"}
+                  content={material.is_per_unit ? "Yes" : "No"}
+                />
+
+                <div className="col-2 d-grid  text-center ">
+                  <button
+                    key="displayAverageCost"
+                    className={
+                      material.avgcost
+                        ? `btn btn-outline-success`
+                        : `btn btn-outline-secondary`
+                    }
+                    data-bs-toggle="modal"
+                    data-bs-target="#materialTransactionModal"
+                    onClick={() => {
+                      setModalMaterial(material);
+                    }}
+                  >
+                    {material.avgcost
+                      ? `$${parseFloat(
+                          material.avgcost * material.quantity
+                        ).toFixed(2)}`
+                      : "$ --.--"}{" "}
+                    <i className="bi bi-pencil-square"></i>
+                  </button>
+                </div>
+
+                <ButtonsColumn
+                  display={"col-2 d-grid"}
+                  ID={material.phm_id}
+                  handleDeleteResource={handleDeleteMaterial}
+                  setRowToEdit={setRowToEdit}
+                />
               </div>
-            </div>
-          </div>
-        ))}
+            ) : (
+              <div className="row row-cols-6 border-bottom py-1 mx-auto gx-1">
+                <SelectWithToggleColumn
+                  display={"col-3"}
+                  label={"Material"}
+                  list={materials}
+                  itemkey={"material_name"}
+                  newValue={addMaterial}
+                  setNewValue={setAddMaterial}
+                  id={"material_id"}
+                  modalID={"#newMaterialModal"}
+                />
+                <EditColumn
+                  display={"col-2"}
+                  type={"number"}
+                  label={"Quantity"}
+                  newValue={newQuantity}
+                  setNewValue={setNewQuantity}
+                  placeholder={"0"}
+                  min={0}
+                  step={1}
+                />
+                <SelectColumn
+                  display={"col-2"}
+                  label={"Units"}
+                  list={units}
+                  itemkey={"unit_name"}
+                  newValue={newUnit}
+                  setNewValue={setNewUnit}
+                  id={"unit_id"}
+                />
+
+                <IsPerUnitCheck
+                  isPerUnit={isPerUnit}
+                  setIsPerUnit={setIsPerUnit}
+                />
+                <DisplayColumn display={"col-2"} />
+                <ButtonAcceptColumn
+                  display={"col-2 d-grid"}
+                  editHandler={handleEditProductHasMaterial}
+                  resourceID={material.phm_id}
+                  setRowToEdit={setRowToEdit}
+                  clearEdit={clearEdit}
+                />
+              </div>
+            );
+          })}
       </div>
     </Fragment>
   );

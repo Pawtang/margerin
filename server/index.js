@@ -129,7 +129,6 @@ app.post("/transaction", async (req, res) => {
 
 //Update price of an item
 app.put("/product/price/:id", async (req, res) => {
-  console.log("Accessed index price");
   try {
     const { id } = req.params;
     const { productPrice } = req.body;
@@ -159,7 +158,6 @@ app.put("/product/yield/:id", async (req, res) => {
 });
 
 app.put("/supplier/edit/:id", async (req, res) => {
-  console.log("index req, body:", req.params, req.body);
   try {
     const { id } = req.params;
     const { editSupplierName, editSupplierContactName, editSupplierPhone } =
@@ -175,7 +173,6 @@ app.put("/supplier/edit/:id", async (req, res) => {
 });
 
 app.put("/transaction/edit/:id", async (req, res) => {
-  console.log("index req, body:", req.params, req.body);
   try {
     const { id } = req.params;
     const {
@@ -197,6 +194,20 @@ app.put("/transaction/edit/:id", async (req, res) => {
 });
 
 app.put("/material/edit/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { editMaterialName, editMaterialDescription } = req.body;
+    const updateMaterial = await pool.query(
+      `UPDATE material SET material_name = '${editMaterialName}', material_description = '${editMaterialDescription}' WHERE material_id = ${id}`
+    );
+    res.status(200).json(updateMaterial.rows);
+  } catch (error) {
+    res.status(400).json({ errorCode: "1003", error: error.message });
+    console.error(error);
+  }
+});
+
+app.put("/productHasMaterials/edit/:id", async (req, res) => {
   console.log("index req, body:", req.params, req.body);
   try {
     const { id } = req.params;

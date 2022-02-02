@@ -38,20 +38,6 @@ export const getTransactionsForMaterial = async (id) => {
   }
 };
 
-// export const getAverageCostForUnitMaterial = async (materialID, unitID) => {
-//   try {
-//     const response = await fetch(
-//       `${URL_SERVER}/materialHasTransactions/averageCost/${materialID}/${unitID}`
-//     );
-//     if (response.status !== 200) {
-//       throw new Error("response is not 200");
-//     }
-//     return await response.json();
-//   } catch (err) {
-//     console.error("getAverageCostForUnitMaterial ERROR: ", err.message);
-//   }
-// };
-
 export const addMaterialToProduct = async (body) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterial`, {
@@ -120,6 +106,25 @@ export const deleteMaterialFromProduct = async (phmID) => {
     }
   } catch (err) {
     console.error("Failed to Delete", err.message);
+  }
+};
+
+export const editProductHasMaterial = async (phmID, body) => {
+  try {
+    const response = await fetch(
+      `${URL_SERVER}/productHasMaterial/edit/${phmID}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
+    console.log("");
+    if (response.status !== 200) {
+      throw new Error("response is not 200");
+    }
+  } catch (err) {
+    console.error(err.message);
   }
 };
 
