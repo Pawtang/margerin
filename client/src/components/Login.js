@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import ToastContainer from "./elements/ToastContainer";
-import Alert from "./elements/Alert";
+
 import _ from "lodash";
 
 const Login = () => {
