@@ -2,6 +2,14 @@ import { React, Fragment, useState, useEffect } from "react";
 import _ from "lodash";
 import AddPropModal from "./AddPropModal";
 import TransactionModal from "./TransactionModal";
+import DisplayColumn from "./elements/DisplayColumn";
+import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
+import ButtonsColumn from "./elements/ButtonsColumn";
+import EditColumn from "./elements/EditColumn";
+import SelectColumn from "./elements/SelectColumn";
+import HeaderColumn from "./elements/HeaderColumn";
+import SelectWithToggleColumn from "./elements/SelectWithToggleColumn";
+
 import {
   getMaterials,
   getMaterialsForProduct,
@@ -49,6 +57,7 @@ const ProductHasMaterials = (props) => {
   const [newMaterialDescription, setNewMaterialDescription] = useState([]);
 
   const [newSupplierName, setNewSupplierName] = useState([]);
+  const [rowToEdit, setRowToEdit] = useState("");
 
   /* --------------------------- Transaction Methods -------------------------- */
 
@@ -251,82 +260,44 @@ const ProductHasMaterials = (props) => {
 
       <div className="row mx-auto pt-2 gx-0">
         <div className="row row-cols-6 pt-3 mx-auto gx-1 ">
-          <div className="col-3">
-            <h6 className="text-center">Material</h6>
-          </div>
-          <div className="col-2">
-            <h6 className="text-center">Quantity</h6>
-          </div>
-          <div className="col-2">
-            <h6 className="text-center">Unit</h6>
-          </div>
-          <div className="col-1">
-            <h6 className="text-center">Per Unit</h6>
-          </div>
-          <div className="col-2">
-            <h6 className="text-center">Cost</h6>
-          </div>
-          <div className="col-2">
-            <h6 className="text-center"></h6>
-          </div>
+          <HeaderColumn display={"col-3"} headerText={"Material"} />
+          <HeaderColumn display={"col-2"} headerText={"Quantity"} />
+          <HeaderColumn display={"col-2"} headerText={"Unit"} />
+          <HeaderColumn display={"col-1"} headerText={"Per Unit"} />
+          <HeaderColumn display={"col-2"} headerText={"Cost"} />
+          <HeaderColumn display={"col-2"} headerText={""} />
         </div>
 
         <div className="row row-cols-6 pt-3 mx-auto gx-1 shadow-sm mb-2">
-          <div className="col-3">
-            <div className="input-group">
-              <select
-                id="inputMaterialName"
-                className="form-select"
-                value={addMaterial}
-                onChange={(e) => setAddMaterial(e.target.value)}
-              >
-                {materials.map((material) => (
-                  <option
-                    value={material.material_id}
-                    key={material.material_id}
-                  >
-                    {material.material_name}
-                  </option>
-                ))}
-              </select>
-              <button
-                className="btn btn-outline-secondary"
-                data-bs-toggle="modal"
-                data-bs-target="#newMaterialModal"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <div className="col-2">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="0"
-              min="0"
-              aria-label="Quantity"
-              value={newQuantity}
-              onChange={(e) => {
-                setNewQuantity(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="col-2">
-            <select
-              id="inputUnits"
-              className="form-select"
-              value={newUnit}
-              onChange={(e) => setNewUnit(e.target.value)}
-            >
-              {units.map((unit) => (
-                <option value={unit.unit_id} key={unit.unit_id}>
-                  {unit.unit_name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SelectWithToggleColumn
+            display={"col-3"}
+            label={"Material"}
+            list={materials}
+            itemkey={"material_name"}
+            newValue={addMaterial}
+            setNewValue={setAddMaterial}
+            id={"material_id"}
+            modalID={"#newMaterialModal"}
+          />
+          <EditColumn
+            display={"col-2"}
+            type={"number"}
+            label={"Quantity"}
+            newValue={newQuantity}
+            setNewValue={setNewQuantity}
+            placeholder={"0"}
+            min={0}
+            step={1}
+          />
+          <SelectColumn
+            display={"col-2"}
+            label={"Units"}
+            list={units}
+            itemkey={"unit_name"}
+            newValue={newUnit}
+            setNewValue={setNewUnit}
+            id={"unit_id"}
+          />
 
           <div className="col-1 text-center">
             <input
@@ -346,6 +317,7 @@ const ProductHasMaterials = (props) => {
               {isPerUnit ? <i className="bi bi-check"></i> : "--"}
             </label>
           </div>
+
           {/* Cost */}
           <div className="col-2 text-center text-muted mx-auto ">
             <p className="py-1 mx-auto">
@@ -356,7 +328,7 @@ const ProductHasMaterials = (props) => {
             </p>
           </div>
 
-          <div className="col-2 text-center ">
+          <div className="col-2 text-center d-grid pb-4">
             <button
               className="btn btn-outline-primary"
               onClick={() => handleAddMaterialToProduct()}

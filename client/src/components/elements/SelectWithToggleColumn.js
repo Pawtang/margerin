@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const SelectWithToggleColumn = (props) => {
   const {
-    classes,
+    display,
     label,
     list,
     itemkey,
@@ -19,7 +19,7 @@ const SelectWithToggleColumn = (props) => {
   }, []);
 
   return (
-    <div className={classes}>
+    <div className={display}>
       <div className="input-group">
         <select
           className="form-select"
