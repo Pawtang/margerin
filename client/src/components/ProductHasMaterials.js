@@ -354,13 +354,19 @@ const ProductHasMaterials = (props) => {
                 key={material.phm_id}
               >
                 <DisplayColumn
-                  display={"col-3"}
+                  display={"col-3 text-center "}
                   content={material.material_name}
                 />
-                <DisplayColumn display={"col-2"} content={material.quantity} />
-                <DisplayColumn display={"col-2"} content={material.unit_name} />
                 <DisplayColumn
-                  display={"col-1"}
+                  display={"col-2 text-center "}
+                  content={material.quantity}
+                />
+                <DisplayColumn
+                  display={"col-2 text-center"}
+                  content={material.unit_name}
+                />
+                <DisplayColumn
+                  display={"col-1 text-center"}
                   content={material.is_per_unit ? "Yes" : "No"}
                 />
 
