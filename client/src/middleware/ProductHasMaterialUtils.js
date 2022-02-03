@@ -119,7 +119,7 @@ export const editProductHasMaterial = async (phmID, body) => {
         body: JSON.stringify(body),
       }
     );
-    console.log("");
+    console.log(phmID, body);
     if (response.status !== 200) {
       throw new Error("response is not 200");
     }

@@ -91,9 +91,7 @@ const Dashboard = () => {
             setProductYield={setProductYield}
             setProductPrice={setProductPrice}
           />
-          <Alert variant="danger" style={{ width: "42rem" }} dismissible>
-            <Alert.Heading>Testing alerts</Alert.Heading>
-          </Alert>
+
           <ProductProfile
             renderProducts={renderProducts}
             deleteProduct={deleteProduct}

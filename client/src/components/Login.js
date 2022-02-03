@@ -1,30 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
-import ToastContainer from "./elements/ToastContainer";
 
 import _ from "lodash";
 
 const Login = () => {
-  const [toasts, setToasts] = useState([]);
-  //Toasts should be a queue structure, FIFO
-
-  const popToast = () => {
-    console.log("pop toast: ", toasts);
-    setTimeout(() => {
-      setToasts([toasts.shift()]);
-    }, 5000);
-  };
-
-  const pushToast = (type, content) => {
-    setToasts([...toasts, { type: type, content: content, id: toasts.length }]);
-  };
-
-  useEffect(() => {
-    !_.isEmpty(toasts) && popToast();
-  }, [toasts]);
-
   return (
     <Fragment>
-      <ToastContainer toasts={toasts} />
       <div className="navbar-clearance"></div>
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white p-5 justify-content-center">
@@ -52,14 +32,7 @@ const Login = () => {
               <input type="password" class="form-control" id="password" />
             </div>
             <div className="d-grid gap-2 d-md-flex justify-content-center">
-              <button
-                class="btn btn-primary"
-                onClick={() => {
-                  pushToast("alert", "Test toast!");
-                }}
-              >
-                Log In
-              </button>
+              <button class="btn btn-primary">Log In</button>
               <button class="btn btn-outline-primary">Sign Up</button>
             </div>
           </div>

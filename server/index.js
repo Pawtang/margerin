@@ -207,13 +207,17 @@ app.put("/material/edit/:id", async (req, res) => {
   }
 });
 
-app.put("/productHasMaterials/edit/:id", async (req, res) => {
+app.put("/productHasMaterial/edit/:id", async (req, res) => {
   console.log("index req, body:", req.params, req.body);
   try {
     const { id } = req.params;
-    const { editMaterialName, editMaterialDescription } = req.body;
+    const { editMaterial, editUnit, editQuantity, editIsPerUnit } = req.body;
     const updateMaterial = await pool.query(
-      `UPDATE material SET material_name = '${editMaterialName}', material_description = '${editMaterialDescription}' WHERE material_id = ${id}`
+      `UPDATE product_has_material SET material_id = '${editMaterial}', 
+      unit_id = '${editUnit}', 
+      quantity =  '${editQuantity}',
+      is_per_unit = '${editIsPerUnit}'
+      WHERE phm_id = ${id}`
     );
     res.status(200).json(updateMaterial.rows);
   } catch (error) {

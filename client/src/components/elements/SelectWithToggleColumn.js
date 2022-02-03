@@ -15,7 +15,7 @@ const SelectWithToggleColumn = (props) => {
   } = props;
 
   useEffect(() => {
-    !_.isEmpty(currentState) && setNewValue(currentState);
+    setNewValue(() => currentState);
   }, []);
 
   return (
