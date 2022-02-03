@@ -5,7 +5,7 @@ const IsPerUnitCheck = (props) => {
   const { currentState, isPerUnit, setIsPerUnit } = props;
 
   useEffect(() => {
-    !_.isEmpty(currentState) && setIsPerUnit(currentState);
+    setIsPerUnit(currentState);
   }, []);
 
   return (
