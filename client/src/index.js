@@ -12,6 +12,7 @@ import ManagerMaterials from "./components/ManagerMaterials";
 import ManagerTransactions from "./components/ManagerTransactions";
 // import TransactionManager from "./components/TransactionManager";
 import Navbar from "./components/Navbar";
+import ToastManager from "./components/ToastManager";
 import "./styles/main.css";
 import "./styles/Styles.css";
 import "./styles/AppPage.css";
@@ -21,6 +22,7 @@ ReactDOM.render(
 
   <BrowserRouter>
     <Navbar />
+    <ToastManager />
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="about" element={<About />} />

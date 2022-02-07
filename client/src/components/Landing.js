@@ -1,17 +1,11 @@
 import { React, Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
-import Toast from "react-bootstrap/Toast";
-import ToastContainer from "react-bootstrap/ToastContainer";
-import Button from "react-bootstrap/Button";
 
 import "../styles/Styles.css";
 import "../styles/main.css";
 
 const Landing = () => {
-  const [showToast, setShowToast] = useState(false);
-  const toggleShowToast = () => setShowToast(!showToast);
-
   return (
     <Fragment>
       <Navbar></Navbar>
@@ -52,26 +46,6 @@ const Landing = () => {
           analytics, you can have a clearer idea of how much your products cost
           to make, and what your real profit margins are.
         </p>
-        <Button onClick={toggleShowToast} className="mb-2">
-          Toggle Toast <strong>with</strong> Animation
-        </Button>
-        <ToastContainer className="p-3" position="bottom-end">
-          <Toast show={showToast} onClose={toggleShowToast}>
-            <Toast.Header>
-              <img
-                src="holder.js/20x20?text=%20"
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">Bootstrap</strong>
-              <small>11 mins ago</small>
-            </Toast.Header>
-            <Toast.Body>
-              Woohoo, you're reading this text in a Toast!
-            </Toast.Body>
-          </Toast>
-        </ToastContainer>
-
         <div className="row shadow rounded-3 my-5 bg-white">
           <div className="col-3 bg-white text-center p-3">
             <i className="bi bi-clipboard-data big-icon"></i>

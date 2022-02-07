@@ -78,7 +78,7 @@ const Transactions = (props) => {
         {/* -------------------------------- Supplier -------------------------------- */}
 
         <SelectWithToggleColumn
-          classes={"col-3"}
+          display={"col-3"}
           label={"Supplier"}
           list={suppliers}
           itemkey={"supplier_name"}
@@ -178,13 +178,14 @@ const Transactions = (props) => {
           ) : (
             <div className="row row-cols-6 border-bottom py-2 mb-2 gx-1">
               <SelectWithToggleColumn
-                classes={"col-3"}
+                display={"col-3"}
                 label={"Supplier"}
                 list={suppliers}
                 itemkey={"supplier_name"}
                 id={"supplier_id"}
-                newValue={transactionSupplier}
-                setNewValue={setTransactionSupplier}
+                currentState={transaction.transaction_supplier}
+                newValue={editTransactionSupplier}
+                setNewValue={setEditTransactionSupplier}
                 modalID={"#newSupplierModal"}
               />
 
@@ -193,8 +194,9 @@ const Transactions = (props) => {
                 type={"number"}
                 label={"Quantity"}
                 min={0}
-                newValue={transactionQuantity}
-                setNewValue={setTransactionQuantity}
+                currentState={transaction.transaction_quantity}
+                newValue={editTransactionQuantity}
+                setNewValue={setEditTransactionQuantity}
                 placeholder={"0"}
               />
 
@@ -205,22 +207,25 @@ const Transactions = (props) => {
                 list={units}
                 itemkey={"unit_name"}
                 id={"unit_id"}
-                newValue={transactionUnit}
-                setNewValue={setTransactionUnit}
+                currentState={transaction.transaction_unit}
+                newValue={editTransactionUnit}
+                setNewValue={setEditTransactionUnit}
               />
 
               <InputCost
                 display={"col-2"}
-                value={transactionCost}
-                setter={setTransactionCost}
+                currentState={transaction.transaction_cost}
+                value={editTransactionCost}
+                setter={setEditTransactionCost}
               />
 
               <EditColumn
                 display={"col-2"}
                 type={"date"}
                 label={"Date"}
-                newValue={transactionDate}
-                setNewValue={setTransactionDate}
+                currentState={transaction.transaction_date}
+                newValue={editTransactionDate}
+                setNewValue={setEditTransactionDate}
                 placeholder={"Transaction Date"}
               />
 

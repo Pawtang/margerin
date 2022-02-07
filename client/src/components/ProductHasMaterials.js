@@ -119,6 +119,8 @@ const ProductHasMaterials = (props) => {
 
   const handleEditProductHasMaterial = async (phmID) => {
     const body = { editMaterial, editQuantity, editUnit, editIsPerUnit };
+
+    console.log(body);
     await editProductHasMaterial(phmID, body);
   };
 

@@ -4,10 +4,13 @@ import _ from "lodash";
 const IsPerUnitCheck = (props) => {
   const { currentState, isPerUnit, setIsPerUnit } = props;
 
+  console.log("curr", currentState);
+
   useEffect(() => {
-    setIsPerUnit(currentState);
+    setIsPerUnit(() => currentState);
   }, []);
 
+  console.log("new", isPerUnit);
   return (
     <div className="col-1 text-center">
       <input

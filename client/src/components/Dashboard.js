@@ -72,7 +72,9 @@ const Dashboard = () => {
         itemType="Product"
         handleAddItem={handleAddProduct}
         newItemName={newProductName}
+        newItemDescription={newProductDescription}
         setNewItemName={setNewProductName}
+        setNewItemDescription={setnewProductDescription}
         clearEntry={clearEntry}
       />
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
