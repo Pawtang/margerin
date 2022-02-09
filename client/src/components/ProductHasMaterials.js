@@ -119,9 +119,8 @@ const ProductHasMaterials = (props) => {
 
   const handleEditProductHasMaterial = async (phmID) => {
     const body = { editMaterial, editQuantity, editUnit, editIsPerUnit };
-
-    console.log(body);
     await editProductHasMaterial(phmID, body);
+    retrieveMaterialsForProduct();
   };
 
   const clearEdit = () => {
@@ -315,12 +314,14 @@ const ProductHasMaterials = (props) => {
             label={"Units"}
             list={units}
             itemkey={"unit_name"}
+            currentState={1}
             newValue={newUnit}
             setNewValue={setNewUnit}
             id={"unit_id"}
           />
 
           <IsPerUnitCheck
+            id={"new-ipu-check"}
             currentState={false}
             isPerUnit={isPerUnit}
             setIsPerUnit={setIsPerUnit}
@@ -436,11 +437,23 @@ const ProductHasMaterials = (props) => {
                 />
 
                 <IsPerUnitCheck
-                  currentState={material.isPerUnit}
+                  id={material.phm_id}
+                  currentState={material.is_per_unit}
                   isPerUnit={editIsPerUnit}
                   setIsPerUnit={setEditIsPerUnit}
                 />
-                <DisplayColumn display={"col-2"} />
+
+                <DisplayColumn
+                  display={"text-muted text-center"}
+                  content={
+                    material.avgcost
+                      ? `$${parseFloat(
+                          material.avgcost * material.quantity
+                        ).toFixed(2)}`
+                      : "$ --.--"
+                  }
+                />
+
                 <ButtonAcceptColumn
                   display={"col-2 d-grid"}
                   editHandler={handleEditProductHasMaterial}

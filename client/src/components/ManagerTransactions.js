@@ -190,6 +190,7 @@ const TransactionManager = () => {
               list={units}
               itemkey={"unit_name"}
               id={"unit_id"}
+              currentState={1}
               newValue={newTransactionUnit}
               setNewValue={setNewTransactionUnit}
             />
@@ -275,7 +276,6 @@ const TransactionManager = () => {
                   />
                   <SelectColumn
                     display={"col-2"}
-                    id={"selectSupplier"}
                     label={"Supplier"}
                     list={suppliers}
                     itemkey={"supplier_name"}
@@ -296,7 +296,6 @@ const TransactionManager = () => {
                   />
                   <SelectColumn
                     display={"col-2"}
-                    id={"selectUnit"}
                     label={"Unit"}
                     list={units}
                     itemkey={"unit_name"}

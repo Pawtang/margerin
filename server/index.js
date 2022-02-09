@@ -294,7 +294,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
     const relatedMaterials = await pool.query(
       `SELECT  m.material_id, m.material_name, phm.quantity, phm.is_per_unit, u.unit_name, u.unit_id, phm.phm_id FROM material m 
       INNER JOIN product_has_material phm ON (m.material_id = phm.material_id) 
-      INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id});`
+      INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id}) ORDER BY m.material_name ASC;`
     );
     const reformattedArray = await Promise.all(
       relatedMaterials.rows.map(async (material) => {
@@ -320,7 +320,7 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
     const { id } = req.params;
 
     const relatedTransactions = await pool.query(
-      `SELECT  t.transaction_id, t.cost, t.quantity, t.transaction_date, s.supplier_name, u.unit_name FROM transaction t 
+      `SELECT  t.transaction_id, t.cost, t.quantity, t.transaction_date, s.supplier_name, s.supplier_id, u.unit_name, u.unit_id FROM transaction t 
       INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) 
       INNER JOIN unit u ON (t.unit_id = u.unit_id) WHERE (material_id = ${id});`
     );

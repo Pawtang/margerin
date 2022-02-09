@@ -2,28 +2,26 @@ import { useEffect } from "react";
 import _ from "lodash";
 
 const IsPerUnitCheck = (props) => {
-  const { currentState, isPerUnit, setIsPerUnit } = props;
-
-  console.log("curr", currentState);
+  const { id, currentState, isPerUnit, setIsPerUnit } = props;
 
   useEffect(() => {
     setIsPerUnit(() => currentState);
   }, []);
 
-  console.log("new", isPerUnit);
   return (
     <div className="col-1 text-center">
       <input
+        checked={isPerUnit ? true : false}
         type="checkbox"
         className="btn-check"
-        id="btn-check-outlined"
+        id={id}
         autoComplete="off"
         value={isPerUnit}
-        onClick={() => {
-          setIsPerUnit((prevCheck) => !prevCheck);
+        onChange={() => {
+          setIsPerUnit((isPerUnit) => !isPerUnit);
         }}
       />
-      <label className="btn btn-outline-secondary" htmlFor="btn-check-outlined">
+      <label className="btn btn-outline-secondary" htmlFor={id}>
         {isPerUnit ? <i className="bi bi-check"></i> : "--"}
       </label>
     </div>

@@ -49,6 +49,7 @@ const Transactions = (props) => {
   };
 
   const handleEditTransaction = async (id) => {
+    // const editTransactionDate = editTransactionDate
     const body = {
       editTransactionMaterial,
       editTransactionSupplier,
@@ -183,7 +184,7 @@ const Transactions = (props) => {
                 list={suppliers}
                 itemkey={"supplier_name"}
                 id={"supplier_id"}
-                currentState={transaction.transaction_supplier}
+                currentState={transaction.supplier_id}
                 newValue={editTransactionSupplier}
                 setNewValue={setEditTransactionSupplier}
                 modalID={"#newSupplierModal"}
@@ -194,7 +195,7 @@ const Transactions = (props) => {
                 type={"number"}
                 label={"Quantity"}
                 min={0}
-                currentState={transaction.transaction_quantity}
+                currentState={transaction.quantity}
                 newValue={editTransactionQuantity}
                 setNewValue={setEditTransactionQuantity}
                 placeholder={"0"}
@@ -202,19 +203,18 @@ const Transactions = (props) => {
 
               <SelectColumn
                 display={"col-2"}
-                id={"selectUnit"}
                 label={"Unit"}
                 list={units}
                 itemkey={"unit_name"}
                 id={"unit_id"}
-                currentState={transaction.transaction_unit}
+                currentState={transaction.unit_id}
                 newValue={editTransactionUnit}
                 setNewValue={setEditTransactionUnit}
               />
 
               <InputCost
                 display={"col-2"}
-                currentState={transaction.transaction_cost}
+                currentState={transaction.cost}
                 value={editTransactionCost}
                 setter={setEditTransactionCost}
               />
@@ -223,7 +223,9 @@ const Transactions = (props) => {
                 display={"col-2"}
                 type={"date"}
                 label={"Date"}
-                currentState={transaction.transaction_date}
+                currentState={dayjs(transaction.transaction_date).format(
+                  "YYYY-MM-DD"
+                )}
                 newValue={editTransactionDate}
                 setNewValue={setEditTransactionDate}
                 placeholder={"Transaction Date"}
