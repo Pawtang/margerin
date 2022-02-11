@@ -4,7 +4,7 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Button from "react-bootstrap/Button";
 
 const ToastManager = () => {
-  const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(true);
   const toggleShowToast = () => setShowToast(!showToast);
   return (
     <>
