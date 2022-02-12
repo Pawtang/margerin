@@ -8,6 +8,7 @@ import EditColumn from "./elements/EditColumn";
 import { getMaterials } from "../middleware/ProductHasMaterialUtils";
 import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
+import Navbar from "./Navbar";
 import _ from "lodash";
 
 const ManagerMaterials = () => {
@@ -69,7 +70,8 @@ const ManagerMaterials = () => {
 
   return (
     <Fragment>
-      <div className="navbar-clearance"></div>
+      <Navbar opacity={"nav-opaque"} />
+
       <div className="container">
         <div className="row">
           <AppNav></AppNav>

@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./components/Landing";
@@ -17,22 +17,35 @@ import "./styles/main.css";
 import "./styles/Styles.css";
 import "./styles/AppPage.css";
 
+const [toastState, setToastState] = useState("none");
+
 ReactDOM.render(
   // <React.StrictMode>
 
   <BrowserRouter>
-    <Navbar />
-    <ToastManager />
+    <ToastManager toastState={toastState} />
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="about" element={<About />} />
       <Route path="contact" element={<Contact />} />
-      <Route path="signup" element={<Signup />} />
-      <Route path="login" element={<Login />} />
-      <Route path="dashboard" element={<Dashboard />} />
-      <Route path="suppliers" element={<ManagerSuppliers />} />
-      <Route path="materials" element={<ManagerMaterials />} />
-      <Route path="transactions" element={<ManagerTransactions />} />
+      <Route path="signup" element={<Signup setToastState={setToastState} />} />
+      <Route path="login" element={<Login setToastState={setToastState} />} />
+      <Route
+        path="dashboard"
+        element={<Dashboard setToastState={setToastState} />}
+      />
+      <Route
+        path="suppliers"
+        element={<ManagerSuppliers setToastState={setToastState} />}
+      />
+      <Route
+        path="materials"
+        element={<ManagerMaterials setToastState={setToastState} />}
+      />
+      <Route
+        path="transactions"
+        element={<ManagerTransactions setToastState={setToastState} />}
+      />
     </Routes>
   </BrowserRouter>,
   // </React.StrictMode>,

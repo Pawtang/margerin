@@ -12,7 +12,7 @@ import {
   updatePrice,
   updateYield,
 } from "../middleware/DashboardUtils";
-import Alert from "react-bootstrap/Alert";
+import Navbar from "./Navbar";
 // import "../styles/Dashboard.css";
 
 const Dashboard = () => {
@@ -68,6 +68,7 @@ const Dashboard = () => {
 
   return (
     <Fragment>
+      <Navbar opacity={"nav-opaque"} />
       <AddPropModal
         itemType="Product"
         handleAddItem={handleAddProduct}
@@ -79,7 +80,7 @@ const Dashboard = () => {
       />
       {/* TODO: Add method to clear NPN and NPD when clicking outside Modal*/}
 
-      <div className="navbar-clearance"></div>
+      {/* <div className="navbar-clearance"></div> */}
       <div className="container">
         <div className="row">
           <AppNav></AppNav>

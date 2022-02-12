@@ -1,9 +1,12 @@
 import { React } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
-const Navbar = () => {
+const Navbar = (props) => {
+  const { opacity } = props;
   return (
-    <nav className="navbar fixed-top navbar-expand-lg navbar-dark p-md-3">
+    <nav
+      className={`navbar main-nav ${opacity} navbar-expand-lg navbar-dark p-md-3`}
+    >
       <div className="container">
         <Link to="/" className="navbar-brand">
           <div className="box">

@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
-import Button from "react-bootstrap/Button";
 
-const ToastManager = () => {
+const ToastManager = (props) => {
+  const { toastState } = props;
   const [showToast, setShowToast] = useState(true);
-  const toggleShowToast = () => setShowToast(!showToast);
+
+  const toastTimer = () => {
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
+
+  // useEffect(() => {
+  //   setShowToast(true);
+  //   toastTimer();
+  // }, []);
+
   return (
     <>
       <ToastContainer className="p-3" position="bottom-end">
-        <Toast show={showToast} onClose={toggleShowToast}>
+        <Toast show={showToast} onClose={setShowToast(false)}>
           <Toast.Header>
             <img
               src="holder.js/20x20?text=%20"

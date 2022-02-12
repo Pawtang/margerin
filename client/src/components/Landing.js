@@ -8,8 +8,8 @@ import "../styles/main.css";
 const Landing = () => {
   return (
     <Fragment>
-      <Navbar></Navbar>
-      <div className="container-fluid background">
+      <Navbar opacity={""} />
+      <div className="container-fluid background position-sticky">
         {/* <div className="blurry"></div> */}
         {/* <nav className="navbar bg-transparent">
           <div className="container justify-content-end mt-4">
@@ -22,7 +22,7 @@ const Landing = () => {
           </div>
         </nav> */}
 
-        <div className="container-fluid d-flex align-items-center hero">
+        <div className="container-fluid d-flex align-items-center hero position-fixed">
           <div className="container titlebox">
             <h1 className="title">margerin</h1>
             <h1 className="white display-6">

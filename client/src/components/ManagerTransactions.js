@@ -8,6 +8,7 @@ import EditColumn from "./elements/EditColumn";
 import InputCost from "./elements/InputCost";
 import SelectColumn from "./elements/SelectColumn";
 import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
+import Navbar from "./Navbar";
 import _ from "lodash";
 import {
   getMaterials,
@@ -126,7 +127,7 @@ const TransactionManager = () => {
 
   return (
     <Fragment>
-      <div className="navbar-clearance"></div>
+      <Navbar opacity={"nav-opaque"} />
       <div className="container">
         <div className="row">
           <AppNav></AppNav>
