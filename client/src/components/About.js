@@ -1,9 +1,10 @@
 import React, { Fragment } from "react";
+import Navbar from "./Navbar";
 
 function About() {
   return (
     <Fragment>
-      <div className="navbar-clearance"></div>
+      <Navbar opacity={"nav-opaque"} />
 
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white p-5 justify-content-center">

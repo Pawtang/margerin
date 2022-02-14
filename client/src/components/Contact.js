@@ -1,9 +1,10 @@
 import { React, Fragment } from "react";
+import Navbar from "./Navbar";
 
 const Contact = () => {
   return (
     <Fragment>
-      <div className="navbar-clearance"></div>
+      <Navbar opacity={"nav-opaque"} />
       <div className="container">
         <div className="app-space">
           <h1>Contact</h1>

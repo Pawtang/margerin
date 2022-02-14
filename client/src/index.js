@@ -10,44 +10,60 @@ import Dashboard from "./components/Dashboard";
 import ManagerSuppliers from "./components/ManagerSuppliers";
 import ManagerMaterials from "./components/ManagerMaterials";
 import ManagerTransactions from "./components/ManagerTransactions";
-// import TransactionManager from "./components/TransactionManager";
-import Navbar from "./components/Navbar";
 import ToastManager from "./components/ToastManager";
 import "./styles/main.css";
 import "./styles/Styles.css";
 import "./styles/AppPage.css";
 
-const [toastState, setToastState] = useState("none");
+const App = () => {
+  const [toastStack, setToastStack] = useState([
+    {
+      title: "Tester",
+      type: "test toast",
+      body: "This is just a test toast, baby",
+    },
+  ]);
+
+  const pushToStack = (toast) => {
+    setToastStack((toastStack) => toastStack.push(toast));
+    setTimeout(() => {
+      setToastStack((toastStack) => toastStack.shift());
+    }, 3000);
+  };
+
+  return (
+    <>
+      <ToastManager toastStack={toastStack} />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="about" element={<About />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="signup" element={<Signup pushToStack={pushToStack} />} />
+        <Route path="login" element={<Login pushToStack={pushToStack} />} />
+        <Route
+          path="dashboard"
+          element={<Dashboard pushToStack={pushToStack} />}
+        />
+        <Route
+          path="suppliers"
+          element={<ManagerSuppliers pushToStack={pushToStack} />}
+        />
+        <Route
+          path="materials"
+          element={<ManagerMaterials pushToStack={pushToStack} />}
+        />
+        <Route
+          path="transactions"
+          element={<ManagerTransactions pushToStack={pushToStack} />}
+        />
+      </Routes>
+    </>
+  );
+};
 
 ReactDOM.render(
-  // <React.StrictMode>
-
   <BrowserRouter>
-    <ToastManager toastState={toastState} />
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="about" element={<About />} />
-      <Route path="contact" element={<Contact />} />
-      <Route path="signup" element={<Signup setToastState={setToastState} />} />
-      <Route path="login" element={<Login setToastState={setToastState} />} />
-      <Route
-        path="dashboard"
-        element={<Dashboard setToastState={setToastState} />}
-      />
-      <Route
-        path="suppliers"
-        element={<ManagerSuppliers setToastState={setToastState} />}
-      />
-      <Route
-        path="materials"
-        element={<ManagerMaterials setToastState={setToastState} />}
-      />
-      <Route
-        path="transactions"
-        element={<ManagerTransactions setToastState={setToastState} />}
-      />
-    </Routes>
+    <App />
   </BrowserRouter>,
-  // </React.StrictMode>,
   document.getElementById("root")
 );

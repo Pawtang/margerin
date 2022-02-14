@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
+import Navbar from "./Navbar";
 
 function Signup() {
   return (
     <Fragment>
-      <div className="navbar-clearance"></div>
-
+      <Navbar opacity={"nav-opaque"} />
       <div class="modal fade " id="strongpassword" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">

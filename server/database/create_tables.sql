@@ -84,3 +84,12 @@ ALTER TABLE product_has_material ALTER COLUMN quantity TYPE decimal(12,3);
 ALTER TABLE supplier ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);
 -- 1/31/22 no reason to use money type, it confuses the front end
 ALTER TABLE transaction ALTER COLUMN cost TYPE decimal(12,2);
+
+--2/12/22 Create users table
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(200) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    UNIQUE (email)
+);

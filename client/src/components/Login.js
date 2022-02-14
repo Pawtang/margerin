@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
+import Navbar from "./Navbar";
 
 import _ from "lodash";
 
 const Login = () => {
   return (
     <Fragment>
-      <div className="navbar-clearance"></div>
+      <Navbar opacity={"nav-opaque"} />
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white p-5 justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10 col-12">

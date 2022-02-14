@@ -11,7 +11,8 @@ import { newMaterial } from "../middleware/ProductHasMaterialUtils";
 import Navbar from "./Navbar";
 import _ from "lodash";
 
-const ManagerMaterials = () => {
+const ManagerMaterials = (props) => {
+  const { pushToStack } = props;
   const [materials, setMaterials] = useState([]);
   /* ------------------------------ New Material ------------------------------ */
   const [newMaterialName, setNewMaterialName] = useState("");
@@ -62,6 +63,7 @@ const ManagerMaterials = () => {
       materials.filter((material) => material.material_id !== materialID)
     );
     retrieveMaterials();
+    pushToStack("delete-material-success");
   };
 
   useEffect(() => {
