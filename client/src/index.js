@@ -11,27 +11,12 @@ import ManagerSuppliers from "./components/ManagerSuppliers";
 import ManagerMaterials from "./components/ManagerMaterials";
 import ManagerTransactions from "./components/ManagerTransactions";
 import ToastManager from "./components/ToastManager";
+import { ToastProvider } from "./contexts/ToastContext";
 import "./styles/main.css";
 import "./styles/Styles.css";
 import "./styles/AppPage.css";
 
 const App = () => {
-  // const [toastStack, setToastStack] = useState([
-  //   {
-  //     title: "Tester",
-  //     type: "test toast",
-  //     body: "This is just a test toast, baby",
-  //   },
-  // ]);
-
-  // const pushToStack = (toast) => {
-  //   setToastStack((toastStack) => toastStack.push(toast));
-  //   setTimeout(() => {
-  //     setToastStack((toastStack) => toastStack.shift());
-  //   }, 3000);
-  // };
-  const pushToStack = () => {};
-
   return (
     <>
       <ToastManager />
@@ -40,24 +25,12 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
-        <Route path="signup" element={<Signup pushToStack={pushToStack} />} />
-        <Route path="login" element={<Login pushToStack={pushToStack} />} />
-        <Route
-          path="dashboard"
-          element={<Dashboard pushToStack={pushToStack} />}
-        />
-        <Route
-          path="suppliers"
-          element={<ManagerSuppliers pushToStack={pushToStack} />}
-        />
-        <Route
-          path="materials"
-          element={<ManagerMaterials pushToStack={pushToStack} />}
-        />
-        <Route
-          path="transactions"
-          element={<ManagerTransactions pushToStack={pushToStack} />}
-        />
+        <Route path="signup" element={<Signup />} />
+        <Route path="login" element={<Login />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="suppliers" element={<ManagerSuppliers />} />
+        <Route path="materials" element={<ManagerMaterials />} />
+        <Route path="transactions" element={<ManagerTransactions />} />
       </Routes>
     </>
   );

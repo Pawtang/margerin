@@ -114,3 +114,7 @@ h2 {
 .custom-toast {
   background-color: white;
 }
+
+.z-super {
+  z-index: 10000;
+}

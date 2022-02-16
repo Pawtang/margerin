@@ -390,6 +390,11 @@ app.delete("/material/:materialID", async (req, res) => {
     );
     res.json("Material deleted!");
   } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error("DELETE error in Index", error);
   }
 });

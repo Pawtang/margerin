@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import _ from "lodash";
 
 const ToastContext = React.createContext();
 
@@ -9,17 +10,19 @@ export function useToasts() {
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
+  const toastTimeout = 3000;
+
   const addToast = (toast) => {
-    setToasts(prevToasts => [...prevToasts, toast]);
+    setToasts((prevToasts) => [...prevToasts, toast]);
   };
 
   const removeToastFromStack = () => {
-    setToasts(prevToasts => {
+    setToasts((prevToasts) => {
       const copyPrevToasts = [...prevToasts];
       copyPrevToasts.shift();
       return copyPrevToasts;
     });
-  }
+  };
 
   useEffect(() => {
     console.log("toasts has been updated");
@@ -27,17 +30,20 @@ export const ToastProvider = ({ children }) => {
       if (toasts && !_.isEmpty(toasts)) {
         removeToastFromStack();
       }
-    }, 2000);
+    }, toastTimeout);
     return () => {
       clearInterval(interval);
-    }
+    };
   }, [toasts]);
-  
 
-  return <ToastContext.Provider value={{
-    toasts,
-    addToast
-  }}>
-    {children}
-  </ToastContext.Provider>;
-}
+  return (
+    <ToastContext.Provider
+      value={{
+        toasts,
+        addToast,
+      }}
+    >
+      {children}
+    </ToastContext.Provider>
+  );
+};

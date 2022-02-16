@@ -1,15 +1,21 @@
+import { ErrorHandling } from "./ErrorHandling";
 const URL_SERVER = "http://localhost:5000";
 
-export const deleteMaterial = async (materialID) => {
+export const deleteMaterial = async (materialID, addToast) => {
   try {
     const response = await fetch(`${URL_SERVER}/material/${materialID}`, {
       method: "DELETE",
     });
     if (response.status !== 200) {
-      throw "DELETE not successful";
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    console.error("Failed to Delete Material", err.message);
+    addToast({
+      title: "Failed to Delete",
+      type: "Error",
+      body: err.toString(),
+    });
   }
 };
 

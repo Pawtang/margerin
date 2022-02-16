@@ -8,11 +8,12 @@ import EditColumn from "./elements/EditColumn";
 import { getMaterials } from "../middleware/ProductHasMaterialUtils";
 import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
+import { useToasts } from "../contexts/ToastContext";
 import Navbar from "./Navbar";
 import _ from "lodash";
 
-const ManagerMaterials = (props) => {
-  const { pushToStack } = props;
+const ManagerMaterials = () => {
+  const { addToast } = useToasts();
   const [materials, setMaterials] = useState([]);
   /* ------------------------------ New Material ------------------------------ */
   const [newMaterialName, setNewMaterialName] = useState("");
@@ -58,12 +59,11 @@ const ManagerMaterials = (props) => {
   };
 
   const handleDeleteMaterial = async (materialID) => {
-    await deleteMaterial(materialID);
+    await deleteMaterial(materialID, addToast);
     setMaterials(
       materials.filter((material) => material.material_id !== materialID)
     );
     retrieveMaterials();
-    pushToStack("delete-material-success");
   };
 
   useEffect(() => {
