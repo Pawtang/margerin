@@ -16,24 +16,26 @@ import "./styles/Styles.css";
 import "./styles/AppPage.css";
 
 const App = () => {
-  const [toastStack, setToastStack] = useState([
-    {
-      title: "Tester",
-      type: "test toast",
-      body: "This is just a test toast, baby",
-    },
-  ]);
+  // const [toastStack, setToastStack] = useState([
+  //   {
+  //     title: "Tester",
+  //     type: "test toast",
+  //     body: "This is just a test toast, baby",
+  //   },
+  // ]);
 
-  const pushToStack = (toast) => {
-    setToastStack((toastStack) => toastStack.push(toast));
-    setTimeout(() => {
-      setToastStack((toastStack) => toastStack.shift());
-    }, 3000);
-  };
+  // const pushToStack = (toast) => {
+  //   setToastStack((toastStack) => toastStack.push(toast));
+  //   setTimeout(() => {
+  //     setToastStack((toastStack) => toastStack.shift());
+  //   }, 3000);
+  // };
+  const pushToStack = () => {};
 
   return (
     <>
-      <ToastManager toastStack={toastStack} />
+      <ToastManager />
+      {/* <ToastManager toastStack={toastStack} /> */}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="about" element={<About />} />
@@ -63,7 +65,9 @@ const App = () => {
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );
