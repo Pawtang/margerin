@@ -19,7 +19,7 @@ export const deleteMaterial = async (materialID, addToast) => {
   }
 };
 
-export const editMaterial = async (materialID, body) => {
+export const editMaterial = async (materialID, body, addToast) => {
   try {
     const response = await fetch(`${URL_SERVER}/material/edit/${materialID}`, {
       method: "PUT",
@@ -28,9 +28,14 @@ export const editMaterial = async (materialID, body) => {
     });
     console.log("");
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    console.error(err.message);
+    addToast({
+      title: "Failed to edit material",
+      type: "Error",
+      body: err.toString(),
+    });
   }
 };

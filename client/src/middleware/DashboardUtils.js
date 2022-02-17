@@ -1,3 +1,5 @@
+import { ErrorHandling } from "./ErrorHandling";
+
 const URL_SERVER = "http://localhost:5000";
 
 export const displayProduct = async (id) => {
@@ -28,15 +30,21 @@ export const addProduct = async (body) => {
   }
 };
 
-export const getProducts = async () => {
+export const getProducts = async (addToast) => {
   try {
     const response = await fetch(`${URL_SERVER}/products`);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
-    return await response.json();
+    const res = await response.json();
+    return res;
   } catch (err) {
-    console.error("getProducts GET /products error:", err.message);
+    addToast({
+      title: "Failed to get product list",
+      type: "Error",
+      body: err.toString(),
+    });
   }
 };
 

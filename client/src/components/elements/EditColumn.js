@@ -29,8 +29,8 @@ const EditColumn = (props) => {
         placeholder={placeholder}
         aria-label={label}
         value={newValue}
-        maxlength={maxlength}
-        minlength={minlength}
+        maxLength={maxlength}
+        minLength={minlength}
         min={min}
         step={step}
         onChange={(e) => {

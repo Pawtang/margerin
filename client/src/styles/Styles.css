@@ -118,3 +118,7 @@ h2 {
 .z-super {
   z-index: 10000;
 }
+
+.fader {
+  transition: all 2ms;
+}

@@ -13,9 +13,11 @@ import {
   updateYield,
 } from "../middleware/DashboardUtils";
 import Navbar from "./Navbar";
+import { useToasts } from "../contexts/ToastContext";
 // import "../styles/Dashboard.css";
 
 const Dashboard = () => {
+  const { addToast } = useToasts();
   const [displayedProduct, setDisplayedProduct] = useState({});
   const [newProductName, setNewProductName] = useState("");
   const [productYield, setProductYield] = useState("");
@@ -28,7 +30,7 @@ const Dashboard = () => {
 
   //How to trigger rendering?
   const renderProducts = async () => {
-    const productArray = await getProducts();
+    const productArray = await getProducts(addToast);
     if (_.isEmpty(productArray)) return; //Maybe?
     setProducts(productArray);
     setDisplayedProduct(productArray[0]);

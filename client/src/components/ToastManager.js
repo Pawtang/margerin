@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
-import dayjs from "dayjs";
+import { Transition } from "react-transition-group";
 import { useToasts } from "../contexts/ToastContext";
 
 const ToastManager = (props) => {
+  const duration = 300;
   const { toasts } = useToasts();
   return (
     <>
@@ -13,8 +14,8 @@ const ToastManager = (props) => {
         {toasts.map((toast) => {
           console.log("toast");
           return (
-            <Toast show={true}>
-              <Toast.Header>
+            <Toast animation={"true"} className={"fader"}>
+              <Toast.Header closeButton={false}>
                 <img
                   src="holder.js/20x20?text=%20"
                   className="rounded me-2"

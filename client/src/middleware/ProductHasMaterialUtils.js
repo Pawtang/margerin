@@ -1,3 +1,4 @@
+import { ErrorHandling } from "./ErrorHandling";
 const URL_SERVER = "http://localhost:5000";
 
 export const getMaterials = async () => {
@@ -12,33 +13,43 @@ export const getMaterials = async () => {
   }
 };
 
-export const getMaterialsForProduct = async (id) => {
+export const getMaterialsForProduct = async (id, addToast) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
     const res = await response.json();
-
     return res;
   } catch (err) {
-    console.error(err.message);
+    addToast({
+      title: "Failed to get materials for product",
+      type: "Error",
+      body: err.toString(),
+    });
   }
 };
 
-export const getTransactionsForMaterial = async (id) => {
+export const getTransactionsForMaterial = async (id, addToast) => {
   try {
     const response = await fetch(`${URL_SERVER}/materialHasTransactions/${id}`);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
-    return await response.json();
+    const res = await response.json();
+    return res;
   } catch (err) {
-    console.error(err.message);
+    addToast({
+      title: "Failed to get transactions for material",
+      type: "Error",
+      body: err.toString(),
+    });
   }
 };
 
-export const addMaterialToProduct = async (body) => {
+export const addMaterialToProduct = async (body, addToast) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterial`, {
       method: "POST",
@@ -48,10 +59,17 @@ export const addMaterialToProduct = async (body) => {
       body: JSON.stringify(body),
     });
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
+    const res = await response.json();
+    return res;
   } catch (err) {
-    console.error(err.message);
+    addToast({
+      title: "Failed to add material to product",
+      type: "Error",
+      body: err.toString(),
+    });
   }
 };
 

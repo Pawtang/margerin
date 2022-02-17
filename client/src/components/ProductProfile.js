@@ -26,13 +26,15 @@ const ProductProfile = (props) => {
         <div className="row mb-5 shadow-sm p-4 rounded-3 ">
           <div className="d-flex flex-row-reverse">
             <div className="btn-group">
-              <button onClick={() => {
-                addToast({
-                  title: "ME",
-                  type: "test",
-                  body: "WE FUCKIN DID IT"
-                });
-              }}>
+              <button
+                onClick={() => {
+                  addToast({
+                    title: "Sample of a Toast",
+                    type: "Error",
+                    body: "WE FUCKIN DID IT",
+                  });
+                }}
+              >
                 Add generic toast
               </button>
               <button className="btn btn-outline-primary" type="button">
