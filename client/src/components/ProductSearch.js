@@ -9,8 +9,8 @@ export const ProductSearch = (props) => {
 
   return (
     <div className="col-12 col-md-3 border-end">
-      <div className="row my-4 border">
-        <div className="col-11 border align-self-center">
+      <div className="row my-4 ">
+        <div className="col-12  align-self-center">
           <div className="input-group">
             <span className="input-group-text" id="basic-addon1">
               <i className="bi bi-search"></i>
@@ -31,7 +31,7 @@ export const ProductSearch = (props) => {
       </div>
 
       <div className="row  mx-0 limit-y">
-        <div className="row my-1">
+        <div className="row my-1 d-grid g-0 mx-0">
           <button
             className="btn btn-primary"
             data-bs-toggle="modal"

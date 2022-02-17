@@ -11,11 +11,7 @@ export const deleteMaterial = async (materialID, addToast) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    addToast({
-      title: "Failed to Delete",
-      type: "Error",
-      body: err.toString(),
-    });
+    throw err;
   }
 };
 

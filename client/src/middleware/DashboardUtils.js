@@ -10,7 +10,7 @@ export const displayProduct = async (id) => {
     }
     return await response.json();
   } catch (err) {
-    console.error("displayProduct get /product/:id error:", err.message);
+    throw err;
   }
 };
 
@@ -26,11 +26,11 @@ export const addProduct = async (body) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error("addProduct POST /product error:", err.message);
+    throw err;
   }
 };
 
-export const getProducts = async (addToast) => {
+export const getProducts = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/products`);
     if (response.status !== 200) {
@@ -40,11 +40,7 @@ export const getProducts = async (addToast) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    addToast({
-      title: "Failed to get product list",
-      type: "Error",
-      body: err.toString(),
-    });
+    throw err;
   }
 };
 
@@ -57,7 +53,7 @@ export const deleteProduct = async (id) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error("deleteProduct DELETE /product error:", err.message);
+    throw err;
   }
 };
 

@@ -1,7 +1,6 @@
 import { React, Fragment, useState, useEffect } from "react";
 import _ from "lodash";
 import AppNav from "./AppNav";
-import ProductHasMaterials from "./ProductHasMaterials";
 import ProductSearch from "./ProductSearch";
 import AddPropModal from "./AddPropModal";
 import ProductProfile from "./ProductProfile";
@@ -30,12 +29,20 @@ const Dashboard = () => {
 
   //How to trigger rendering?
   const renderProducts = async () => {
-    const productArray = await getProducts(addToast);
-    if (_.isEmpty(productArray)) return; //Maybe?
-    setProducts(productArray);
-    setDisplayedProduct(productArray[0]);
-    setProductYield(productArray[0].yield);
-    setProductPrice(productArray[0].price);
+    try {
+      const productArray = await getProducts();
+      if (_.isEmpty(productArray)) return; //Maybe?
+      setProducts(productArray);
+      setDisplayedProduct(productArray[0]);
+      setProductYield(productArray[0].yield);
+      setProductPrice(productArray[0].price);
+    } catch (err) {
+      addToast({
+        title: "Failed to get product list",
+        type: "Error",
+        body: err.toString(),
+      });
+    }
   };
 
   useEffect(() => {
@@ -44,11 +51,24 @@ const Dashboard = () => {
 
   /* ------------------------------- Add Product ------------------------------ */
   const handleAddProduct = async (e) => {
-    e.preventDefault();
-    const body = { newProductName, newProductDescription };
-    await addProduct(body);
-    clearEntry("productModal");
-    renderProducts();
+    try {
+      e.preventDefault();
+      const body = { newProductName, newProductDescription };
+      await addProduct(body);
+      clearEntry("productModal");
+      renderProducts();
+      addToast({
+        title: "Product Added!",
+        type: "Success",
+        body: "Successfully added product",
+      });
+    } catch (err) {
+      addToast({
+        title: "Failed to add product to list",
+        type: "Error",
+        body: err.toString(),
+      });
+    }
   };
 
   const clearEntry = () => {
@@ -57,9 +77,17 @@ const Dashboard = () => {
   };
 
   const updateProductYield = async () => {
-    const productID = displayedProduct.product_id;
-    const body = { productYield };
-    await updateYield(productID, body);
+    try {
+      const productID = displayedProduct.product_id;
+      const body = { productYield };
+      await updateYield(productID, body);
+    } catch (err) {
+      addToast({
+        title: "Failed to update product yield",
+        type: "Error",
+        body: err.toString(),
+      });
+    }
   };
 
   const updateProductPrice = async () => {

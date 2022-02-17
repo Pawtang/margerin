@@ -59,11 +59,18 @@ const ManagerMaterials = () => {
   };
 
   const handleDeleteMaterial = async (materialID) => {
-    await deleteMaterial(materialID, addToast);
-    setMaterials(
-      materials.filter((material) => material.material_id !== materialID)
-    );
-    retrieveMaterials();
+    try {
+      await deleteMaterial(materialID, addToast);
+      setMaterials(
+        materials.filter((material) => material.material_id !== materialID)
+      );
+    } catch (err) {
+      addToast({
+        title: "Failed to delete material",
+        type: "Error",
+        body: err.toString(),
+      });
+    }
   };
 
   useEffect(() => {
