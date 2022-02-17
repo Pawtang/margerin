@@ -18,25 +18,12 @@ const ProductProfile = (props) => {
     setProductAverageCost,
   } = props;
 
-  const { addToast } = useToasts();
-
   return (
     <Fragment>
       <div className="col-12 col-md-9 p-4 gx-5">
         <div className="row mb-5 shadow-sm p-4 rounded-3 ">
           <div className="d-flex flex-row-reverse">
             <div className="btn-group">
-              <button
-                onClick={() => {
-                  addToast({
-                    title: "Sample of a Toast",
-                    type: "Error",
-                    body: "WE FUCKIN DID IT",
-                  });
-                }}
-              >
-                Add generic toast
-              </button>
               <button className="btn btn-outline-primary" type="button">
                 Edit <i className="bi bi-pencil-square"></i>
               </button>

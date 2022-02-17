@@ -9,6 +9,7 @@ import { getMaterials } from "../middleware/ProductHasMaterialUtils";
 import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
 import { useToasts } from "../contexts/ToastContext";
+import { ErrorHandling } from "../middleware/ErrorHandling";
 import Navbar from "./Navbar";
 import _ from "lodash";
 
@@ -44,18 +45,34 @@ const ManagerMaterials = () => {
   };
 
   const retrieveMaterials = async () => {
-    const array = await getMaterials();
-    setMaterials(array);
+    try {
+      const array = await getMaterials();
+      setMaterials(array);
+    } catch (err) {
+      addToast({
+        title: "Failed to add material",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleAddMaterial = async () => {
-    const body = {
-      newMaterialName,
-      newMaterialDescription,
-    };
-    await newMaterial(body);
-    clearInput();
-    retrieveMaterials();
+    try {
+      const body = {
+        newMaterialName,
+        newMaterialDescription,
+      };
+      await newMaterial(body);
+      clearInput();
+      retrieveMaterials();
+    } catch (err) {
+      addToast({
+        title: "Failed to add material",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleDeleteMaterial = async (materialID) => {
@@ -68,7 +85,7 @@ const ManagerMaterials = () => {
       addToast({
         title: "Failed to delete material",
         type: "Error",
-        body: err.toString(),
+        body: ErrorHandling(err),
       });
     }
   };

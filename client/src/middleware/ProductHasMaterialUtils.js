@@ -9,11 +9,11 @@ export const getMaterials = async () => {
     }
     return await response.json();
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };
 
-export const getMaterialsForProduct = async (id, addToast) => {
+export const getMaterialsForProduct = async (id) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`);
     if (response.status !== 200) {
@@ -23,15 +23,11 @@ export const getMaterialsForProduct = async (id, addToast) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    addToast({
-      title: "Failed to get materials for product",
-      type: "Error",
-      body: err.toString(),
-    });
+    throw err;
   }
 };
 
-export const getTransactionsForMaterial = async (id, addToast) => {
+export const getTransactionsForMaterial = async (id) => {
   try {
     const response = await fetch(`${URL_SERVER}/materialHasTransactions/${id}`);
     if (response.status !== 200) {
@@ -41,15 +37,11 @@ export const getTransactionsForMaterial = async (id, addToast) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    addToast({
-      title: "Failed to get transactions for material",
-      type: "Error",
-      body: err.toString(),
-    });
+    throw err;
   }
 };
 
-export const addMaterialToProduct = async (body, addToast) => {
+export const addMaterialToProduct = async (body) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterial`, {
       method: "POST",
@@ -65,11 +57,7 @@ export const addMaterialToProduct = async (body, addToast) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    addToast({
-      title: "Failed to add material to product",
-      type: "Error",
-      body: err.toString(),
-    });
+    throw err;
   }
 };
 
@@ -86,7 +74,7 @@ export const addTransactionForMaterial = async (body) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error("Failed to add transaction: ", err.message);
+    throw err;
   }
 };
 
@@ -98,7 +86,7 @@ export const getUnits = async () => {
     }
     return response.json();
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };
 
@@ -110,7 +98,7 @@ export const getSuppliers = async () => {
     }
     return response.json();
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };
 
@@ -123,7 +111,7 @@ export const deleteMaterialFromProduct = async (phmID) => {
       throw "DELETE not successful";
     }
   } catch (err) {
-    console.error("Failed to Delete", err.message);
+    throw err;
   }
 };
 
@@ -142,7 +130,7 @@ export const editProductHasMaterial = async (phmID, body) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };
 
@@ -161,7 +149,7 @@ export const deleteTransactionFromMaterial = async (
       throw "DELETE not successful";
     }
   } catch (err) {
-    console.error("Failed to Delete", err.message);
+    throw err;
   }
 };
 
@@ -176,7 +164,7 @@ export const newMaterial = async (body) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };
 
@@ -191,6 +179,6 @@ export const newSupplier = async (body) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };

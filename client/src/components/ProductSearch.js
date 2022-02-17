@@ -1,4 +1,3 @@
-//TODO: Generic Naming
 import { displayProduct } from "../middleware/DashboardUtils";
 import { React, useState } from "react";
 
