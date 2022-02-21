@@ -28,10 +28,6 @@ export const editMaterial = async (materialID, body, addToast) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    addToast({
-      title: "Failed to edit material",
-      type: "Error",
-      body: err.toString(),
-    });
+    throw err;
   }
 };

@@ -93,3 +93,5 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(200) NOT NULL,
     UNIQUE (email)
 );
+-- 2/18/22
+ALTER TABLE product ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);

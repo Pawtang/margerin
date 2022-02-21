@@ -47,7 +47,7 @@ export const ProductSearch = (props) => {
               product.product_name.toLowerCase().includes(search.toLowerCase())
             )
             .map((product) => (
-              <div className="row my-1" key={product.product_id}>
+              <div className="row my-1 d-grid g-0" key={product.product_id}>
                 <button
                   className="btn btn-outline-primary"
                   onClick={async () => {

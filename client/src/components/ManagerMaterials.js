@@ -50,7 +50,7 @@ const ManagerMaterials = () => {
       setMaterials(array);
     } catch (err) {
       addToast({
-        title: "Failed to add material",
+        title: "Failed to load materials",
         type: "Error",
         body: ErrorHandling(err),
       });

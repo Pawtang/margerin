@@ -58,7 +58,7 @@ const Dashboard = () => {
       clearEntry("productModal");
       renderProducts();
       addToast({
-        title: "Product Added!",
+        title: `${newProductName} added!`,
         type: "Success",
         body: "Successfully added product",
       });

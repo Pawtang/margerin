@@ -10,7 +10,7 @@ export const deleteSupplier = async (supplierID) => {
       throw "DELETE not successful";
     }
   } catch (err) {
-    console.error("Failed to Delete", err.message);
+    throw err;
   }
 };
 
@@ -22,7 +22,7 @@ export const getSuppliers = async () => {
     }
     return response.json();
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };
 
@@ -37,7 +37,7 @@ export const newSupplier = async (body) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };
 
@@ -53,6 +53,6 @@ export const editSupplier = async (supplierID, body) => {
       throw new Error("response is not 200");
     }
   } catch (err) {
-    console.error(err.message);
+    throw err;
   }
 };

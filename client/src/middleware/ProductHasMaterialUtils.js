@@ -71,7 +71,8 @@ export const addTransactionForMaterial = async (body) => {
       body: JSON.stringify(body),
     });
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
     throw err;
@@ -82,7 +83,8 @@ export const getUnits = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/units`);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
     return response.json();
   } catch (err) {
@@ -94,7 +96,8 @@ export const getSuppliers = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/suppliers`);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
     return response.json();
   } catch (err) {
@@ -108,7 +111,8 @@ export const deleteMaterialFromProduct = async (phmID) => {
       method: "DELETE",
     });
     if (response.status !== 200) {
-      throw "DELETE not successful";
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
     throw err;
@@ -127,7 +131,8 @@ export const editProductHasMaterial = async (phmID, body) => {
     );
     console.log(phmID, body);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
     throw err;
@@ -146,7 +151,8 @@ export const deleteTransactionFromMaterial = async (
       }
     );
     if (response.status !== 200) {
-      throw "DELETE not successful";
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
     throw err;
@@ -161,7 +167,9 @@ export const newMaterial = async (body) => {
       body: JSON.stringify(body),
     });
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      console.log("Error in PHMUtils");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
     throw err;
@@ -176,7 +184,8 @@ export const newSupplier = async (body) => {
       body: JSON.stringify(body),
     });
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
     throw err;

@@ -16,12 +16,12 @@ const ToastManager = (props) => {
           return (
             <Toast animation={"true"} className={"fader"}>
               <Toast.Header closeButton={false}>
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto">{toast.title}</strong>
+                {toast.type == "Success" ? (
+                  <i class="bi bi-hand-thumbs-up-fill"></i>
+                ) : (
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+                )}
+                <strong className="me-auto"> {toast.title}</strong>
                 <small>{toast.type}</small>
               </Toast.Header>
               <Toast.Body>{toast.body}</Toast.Body>

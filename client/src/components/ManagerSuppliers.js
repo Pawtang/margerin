@@ -13,8 +13,11 @@ import {
   editSupplier,
 } from "../middleware/SupplierUtils";
 import _ from "lodash";
+import { useToasts } from "../contexts/ToastContext";
+import { ErrorHandling } from "../middleware/ErrorHandling";
 
 const ManagerSuppliers = () => {
+  const { addToast } = useToasts();
   const [suppliers, setSuppliers] = useState([]);
 
   /* ------------------------------- Adding New ------------------------------- */
@@ -31,38 +34,68 @@ const ManagerSuppliers = () => {
   // const [editSupplierRating, setEditSupplierRating] = useState("");
 
   const retrieveSuppliers = async () => {
-    const array = await getSuppliers();
-    setSuppliers(array);
+    try {
+      const array = await getSuppliers();
+      setSuppliers(array);
+    } catch (err) {
+      addToast({
+        title: "Failed to load suppliers",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleAddSupplier = async () => {
-    const body = {
-      newSupplierName,
-      newSupplierContactName,
-      newSupplierPhone,
-      // newSupplierRating,
-    };
-    await newSupplier(body);
-    retrieveSuppliers();
+    try {
+      const body = {
+        newSupplierName,
+        newSupplierContactName,
+        newSupplierPhone,
+      };
+      await newSupplier(body);
+      retrieveSuppliers();
+    } catch (err) {
+      addToast({
+        title: "Failed to add supplier",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleEditSupplier = async (id) => {
-    const body = {
-      editSupplierName,
-      editSupplierContactName,
-      editSupplierPhone,
-      // editSupplierRating,
-    };
-    await editSupplier(id, body);
-    retrieveSuppliers();
+    try {
+      const body = {
+        editSupplierName,
+        editSupplierContactName,
+        editSupplierPhone,
+      };
+      await editSupplier(id, body);
+      retrieveSuppliers();
+    } catch (err) {
+      addToast({
+        title: "Failed to edit supplier",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleDeleteSupplier = async (supplierID) => {
-    await deleteSupplier(supplierID);
-    setSuppliers(
-      suppliers.filter((supplier) => supplier.supplier_id !== supplierID)
-    );
-    retrieveSuppliers();
+    try {
+      await deleteSupplier(supplierID);
+      setSuppliers(
+        suppliers.filter((supplier) => supplier.supplier_id !== supplierID)
+      );
+      retrieveSuppliers();
+    } catch (err) {
+      addToast({
+        title: "Failed to delete supplier",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const clearEdit = () => {

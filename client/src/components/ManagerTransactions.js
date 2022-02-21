@@ -21,8 +21,11 @@ import {
   newTransaction,
   editTransaction,
 } from "../middleware/TransactionUtils";
+import { useToasts } from "../contexts/ToastContext";
+import { ErrorHandling } from "../middleware/ErrorHandling";
 
 const TransactionManager = () => {
+  const { addToast } = useToasts();
   const todayDate = new Date().toISOString().split("T")[0];
   /* ----------------------------- New Transaction ---------------------------- */
   const [transactions, setTransactions] = useState([]);
@@ -48,55 +51,112 @@ const TransactionManager = () => {
   const [rowToEdit, setRowToEdit] = useState("");
 
   const loadLists = async () => {
-    const allMaterials = await getMaterials();
-    const unitList = await getUnits();
-    const supplierList = await getSuppliers();
-    setMaterials(allMaterials);
-    setUnits(unitList);
-    setSuppliers(supplierList);
+    try {
+      const allMaterials = await getMaterials();
+      setMaterials(allMaterials);
+    } catch (err) {
+      addToast({
+        title: "Failed to load materials",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
+    try {
+      const unitList = await getUnits();
+      setUnits(unitList);
+    } catch (err) {
+      addToast({
+        title: "Failed to load units",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
+
+    try {
+      const supplierList = await getSuppliers();
+      setSuppliers(supplierList);
+    } catch (err) {
+      addToast({
+        title: "Failed to load suppliers",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const retrieveTransactions = async () => {
-    const array = await getTransactionData();
-    setTransactions(array);
+    try {
+      const array = await getTransactionData();
+      setTransactions(array);
+    } catch (err) {
+      addToast({
+        title: "Failed to load transactions",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleAddTransaction = async () => {
-    const body = {
-      newTransactionDate,
-      newTransactionMaterial,
-      newTransactionSupplier,
-      newTransactionUnit,
-      newTransactionCost,
-      newTransactionQuantity,
-    };
-    await newTransaction(body);
-    retrieveTransactions();
-    clearNew();
+    try {
+      const body = {
+        newTransactionDate,
+        newTransactionMaterial,
+        newTransactionSupplier,
+        newTransactionUnit,
+        newTransactionCost,
+        newTransactionQuantity,
+      };
+      clearNew();
+      await newTransaction(body);
+      retrieveTransactions();
+    } catch (err) {
+      addToast({
+        title: "Failed to add transaction",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleEditTransaction = async (id) => {
-    const body = {
-      editTransactionMaterial,
-      editTransactionSupplier,
-      editTransactionUnit,
-      editTransactionCost,
-      editTransactionQuantity,
-      editTransactionDate,
-    };
-    await editTransaction(id, body);
-    retrieveTransactions();
-    clearEdit();
+    try {
+      const body = {
+        editTransactionMaterial,
+        editTransactionSupplier,
+        editTransactionUnit,
+        editTransactionCost,
+        editTransactionQuantity,
+        editTransactionDate,
+      };
+      await editTransaction(id, body);
+      retrieveTransactions();
+      clearEdit();
+    } catch (err) {
+      addToast({
+        title: "Failed to edit transaction",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const handleDeleteTransaction = async (transactionID) => {
-    await deleteTransaction(transactionID);
-    setTransactions(
-      transactions.filter(
-        (transaction) => transaction.transaction_id !== transactionID
-      )
-    );
-    retrieveTransactions();
+    try {
+      await deleteTransaction(transactionID);
+      setTransactions(
+        transactions.filter(
+          (transaction) => transaction.transaction_id !== transactionID
+        )
+      );
+      retrieveTransactions();
+    } catch (err) {
+      addToast({
+        title: "Failed to delete transaction",
+        type: "Error",
+        body: ErrorHandling(err),
+      });
+    }
   };
 
   const clearEdit = () => {
