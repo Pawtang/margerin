@@ -11,7 +11,7 @@ export const deleteMaterial = async (materialID, addToast) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -28,6 +28,6 @@ export const editMaterial = async (materialID, body, addToast) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };

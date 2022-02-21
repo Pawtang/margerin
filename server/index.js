@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json()); //req.body
 
 //ROUTES//
+
 /* ----------------------------- CREATE METHODS ----------------------------- */
 //create a product
 app.post("/product", async (req, res) => {

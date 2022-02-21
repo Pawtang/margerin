@@ -58,7 +58,7 @@ const TransactionManager = () => {
       addToast({
         title: "Failed to load materials",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
     try {
@@ -68,7 +68,7 @@ const TransactionManager = () => {
       addToast({
         title: "Failed to load units",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
 
@@ -79,7 +79,7 @@ const TransactionManager = () => {
       addToast({
         title: "Failed to load suppliers",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
@@ -92,7 +92,7 @@ const TransactionManager = () => {
       addToast({
         title: "Failed to load transactions",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
@@ -114,7 +114,7 @@ const TransactionManager = () => {
       addToast({
         title: "Failed to add transaction",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
@@ -136,7 +136,7 @@ const TransactionManager = () => {
       addToast({
         title: "Failed to edit transaction",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
@@ -154,7 +154,7 @@ const TransactionManager = () => {
       addToast({
         title: "Failed to delete transaction",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };

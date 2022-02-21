@@ -9,7 +9,7 @@ export const getMaterials = async () => {
     }
     return await response.json();
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -23,7 +23,7 @@ export const getMaterialsForProduct = async (id) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -37,7 +37,7 @@ export const getTransactionsForMaterial = async (id) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -57,7 +57,7 @@ export const addMaterialToProduct = async (body) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -75,7 +75,7 @@ export const addTransactionForMaterial = async (body) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -88,7 +88,7 @@ export const getUnits = async () => {
     }
     return response.json();
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -101,7 +101,7 @@ export const getSuppliers = async () => {
     }
     return response.json();
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -115,7 +115,7 @@ export const deleteMaterialFromProduct = async (phmID) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -135,7 +135,7 @@ export const editProductHasMaterial = async (phmID, body) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -155,7 +155,7 @@ export const deleteTransactionFromMaterial = async (
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -172,7 +172,7 @@ export const newMaterial = async (body) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -188,6 +188,6 @@ export const newSupplier = async (body) => {
       throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };

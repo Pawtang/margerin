@@ -14,6 +14,7 @@ export const ErrorHandling = (errorCode) => {
     42804: "Incorrect datatype",
     22000: "Data exception",
   };
-  if (!(errorCode in dictionary)) return "Error: unknown error";
+  if (!(errorCode in dictionary))
+    return `${errorCode.toString()}: unknown error`;
   return dictionary[errorCode];
 };

@@ -10,23 +10,27 @@ function About() {
         <div className="row shadow rounded-3 bg-white p-5 justify-content-center">
           <h1>About</h1>
           <p>
-            Startup MVP customer partnership freemium android monetization focus
-            A/B testing metrics rockstar. Rockstar responsive web design
-            termsheet graphical user interface ownership investor. Long tail
-            entrepreneur investor market conversion startup sales focus product
-            management network effects handshake first mover advantage success
-            prototype. Influencer client founders marketing. Twitter equity
-            backing. Learning curve market angel investor.
+            The purpose of Margerin is to provide a better understanding of your
+            production costs. It uses data from your past transactions to
+            provide an accurate and up-to-date average product cost, and based
+            on your pricing, the profit per product.
           </p>
           <p>
-            Vesting period social proof backing. Value proposition
-            business-to-business churn rate metrics non-disclosure agreement
-            responsive web design assets success sales funding branding
-            ownership hackathon product management. Virality angel investor
-            partnership gen-z hypotheses validation. Branding marketing
-            technology investor customer disruptive creative gen-z angel
-            investor learning curve. Crowdfunding partner network ownership.
-            Incubator vesting period focus release buzz.
+            Margerin is built on a model of products, materials, recipes,
+            transactions, and suppliers. For non-food projects, this can also be
+            understood as assemblies, materials, BOMs, transaction, and
+            suppliers.
+          </p>
+          <p>
+            Transaction data is aggregated over a recent timeframe to build the
+            product recipe cost. Because one recipe often makes multiple
+            products, a yield per recipe field is included that acts as the
+            divisor for the total cost.
+          </p>
+          <p>
+            The dashboard allows in-context editing of products, while the
+            material manager tabs allow you to quickly create/edit/delete
+            resources such as materials, transactions, and suppliers.
           </p>
         </div>
       </div>

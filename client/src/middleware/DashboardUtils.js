@@ -6,11 +6,12 @@ export const displayProduct = async (id) => {
   try {
     const response = await fetch(`${URL_SERVER}/product/${id}`);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode));
     }
     return await response.json();
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -23,10 +24,11 @@ export const addProduct = async (body) => {
       body: JSON.stringify(body),
     });
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode));
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -40,7 +42,7 @@ export const getProducts = async () => {
     const res = await response.json();
     return res;
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -50,10 +52,11 @@ export const deleteProduct = async (id) => {
       method: "DELETE",
     });
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode));
     }
   } catch (err) {
-    throw err;
+    throw ErrorHandling(err);
   }
 };
 
@@ -67,9 +70,12 @@ export const updatePrice = async (id, body) => {
     });
     console.log("updatePrice Response:", response.rows[0]);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode));
     }
-  } catch (error) {}
+  } catch (err) {
+    throw ErrorHandling(err);
+  }
 };
 
 export const updateYield = async (id, body) => {
@@ -82,7 +88,10 @@ export const updateYield = async (id, body) => {
     });
     console.log("updateYield Response:", response.rows[0]);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(ErrorHandling(res.errorCode));
     }
-  } catch (error) {}
+  } catch (err) {
+    throw ErrorHandling(err);
+  }
 };

@@ -41,7 +41,7 @@ const ManagerSuppliers = () => {
       addToast({
         title: "Failed to load suppliers",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
@@ -59,7 +59,7 @@ const ManagerSuppliers = () => {
       addToast({
         title: "Failed to add supplier",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
@@ -77,7 +77,7 @@ const ManagerSuppliers = () => {
       addToast({
         title: "Failed to edit supplier",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
@@ -93,7 +93,7 @@ const ManagerSuppliers = () => {
       addToast({
         title: "Failed to delete supplier",
         type: "Error",
-        body: ErrorHandling(err),
+        body: err.toString(),
       });
     }
   };
