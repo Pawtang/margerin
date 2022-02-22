@@ -34,7 +34,9 @@ const EditColumn = (props) => {
         min={min}
         step={step}
         onChange={(e) => {
+          // if (e.nativeEvent.data.match(/^[A-Za-z0-9\s]+$/)) {
           setNewValue(e.target.value);
+          // }
         }}
         onBlur={onBlur}
       />

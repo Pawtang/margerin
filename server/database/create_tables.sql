@@ -88,10 +88,8 @@ ALTER TABLE transaction ALTER COLUMN cost TYPE decimal(12,2);
 --2/12/22 Create users table
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name VARCHAR(200) NOT NULL,
-    email VARCHAR(200) NOT NULL,
-    password VARCHAR(200) NOT NULL,
-    UNIQUE (email)
+    email VARCHAR(200) UNIQUE NOT NULL,
+    hash VARCHAR(200) NOT NULL
 );
 -- 2/18/22
 ALTER TABLE product ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);

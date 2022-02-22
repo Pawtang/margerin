@@ -2,13 +2,40 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
-// const { Router } = require("express");
+const bycrypt = require("bcrypt");
 
 //middleware
 app.use(cors());
 app.use(express.json()); //req.body
 
 //ROUTES//
+/* ----------------------------- Authentication ----------------------------- */
+const saltRounds = 10;
+// const hashThisPass(plaintext) => {
+//   bcrypt.hash(plaintext, saltRounds, function(error, hash) {
+//     return
+//   })
+// }
+
+app.post("/register", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const hashed = hashThisPass(password);
+    const newUser = await pool.query(
+      `INSERT INTO user (userID, email, password) VALUES($1, $2) RETURNING *`,
+      [email, password]
+    );
+    // console.log(newProduct);
+    res.json(newProduct.rows);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error);
+  }
+});
 
 /* ----------------------------- CREATE METHODS ----------------------------- */
 //create a product
@@ -21,8 +48,13 @@ app.post("/product", async (req, res) => {
     );
     // console.log(newProduct);
     res.json(newProduct.rows);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -34,8 +66,13 @@ app.post("/material", async (req, res) => {
       `INSERT INTO material (material_name, material_description) VALUES('${newMaterialName}', '${newMaterialDescription}') RETURNING *`
     );
     res.json(newMaterial.rows);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -47,8 +84,13 @@ app.post("/supplier", async (req, res) => {
       `INSERT INTO supplier (supplier_name) VALUES('${newSupplierName}') RETURNING *`
     );
     res.status(201).json(newSupplier.rows[0]);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -65,8 +107,13 @@ app.post("/supplier/new", async (req, res) => {
       `INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating) VALUES('${newSupplierName}', '${newSupplierContactName}', '${newSupplierphone}', '${newSupplierRating}') RETURNING *`
     );
     res.status(201).json(newSupplier.rows[0]);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -79,8 +126,13 @@ app.post("/productHasMaterial", async (req, res) => {
       `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity, is_per_unit) VALUES('${productID}', '${addMaterial}', '${newUnit}', '${newQuantity}', '${isPerUnit}') RETURNING *`
     );
     res.status(201).json(productHasMaterial.rows);
-  } catch (err) {
-    console.error("Index: productHasMaterial POST: ", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Index: productHasMaterial POST: ", error.message);
   }
 });
 
@@ -100,8 +152,13 @@ app.post("/materialHasTransaction", async (req, res) => {
       `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplier}, ${materialID}, ${transactionUnit}, ${transactionCost},${transactionQuantity}, TO_DATE('${transactionDate}', 'YYYY-MM-DD') ) RETURNING *`
     );
     res.status(201).json(productHasMaterial.rows);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Error in index, materialHasTransaction:", error.message);
   }
 });
 
@@ -121,8 +178,13 @@ app.post("/transaction", async (req, res) => {
       `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${newTransactionSupplier}, ${newTransactionMaterial}, ${newTransactionUnit}, ${newTransactionCost},${newTransactionQuantity}, TO_DATE('${newTransactionDate}', 'YYYY-MM-DD') ) RETURNING *`
     );
     res.status(201).json(newTransaction.rows);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -138,7 +200,11 @@ app.put("/product/price/:id", async (req, res) => {
     );
     res.status(200).json(updatePrice.rows);
   } catch (error) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error(error);
   }
 });
@@ -153,7 +219,11 @@ app.put("/product/yield/:id", async (req, res) => {
     );
     res.status(200).json(updateYield.rows);
   } catch (error) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error(error);
   }
 });
@@ -168,7 +238,11 @@ app.put("/supplier/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateSupplier.rows);
   } catch (error) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error(error);
   }
 });
@@ -189,7 +263,11 @@ app.put("/transaction/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateTransaction.rows);
   } catch (error) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error(error);
   }
 });
@@ -203,8 +281,12 @@ app.put("/material/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateMaterial.rows);
   } catch (error) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
-    console.error(error);
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -222,8 +304,12 @@ app.put("/productHasMaterial/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateMaterial.rows);
   } catch (error) {
-    res.status(400).json({ errorCode: "1003", error: error.message });
-    console.error(error);
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -235,8 +321,13 @@ app.get("/products", async (req, res) => {
       `SELECT * FROM product ORDER BY product_name ASC`
     );
     res.status(200).json(getAllProducts.rows);
-  } catch (err) {
-    console.error("Get all products", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Get all products", error.message);
   }
 });
 
@@ -247,8 +338,13 @@ app.get("/materials", async (req, res) => {
       `SELECT * FROM material ORDER BY material_name ASC`
     );
     res.status(200).json(getAllMaterials.rows);
-  } catch (err) {
-    console.error("Get all materials", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Get all materials", error.message);
   }
 });
 
@@ -257,8 +353,13 @@ app.get("/units", async (req, res) => {
   try {
     const getAllUnits = await pool.query(`SELECT * FROM unit`);
     res.status(200).json(getAllUnits.rows);
-  } catch (err) {
-    console.error("Get all units", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Get all units", error.message);
   }
 });
 
@@ -269,8 +370,13 @@ app.get("/suppliers", async (req, res) => {
       `SELECT * FROM supplier ORDER BY supplier_name ASC`
     );
     res.status(200).json(getAllSuppliers.rows);
-  } catch (err) {
-    console.error("Get all suppliers", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Get all suppliers", error.message);
   }
 });
 
@@ -282,8 +388,13 @@ app.get("/product/:id", async (req, res) => {
       `SELECT * FROM product WHERE product_id = ${id}`
     );
     res.json(getProduct.rows[0]);
-  } catch (err) {
-    console.error("Get a product", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Get a product", error.message);
   }
 });
 
@@ -310,8 +421,13 @@ app.get("/productHasMaterials/:id", async (req, res) => {
       })
     );
     res.json(reformattedArray);
-  } catch (err) {
-    console.error("Error source productHasMaterials", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Error source productHasMaterials", error.message);
   }
 });
 
@@ -326,8 +442,13 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
       INNER JOIN unit u ON (t.unit_id = u.unit_id) WHERE (material_id = ${id});`
     );
     res.json(relatedTransactions.rows);
-  } catch (err) {
-    console.error("Get all transactions for materials", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Get all transactions for materials", error.message);
   }
 });
 
@@ -337,8 +458,13 @@ app.get("/transaction", async (req, res) => {
       `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_id, u.unit_name, s.supplier_id, s.supplier_name, m.material_id, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) ORDER BY t.transaction_date DESC`
     );
     res.json(transactionData.rows);
-  } catch (err) {
-    console.error("Get all transaction data", err.message);
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Get all transaction data", error.message);
   }
 });
 
@@ -354,7 +480,16 @@ app.delete("/product/:id", async (req, res) => {
     );
     res.json("Product deleted!");
   } catch (error) {
-    res.status(400).json({ errorCode: "1002", error: error.message });
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error(error);
   }
 });
@@ -367,7 +502,12 @@ app.delete("/productHasMaterial/:phmID", async (req, res) => {
     );
     res.json("Material deleted!");
   } catch (error) {
-    console.error("DELETE error in Index", error);
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -379,7 +519,12 @@ app.delete("/supplier/:supplierID", async (req, res) => {
     );
     res.json("Supplier deleted!");
   } catch (error) {
-    console.error("DELETE error in Index", error);
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error(error.message);
   }
 });
 
@@ -396,7 +541,6 @@ app.delete("/material/:materialID", async (req, res) => {
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error("DELETE error in Index", error);
   }
 });
 
@@ -410,7 +554,12 @@ app.delete(
       );
       res.json("Transaction deleted!");
     } catch (error) {
-      console.error("DELETE error in Index", error);
+      res.status(400);
+      res.json({
+        errorCode: error.code,
+        errorMessage: error.detail,
+      });
+      console.error(error.message);
     }
   }
 );
@@ -423,6 +572,11 @@ app.delete("/transaction/:transactionID", async (req, res) => {
     );
     res.json("Transaction deleted!");
   } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error("DELETE error in Index", error);
   }
 });

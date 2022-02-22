@@ -15,6 +15,7 @@ export const deleteMaterial = async (materialID, addToast) => {
   }
 };
 
+//Use this model!
 export const editMaterial = async (materialID, body, addToast) => {
   try {
     const response = await fetch(`${URL_SERVER}/material/edit/${materialID}`, {
@@ -25,9 +26,9 @@ export const editMaterial = async (materialID, body, addToast) => {
     console.log("");
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res); //This is where the error is created from the response
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
