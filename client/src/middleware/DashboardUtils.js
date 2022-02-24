@@ -1,5 +1,3 @@
-import { ErrorHandling } from "./ErrorHandling";
-
 const URL_SERVER = "http://localhost:5000";
 
 export const displayProduct = async (id) => {
@@ -7,11 +5,11 @@ export const displayProduct = async (id) => {
     const response = await fetch(`${URL_SERVER}/product/${id}`);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode));
+      throw new Error(res.errorMessage);
     }
     return await response.json();
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error("Failed to display product");
   }
 };
 
@@ -25,10 +23,10 @@ export const addProduct = async (body) => {
     });
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode));
+      throw new Error(res);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error("Failed to add product");
   }
 };
 
@@ -37,12 +35,12 @@ export const getProducts = async () => {
     const response = await fetch(`${URL_SERVER}/products`);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res);
     }
     const res = await response.json();
     return res;
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error("Failed to get products");
   }
 };
 
@@ -53,10 +51,10 @@ export const deleteProduct = async (id) => {
     });
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode));
+      throw new Error(res);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error("Failed to delete product");
   }
 };
 
@@ -71,10 +69,10 @@ export const updatePrice = async (id, body) => {
     console.log("updatePrice Response:", response.rows[0]);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode));
+      throw new Error(res);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error("Failed to update price");
   }
 };
 
@@ -89,9 +87,9 @@ export const updateYield = async (id, body) => {
     console.log("updateYield Response:", response.rows[0]);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode));
+      throw new Error(res);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err);
   }
 };

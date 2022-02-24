@@ -10,6 +10,7 @@ import SelectColumn from "./elements/SelectColumn";
 import HeaderColumn from "./elements/HeaderColumn";
 import SelectWithToggleColumn from "./elements/SelectWithToggleColumn";
 import IsPerUnitCheck from "./elements/IsPerUnitCheck";
+import { useToasts } from "../contexts/ToastContext";
 
 import {
   getMaterials,
@@ -29,6 +30,7 @@ import {
 const ProductHasMaterials = (props) => {
   //General Purpose
 
+  const { addToast } = useToasts();
   const productID = props.productID;
   const productYield = props.productYield;
   const setProductAverageCost = props.setProductAverageCost;
@@ -108,13 +110,26 @@ const ProductHasMaterials = (props) => {
   /* ---------------------------- Material Methods ---------------------------- */
 
   const handleAddMaterialToProduct = async () => {
-    const body = { productID, addMaterial, newUnit, newQuantity, isPerUnit };
-    await addMaterialToProduct(body);
-    const materialArray = await getMaterialsForProduct(productID);
-    setMaterialsForProduct(materialArray);
-    setAddMaterial("");
-    setNewUnit("1");
-    setNewQuantity("0");
+    try {
+      const body = { productID, addMaterial, newUnit, newQuantity, isPerUnit };
+      await addMaterialToProduct(body);
+      const response = await getMaterialsForProduct(productID);
+      setMaterialsForProduct(response);
+      setAddMaterial("");
+      setNewUnit("1");
+      setNewQuantity("0");
+      addToast({
+        title: "",
+        type: "Success",
+        body: "Material added",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   const handleEditProductHasMaterial = async (phmID) => {

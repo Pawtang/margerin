@@ -29,6 +29,6 @@ export const editMaterial = async (materialID, body, addToast) => {
       throw new Error(res); //This is where the error is created from the response
     }
   } catch (err) {
-    throw new Error(err.errorCode);
+    throw new Error("Failed to edit material");
   }
 };

@@ -25,7 +25,6 @@ export const ToastProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("toasts has been updated");
     const interval = setInterval(() => {
       if (toasts && !_.isEmpty(toasts)) {
         removeToastFromStack();

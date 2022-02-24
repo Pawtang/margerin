@@ -12,7 +12,6 @@ const ToastManager = (props) => {
       <ToastContainer className="p-3 z-super" position="bottom-end">
         {/* <Toast show={showToast} onClose={console.log("")}> */}
         {toasts.map((toast) => {
-          console.log("toast");
           return (
             <Toast animation={"true"} className={"fader"}>
               <Toast.Header closeButton={false}>

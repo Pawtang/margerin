@@ -26,14 +26,13 @@ app.post("/register", async (req, res) => {
       [email, password]
     );
     // console.log(newProduct);
-    res.json(newProduct.rows);
+    res.status(200).json(newProduct.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error);
+    console.error(error.message);
   }
 });
 
@@ -47,10 +46,9 @@ app.post("/product", async (req, res) => {
       `INSERT INTO product (product_name, product_description) VALUES('${newProductName}', '${newProductDescription}') RETURNING *`
     );
     // console.log(newProduct);
-    res.json(newProduct.rows);
+    res.status(200).json(newProduct.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
@@ -65,10 +63,9 @@ app.post("/material", async (req, res) => {
     const newMaterial = await pool.query(
       `INSERT INTO material (material_name, material_description) VALUES('${newMaterialName}', '${newMaterialDescription}') RETURNING *`
     );
-    res.json(newMaterial.rows);
+    res.status(200).json(newMaterial.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
@@ -83,10 +80,9 @@ app.post("/supplier", async (req, res) => {
     const newSupplier = await pool.query(
       `INSERT INTO supplier (supplier_name) VALUES('${newSupplierName}') RETURNING *`
     );
-    res.status(201).json(newSupplier.rows[0]);
+    res.status(200).json(newSupplier.rows[0]);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
@@ -106,13 +102,9 @@ app.post("/supplier/new", async (req, res) => {
     const newSupplier = await pool.query(
       `INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating) VALUES('${newSupplierName}', '${newSupplierContactName}', '${newSupplierphone}', '${newSupplierRating}') RETURNING *`
     );
-    res.status(201).json(newSupplier.rows[0]);
+    res.status(200).json(newSupplier.rows[0]);
   } catch (error) {
-    res.status(400);
-    res.json({
-      errorCode: error.code,
-      errorMessage: error.detail,
-    });
+    res.status(400).json("Failed to create a new supplier");
     console.error(error.message);
   }
 });
@@ -125,12 +117,12 @@ app.post("/productHasMaterial", async (req, res) => {
     const productHasMaterial = await pool.query(
       `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity, is_per_unit) VALUES('${productID}', '${addMaterial}', '${newUnit}', '${newQuantity}', '${isPerUnit}') RETURNING *`
     );
-    res.status(201).json(productHasMaterial.rows);
+    res.status(200).json(productHasMaterial.rows);
   } catch (error) {
     res.status(400);
     res.json({
       errorCode: error.code,
-      errorMessage: error.detail,
+      errorMessage: error.message,
     });
     console.error("Index: productHasMaterial POST: ", error.message);
   }
@@ -151,7 +143,7 @@ app.post("/materialHasTransaction", async (req, res) => {
     const productHasMaterial = await pool.query(
       `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplier}, ${materialID}, ${transactionUnit}, ${transactionCost},${transactionQuantity}, TO_DATE('${transactionDate}', 'YYYY-MM-DD') ) RETURNING *`
     );
-    res.status(201).json(productHasMaterial.rows);
+    res.status(200).json(productHasMaterial.rows);
   } catch (error) {
     res.status(400);
     res.json({
@@ -177,10 +169,9 @@ app.post("/transaction", async (req, res) => {
     const newTransaction = await pool.query(
       `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${newTransactionSupplier}, ${newTransactionMaterial}, ${newTransactionUnit}, ${newTransactionCost},${newTransactionQuantity}, TO_DATE('${newTransactionDate}', 'YYYY-MM-DD') ) RETURNING *`
     );
-    res.status(201).json(newTransaction.rows);
+    res.status(200).json(newTransaction.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
@@ -200,12 +191,11 @@ app.put("/product/price/:id", async (req, res) => {
     );
     res.status(200).json(updatePrice.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error);
+    console.error(error.message);
   }
 });
 
@@ -219,12 +209,11 @@ app.put("/product/yield/:id", async (req, res) => {
     );
     res.status(200).json(updateYield.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error);
+    console.error(error.message);
   }
 });
 
@@ -238,12 +227,11 @@ app.put("/supplier/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateSupplier.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error);
+    console.error(error.message);
   }
 });
 
@@ -263,12 +251,11 @@ app.put("/transaction/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateTransaction.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error);
+    console.error(error.message);
   }
 });
 
@@ -281,12 +268,16 @@ app.put("/material/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateMaterial.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error.message);
+    console.error(
+      res.json({
+        "error code": errorCode,
+        "error message": errorMessage,
+      })
+    );
   }
 });
 
@@ -304,8 +295,7 @@ app.put("/productHasMaterial/edit/:id", async (req, res) => {
     );
     res.status(200).json(updateMaterial.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
@@ -387,7 +377,7 @@ app.get("/product/:id", async (req, res) => {
     const getProduct = await pool.query(
       `SELECT * FROM product WHERE product_id = ${id}`
     );
-    res.json(getProduct.rows[0]);
+    res.status(200).json(getProduct.rows[0]);
   } catch (error) {
     res.status(400);
     res.json({
@@ -420,7 +410,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
         };
       })
     );
-    res.json(reformattedArray);
+    res.status(200).json(reformattedArray);
   } catch (error) {
     res.status(400);
     res.json({
@@ -441,7 +431,7 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
       INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) 
       INNER JOIN unit u ON (t.unit_id = u.unit_id) WHERE (material_id = ${id});`
     );
-    res.json(relatedTransactions.rows);
+    res.status(200).json(relatedTransactions.rows);
   } catch (error) {
     res.status(400);
     res.json({
@@ -457,7 +447,7 @@ app.get("/transaction", async (req, res) => {
     const transactionData = await pool.query(
       `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_id, u.unit_name, s.supplier_id, s.supplier_name, m.material_id, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) ORDER BY t.transaction_date DESC`
     );
-    res.json(transactionData.rows);
+    res.status(200).json(transactionData.rows);
   } catch (error) {
     res.status(400);
     res.json({
@@ -478,19 +468,18 @@ app.delete("/product/:id", async (req, res) => {
       `DELETE FROM product WHERE product_id = ${id}
       `
     );
-    res.json("Product deleted!");
+    res.status(200).json("Product deleted!");
   } catch (error) {
     res.status(400);
     res.json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error);
+    console.error(error.message);
   }
 });
 
@@ -500,10 +489,9 @@ app.delete("/productHasMaterial/:phmID", async (req, res) => {
     const deleteMaterial = await pool.query(
       `DELETE FROM product_has_material WHERE phm_id = ${phmID}`
     );
-    res.json("Material deleted!");
+    res.status(200).json("Material deleted!");
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
@@ -517,10 +505,9 @@ app.delete("/supplier/:supplierID", async (req, res) => {
     const deleteSupplier = await pool.query(
       `DELETE FROM supplier WHERE supplier_id = ${supplierID}`
     );
-    res.json("Supplier deleted!");
+    res.status(200).json("Supplier deleted!");
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });
@@ -534,7 +521,7 @@ app.delete("/material/:materialID", async (req, res) => {
     const deleteMaterial = await pool.query(
       `DELETE FROM material WHERE material_id = ${materialID}`
     );
-    res.json("Material deleted!");
+    res.status(200).json("Material deleted!");
   } catch (error) {
     res.status(400);
     res.json({
@@ -552,7 +539,7 @@ app.delete(
       const deleteTransaction = await pool.query(
         `DELETE FROM transaction WHERE material_id = ${materialID} AND transaction_id = ${transactionID}`
       );
-      res.json("Transaction deleted!");
+      res.status(200).json("Transaction deleted!");
     } catch (error) {
       res.status(400);
       res.json({
@@ -570,7 +557,7 @@ app.delete("/transaction/:transactionID", async (req, res) => {
     const deleteTransaction = await pool.query(
       `DELETE FROM transaction WHERE transaction_id = ${transactionID}`
     );
-    res.json("Transaction deleted!");
+    res.status(200).json("Transaction deleted!");
   } catch (error) {
     res.status(400);
     res.json({
@@ -582,6 +569,21 @@ app.delete("/transaction/:transactionID", async (req, res) => {
 });
 
 /* ------------------------------- END METHODS ------------------------------ */
+
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status(404);
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    },
+  });
+});
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");

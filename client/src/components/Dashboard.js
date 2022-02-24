@@ -13,7 +13,6 @@ import {
 } from "../middleware/DashboardUtils";
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
-// import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const { addToast } = useToasts();

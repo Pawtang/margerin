@@ -52,7 +52,7 @@ const ManagerMaterials = () => {
       addToast({
         title: "Failed to load materials",
         type: "Error",
-        body: err.toString(),
+        body: "Failed to edit material",
       });
     }
   };
@@ -70,7 +70,7 @@ const ManagerMaterials = () => {
       addToast({
         title: "Failed to add material",
         type: "Error",
-        body: err.toString(),
+        body: err,
       });
     }
   };
@@ -85,7 +85,7 @@ const ManagerMaterials = () => {
       addToast({
         title: "Failed to delete material",
         type: "Error",
-        body: err.toString(),
+        body: err,
       });
     }
   };

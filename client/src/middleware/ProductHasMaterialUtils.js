@@ -5,11 +5,12 @@ export const getMaterials = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/materials`);
     if (response.status !== 200) {
-      throw new Error("response is not 200");
+      const res = await response.json();
+      throw new Error(res.message);
     }
     return await response.json();
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -18,12 +19,12 @@ export const getMaterialsForProduct = async (id) => {
     const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
     const res = await response.json();
     return res;
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err);
   }
 };
 
@@ -32,12 +33,12 @@ export const getTransactionsForMaterial = async (id) => {
     const response = await fetch(`${URL_SERVER}/materialHasTransactions/${id}`);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
     const res = await response.json();
     return res;
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -50,14 +51,17 @@ export const addMaterialToProduct = async (body) => {
       },
       body: JSON.stringify(body),
     });
+    console.log("middle response status:", response.status);
     if (response.status !== 200) {
+      console.log("reached error block in utils");
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
     const res = await response.json();
+    console.log("res", res);
     return res;
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error("Failed to add material to product");
   }
 };
 
@@ -72,10 +76,10 @@ export const addTransactionForMaterial = async (body) => {
     });
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -84,11 +88,11 @@ export const getUnits = async () => {
     const response = await fetch(`${URL_SERVER}/units`);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
     return response.json();
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -97,11 +101,11 @@ export const getSuppliers = async () => {
     const response = await fetch(`${URL_SERVER}/suppliers`);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
     return response.json();
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -112,10 +116,10 @@ export const deleteMaterialFromProduct = async (phmID) => {
     });
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -132,10 +136,10 @@ export const editProductHasMaterial = async (phmID, body) => {
     console.log(phmID, body);
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -152,10 +156,10 @@ export const deleteTransactionFromMaterial = async (
     );
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -169,10 +173,10 @@ export const newMaterial = async (body) => {
     if (response.status !== 200) {
       console.log("Error in PHMUtils");
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
 
@@ -185,9 +189,9 @@ export const newSupplier = async (body) => {
     });
     if (response.status !== 200) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    throw new Error(err.errorCode);
   }
 };
