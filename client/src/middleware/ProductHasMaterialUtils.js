@@ -54,7 +54,7 @@ export const addMaterialToProduct = async (body) => {
     console.log("middle response status:", response.status);
     if (response.status !== 200) {
       console.log("reached error block in utils");
-      const res = await response.json();
+      const res = await response.json(); //is this really needed? Try skipping this
       throw new Error(res.message);
     }
     const res = await response.json();
@@ -78,8 +78,9 @@ export const addTransactionForMaterial = async (body) => {
       const res = await response.json();
       throw new Error(res.message);
     }
+    return response.json();
   } catch (err) {
-    throw new Error(err.errorCode);
+    throw new Error("Failed to add transaction");
   }
 };
 
