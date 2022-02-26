@@ -6,23 +6,25 @@ export const deleteSupplier = async (supplierID) => {
     const response = await fetch(`${URL_SERVER}/supplier/${supplierID}`, {
       method: "DELETE",
     });
-    if (response.status !== 200) {
-      throw "DELETE not successful";
+    if (!response.ok) {
+      throw new Error(response.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    console.error(err);
+    throw new Error("Failed to delete supplier");
   }
 };
 
 export const getSuppliers = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/suppliers`);
-    if (response.status !== 200) {
-      throw new Error("response is not 200");
+    if (!response.ok) {
+      throw new Error(response.message);
     }
     return response.json();
   } catch (err) {
-    throw ErrorHandling(err);
+    console.error(err);
+    throw new Error("Failed to load suppliers");
   }
 };
 
@@ -33,11 +35,12 @@ export const newSupplier = async (body) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (response.status !== 200) {
-      throw new Error("response is not 200");
+    if (!response.ok) {
+      throw new Error(response.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    console.error(err);
+    throw new Error("Failed to add supplier");
   }
 };
 
@@ -49,10 +52,11 @@ export const editSupplier = async (supplierID, body) => {
       body: JSON.stringify(body),
     });
     console.log("");
-    if (response.status !== 200) {
-      throw new Error("response is not 200");
+    if (!response.ok) {
+      throw new Error(response.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    console.error(err);
+    throw new Error("Failed to add supplier");
   }
 };

@@ -37,11 +37,11 @@ const ManagerSuppliers = () => {
     try {
       const array = await getSuppliers();
       setSuppliers(array);
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to load suppliers",
+        title: " Database Error",
         type: "Error",
-        body: err.toString(),
+        body: error.message,
       });
     }
   };
@@ -55,11 +55,16 @@ const ManagerSuppliers = () => {
       };
       await newSupplier(body);
       retrieveSuppliers();
-    } catch (err) {
       addToast({
-        title: "Failed to add supplier",
+        title: " Success",
         type: "Error",
-        body: err.toString(),
+        body: "Supplier added",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
       });
     }
   };
@@ -73,11 +78,16 @@ const ManagerSuppliers = () => {
       };
       await editSupplier(id, body);
       retrieveSuppliers();
-    } catch (err) {
       addToast({
-        title: "Failed to edit supplier",
+        title: " Success",
         type: "Error",
-        body: err.toString(),
+        body: "Supplier updated",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
       });
     }
   };
@@ -89,11 +99,16 @@ const ManagerSuppliers = () => {
         suppliers.filter((supplier) => supplier.supplier_id !== supplierID)
       );
       retrieveSuppliers();
-    } catch (err) {
       addToast({
-        title: "Failed to delete supplier",
+        title: " Success",
         type: "Error",
-        body: err.toString(),
+        body: "Supplier deleted",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
       });
     }
   };

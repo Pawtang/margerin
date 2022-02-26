@@ -35,11 +35,11 @@ const Dashboard = () => {
       setDisplayedProduct(productArray[0]);
       setProductYield(productArray[0].yield);
       setProductPrice(productArray[0].price);
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to get product list",
+        title: " Database Error",
         type: "Error",
-        body: err.toString(),
+        body: error.message,
       });
     }
   };
@@ -61,11 +61,11 @@ const Dashboard = () => {
         type: "Success",
         body: "Successfully added product",
       });
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to add product to list",
+        title: " Database Error",
         type: "Error",
-        body: err.toString(),
+        body: error.message,
       });
     }
   };
@@ -80,19 +80,27 @@ const Dashboard = () => {
       const productID = displayedProduct.product_id;
       const body = { productYield };
       await updateYield(productID, body);
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to update product yield",
+        title: "Database error",
         type: "Error",
-        body: err.toString(),
+        body: error.toString(),
       });
     }
   };
 
   const updateProductPrice = async () => {
-    const productID = displayedProduct.product_id;
-    const body = { productPrice };
-    await updatePrice(productID, body);
+    try {
+      const productID = displayedProduct.product_id;
+      const body = { productPrice };
+      await updatePrice(productID, body);
+    } catch (error) {
+      addToast({
+        title: "Database error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   return (

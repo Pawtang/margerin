@@ -77,19 +77,27 @@ const ProductHasMaterials = (props) => {
   };
 
   const handleAddTransactionForMaterial = async () => {
-    let materialID = modalMaterial.material_id;
-    const body = {
-      transactionSupplier,
-      materialID,
-      transactionUnit,
-      transactionCost,
-      transactionQuantity,
-      transactionDate,
-    };
-    await addTransactionForMaterial(body);
-    await retrieveTransactionsForMaterial();
-    await retrieveMaterialsForProduct();
-    clearTransactionEntry();
+    try {
+      let materialID = modalMaterial.material_id;
+      const body = {
+        transactionSupplier,
+        materialID,
+        transactionUnit,
+        transactionCost,
+        transactionQuantity,
+        transactionDate,
+      };
+      await addTransactionForMaterial(body);
+      await retrieveTransactionsForMaterial();
+      await retrieveMaterialsForProduct();
+      clearTransactionEntry();
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   const handleDeleteTransaction = async (transactionID) => {
@@ -133,9 +141,22 @@ const ProductHasMaterials = (props) => {
   };
 
   const handleEditProductHasMaterial = async (phmID) => {
-    const body = { editMaterial, editQuantity, editUnit, editIsPerUnit };
-    await editProductHasMaterial(phmID, body);
-    retrieveMaterialsForProduct();
+    try {
+      const body = { editMaterial, editQuantity, editUnit, editIsPerUnit };
+      await editProductHasMaterial(phmID, body);
+      retrieveMaterialsForProduct();
+      addToast({
+        title: " Success",
+        type: "Error",
+        body: "Product updated",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   const clearEdit = () => {
@@ -147,27 +168,66 @@ const ProductHasMaterials = (props) => {
 
   const handleNewMaterial = async (e) => {
     e.preventDefault();
-    const body = { newMaterialName, newMaterialDescription };
-    await newMaterial(body);
-    const materials = await getMaterials();
-    setMaterials(materials);
-    clearMaterialEntry();
+    try {
+      const body = { newMaterialName, newMaterialDescription };
+      await newMaterial(body);
+      const materials = await getMaterials();
+      setMaterials(materials);
+      clearMaterialEntry();
+      addToast({
+        title: " Success",
+        type: "Error",
+        body: "Material added",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   const handleAddSupplier = async (e) => {
     e.preventDefault();
-    const body = { newSupplierName };
-    await newSupplier(body);
-    const suppliers = await getSuppliers();
-    setSuppliers(suppliers);
+    try {
+      const body = { newSupplierName };
+      await newSupplier(body);
+      const suppliers = await getSuppliers();
+      setSuppliers(suppliers);
+      addToast({
+        title: " Success",
+        type: "Error",
+        body: "Supplier added",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   const handleDeleteMaterial = async (phmID) => {
-    await deleteMaterialFromProduct(phmID);
-    setMaterialsForProduct(
-      materialsForProduct.filter((material) => material.phm_id !== phmID)
-    );
-    retrieveMaterialsForProduct();
+    try {
+      await deleteMaterialFromProduct(phmID);
+      setMaterialsForProduct(
+        materialsForProduct.filter((material) => material.phm_id !== phmID)
+      );
+      retrieveMaterialsForProduct();
+      addToast({
+        title: " Success",
+        type: "Error",
+        body: "Material deleted",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   const clearMaterialEntry = () => {

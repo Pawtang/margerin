@@ -10,6 +10,7 @@ import HeaderColumn from "./elements/HeaderColumn";
 import dayjs from "dayjs";
 import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
 import { editTransaction } from "../middleware/TransactionUtils";
+import { useToasts } from "../contexts/ToastContext";
 
 const Transactions = (props) => {
   const {
@@ -32,6 +33,7 @@ const Transactions = (props) => {
     retrieveTransactionsForMaterial,
   } = props;
 
+  const { addToast } = useToasts();
   const [rowToEdit, setRowToEdit] = useState("");
   const editTransactionMaterial = modalMaterial.material_id;
   const [editTransactionSupplier, setEditTransactionSupplier] = useState("");
@@ -49,18 +51,25 @@ const Transactions = (props) => {
   };
 
   const handleEditTransaction = async (id) => {
-    // const editTransactionDate = editTransactionDate
-    const body = {
-      editTransactionMaterial,
-      editTransactionSupplier,
-      editTransactionUnit,
-      editTransactionCost,
-      editTransactionQuantity,
-      editTransactionDate,
-    };
-    await editTransaction(id, body);
-    retrieveTransactionsForMaterial();
-    clearEdit();
+    try {
+      const body = {
+        editTransactionMaterial,
+        editTransactionSupplier,
+        editTransactionUnit,
+        editTransactionCost,
+        editTransactionQuantity,
+        editTransactionDate,
+      };
+      await editTransaction(id, body);
+      await retrieveTransactionsForMaterial();
+      clearEdit();
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
   };
 
   return (
@@ -108,6 +117,7 @@ const Transactions = (props) => {
           list={units}
           itemkey={"unit_name"}
           id={"unit_id"}
+          currentState={1}
           newValue={transactionUnit}
           setNewValue={setTransactionUnit}
         />
@@ -132,7 +142,7 @@ const Transactions = (props) => {
 
         <div className="col-2 d-grid">
           <button
-            className="btn btn-primary"
+            className="btn btn-mary"
             onClick={() => handleAddTransactionForMaterial()}
           >
             Add Transaction

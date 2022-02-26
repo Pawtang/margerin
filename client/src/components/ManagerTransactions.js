@@ -54,32 +54,32 @@ const TransactionManager = () => {
     try {
       const allMaterials = await getMaterials();
       setMaterials(allMaterials);
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to load materials",
+        title: " Database Error",
         type: "Error",
-        body: err.toString(),
+        body: error.message,
       });
     }
     try {
       const unitList = await getUnits();
       setUnits(unitList);
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to load units",
+        title: " Database Error",
         type: "Error",
-        body: err.toString(),
+        body: error.message,
       });
     }
 
     try {
       const supplierList = await getSuppliers();
       setSuppliers(supplierList);
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to load suppliers",
+        title: " Database Error",
         type: "Error",
-        body: err.toString(),
+        body: error.message,
       });
     }
   };
@@ -88,11 +88,11 @@ const TransactionManager = () => {
     try {
       const array = await getTransactionData();
       setTransactions(array);
-    } catch (err) {
+    } catch (error) {
       addToast({
-        title: "Failed to load transactions",
+        title: " Database Error",
         type: "Error",
-        body: err.toString(),
+        body: error.message,
       });
     }
   };
@@ -110,11 +110,16 @@ const TransactionManager = () => {
       clearNew();
       await newTransaction(body);
       retrieveTransactions();
-    } catch (err) {
       addToast({
-        title: "Failed to add transaction",
+        title: " Success",
         type: "Error",
-        body: err.toString(),
+        body: "Transaction added",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
       });
     }
   };
@@ -132,11 +137,16 @@ const TransactionManager = () => {
       await editTransaction(id, body);
       retrieveTransactions();
       clearEdit();
-    } catch (err) {
       addToast({
-        title: "Failed to edit transaction",
+        title: " Success",
         type: "Error",
-        body: err.toString(),
+        body: "Transaction updated",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
       });
     }
   };
@@ -150,11 +160,16 @@ const TransactionManager = () => {
         )
       );
       retrieveTransactions();
-    } catch (err) {
       addToast({
-        title: "Failed to delete transaction",
+        title: " Success",
         type: "Error",
-        body: err.toString(),
+        body: "Transaction deleted",
+      });
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
       });
     }
   };

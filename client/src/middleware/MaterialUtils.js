@@ -6,12 +6,13 @@ export const deleteMaterial = async (materialID, addToast) => {
     const response = await fetch(`${URL_SERVER}/material/${materialID}`, {
       method: "DELETE",
     });
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
-      throw new Error(ErrorHandling(res.errorCode)); //Throw puts you in catch
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw ErrorHandling(err);
+    console.error(err.message);
+    throw new Error("Failed to delete material");
   }
 };
 
@@ -24,11 +25,12 @@ export const editMaterial = async (materialID, body, addToast) => {
       body: JSON.stringify(body),
     });
     console.log("");
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
-      throw new Error(res); //This is where the error is created from the response
+      throw new Error(res.message);
     }
   } catch (err) {
+    console.error(err.message);
     throw new Error("Failed to edit material");
   }
 };

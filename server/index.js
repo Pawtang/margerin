@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
-const bycrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 //middleware
 app.use(cors());
@@ -10,29 +10,19 @@ app.use(express.json()); //req.body
 
 //ROUTES//
 /* ----------------------------- Authentication ----------------------------- */
-const saltRounds = 10;
-// const hashThisPass(plaintext) => {
-//   bcrypt.hash(plaintext, saltRounds, function(error, hash) {
-//     return
-//   })
-// }
 
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const hashed = hashThisPass(password);
+    const hashbrowns = await bcrypt.hash(password, 10);
     const newUser = await pool.query(
-      `INSERT INTO user (userID, email, password) VALUES($1, $2) RETURNING *`,
-      [email, password]
+      `INSERT INTO user (email, hash) VALUES($1, $2) RETURNING *`,
+      [email, hashbrowns]
     );
-    // console.log(newProduct);
-    res.status(200).json(newProduct.rows);
+    res.status(200).json(newUser.rows[0]);
   } catch (error) {
-    res.status(400).json({
-      errorCode: error.code,
-      errorMessage: error.detail,
-    });
-    console.error(error.message);
+    console.error(error);
+    res.status(400).json("Registration failed");
   }
 });
 
@@ -53,6 +43,7 @@ app.post("/product", async (req, res) => {
       errorMessage: error.detail,
     });
     console.error(error.message);
+    res.status(400).json("Failed to create a new product");
   }
 });
 
@@ -69,6 +60,7 @@ app.post("/material", async (req, res) => {
       errorCode: error.code,
       errorMessage: error.detail,
     });
+    res.status(400).json("Failed to create a new material");
     console.error(error.message);
   }
 });
@@ -86,6 +78,7 @@ app.post("/supplier", async (req, res) => {
       errorCode: error.code,
       errorMessage: error.detail,
     });
+    res.status(400).json("Failed to create a new supplier");
     console.error(error.message);
   }
 });

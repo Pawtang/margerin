@@ -4,12 +4,14 @@ const URL_SERVER = "http://localhost:5000";
 export const getTransactionData = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/transaction`);
-    if (response.status !== 200) {
-      throw new Error("response is not 200");
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.message);
     }
     return await response.json();
   } catch (err) {
-    throw err;
+    console.error(err);
+    throw new Error("Failed to get transaction data");
   }
 };
 
@@ -18,11 +20,13 @@ export const deleteTransaction = async (transactionID) => {
     const response = await fetch(`${URL_SERVER}/transaction/${transactionID}`, {
       method: "DELETE",
     });
-    if (response.status !== 200) {
-      throw "DELETE not successful";
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw err;
+    console.error(err);
+    throw new Error("Failed to delete transaction");
   }
 };
 
@@ -33,11 +37,13 @@ export const newTransaction = async (body) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (response.status !== 200) {
-      throw new Error("response is not 200");
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw err;
+    console.error(err);
+    throw new Error("Failed to load units");
   }
 };
 
@@ -51,10 +57,12 @@ export const editTransaction = async (transactionID, body) => {
         body: JSON.stringify(body),
       }
     );
-    if (response.status !== 200) {
-      throw new Error("response is not 200");
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.message);
     }
   } catch (err) {
-    throw err;
+    console.error(err);
+    throw new Error("Failed to load units");
   }
 };

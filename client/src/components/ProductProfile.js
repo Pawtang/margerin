@@ -125,7 +125,15 @@ const ProductProfile = (props) => {
                   Profit Per Unit
                 </label>
                 <div className="input-group">
-                  <span className="input-group-text">$</span>
+                  <span
+                    className={`input-group-text ${
+                      productPrice - productAverageCost > 0
+                        ? `bg-success`
+                        : `bg-warning`
+                    }`}
+                  >
+                    $
+                  </span>
                   <input
                     className="form-control text-center"
                     type="text"

@@ -4,12 +4,13 @@ const URL_SERVER = "http://localhost:5000";
 export const getMaterials = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/materials`);
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
     return await response.json();
   } catch (err) {
+    console.error(err);
     throw new Error(err.errorCode);
   }
 };
@@ -17,28 +18,28 @@ export const getMaterials = async () => {
 export const getMaterialsForProduct = async (id) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`);
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
-    const res = await response.json();
-    return res;
+    return await response.json();
   } catch (err) {
-    throw new Error(err);
+    console.error(err);
+    throw new Error("Failed to get materials");
   }
 };
 
 export const getTransactionsForMaterial = async (id) => {
   try {
     const response = await fetch(`${URL_SERVER}/materialHasTransactions/${id}`);
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
-    const res = await response.json();
-    return res;
+    return await response.json();
   } catch (err) {
-    throw new Error(err.errorCode);
+    console.error(err);
+    throw new Error("Failed to get transactions for material");
   }
 };
 
@@ -51,16 +52,13 @@ export const addMaterialToProduct = async (body) => {
       },
       body: JSON.stringify(body),
     });
-    console.log("middle response status:", response.status);
-    if (response.status !== 200) {
-      console.log("reached error block in utils");
+    if (!response.ok) {
       const res = await response.json(); //is this really needed? Try skipping this
       throw new Error(res.message);
     }
-    const res = await response.json();
-    console.log("res", res);
-    return res;
+    return await response.json();
   } catch (err) {
+    console.error(err);
     throw new Error("Failed to add material to product");
   }
 };
@@ -74,12 +72,13 @@ export const addTransactionForMaterial = async (body) => {
       },
       body: JSON.stringify(body),
     });
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
-    return response.json();
+    return await response.json();
   } catch (err) {
+    console.error(err);
     throw new Error("Failed to add transaction");
   }
 };
@@ -87,26 +86,28 @@ export const addTransactionForMaterial = async (body) => {
 export const getUnits = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/units`);
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
-    return response.json();
+    return await response.json();
   } catch (err) {
-    throw new Error(err.errorCode);
+    console.error(err);
+    throw new Error("Failed to load units");
   }
 };
 
 export const getSuppliers = async () => {
   try {
     const response = await fetch(`${URL_SERVER}/suppliers`);
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
     return response.json();
   } catch (err) {
-    throw new Error(err.errorCode);
+    console.error(err);
+    throw new Error("Failed to load suppliers");
   }
 };
 
@@ -115,12 +116,13 @@ export const deleteMaterialFromProduct = async (phmID) => {
     const response = await fetch(`${URL_SERVER}/productHasMaterial/${phmID}`, {
       method: "DELETE",
     });
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
   } catch (err) {
-    throw new Error(err.errorCode);
+    console.error(err);
+    throw new Error("Failed to remove material from product");
   }
 };
 
@@ -135,7 +137,7 @@ export const editProductHasMaterial = async (phmID, body) => {
       }
     );
     console.log(phmID, body);
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
@@ -155,7 +157,7 @@ export const deleteTransactionFromMaterial = async (
         method: "DELETE",
       }
     );
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }
@@ -171,7 +173,7 @@ export const newMaterial = async (body) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (response.status !== 200) {
+    if (!response.ok) {
       console.log("Error in PHMUtils");
       const res = await response.json();
       throw new Error(res.message);
@@ -188,7 +190,7 @@ export const newSupplier = async (body) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (response.status !== 200) {
+    if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
     }

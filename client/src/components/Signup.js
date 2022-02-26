@@ -1,7 +1,42 @@
 import React, { Fragment } from "react";
 import Navbar from "./Navbar";
+import { useToasts } from "../contexts/ToastContext";
 
 function Signup() {
+  const URL_SERVER = "http://localhost:5000";
+  const { addToast } = useToasts();
+
+  const newUser = async (body) => {
+    try {
+      console.log("Front end", body);
+      const response = await fetch(`${URL_SERVER}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        const res = await response.json();
+        throw new Error(res.message);
+      }
+    } catch (err) {
+      console.error(err);
+      throw new Error("Failed to register user");
+    }
+  };
+
+  const handleAddUser = async (email, password, confirm) => {
+    try {
+      if (password == confirm && )
+      const register = await newUser(email, password);
+    } catch (error) {
+      addToast({
+        title: " Registration Error",
+        type: "Error",
+        body: error.message,
+      });
+    }
+  };
+
   return (
     <Fragment>
       <Navbar opacity={"nav-opaque"} />
