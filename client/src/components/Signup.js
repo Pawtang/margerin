@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import { React, useState, Fragment } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 
@@ -6,9 +7,18 @@ function Signup() {
   const URL_SERVER = "http://localhost:5000";
   const { addToast } = useToasts();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+    setConfirm("");
+  };
+
   const newUser = async (body) => {
     try {
-      console.log("Front end", body);
       const response = await fetch(`${URL_SERVER}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -16,18 +26,29 @@ function Signup() {
       });
       if (!response.ok) {
         const res = await response.json();
-        throw new Error(res.message);
+        throw new Error(res);
       }
+      clearInputs();
+      addToast({
+        title: " Success",
+        type: "Success",
+        body: "Registration successful",
+      });
     } catch (err) {
-      console.error(err);
-      throw new Error("Failed to register user");
+      console.error(err.message);
+      throw new Error(err.message);
     }
   };
 
-  const handleAddUser = async (email, password, confirm) => {
+  const handleAddUser = async (e) => {
     try {
-      if (password == confirm && )
-      const register = await newUser(email, password);
+      e.preventDefault();
+      if (password === confirm) {
+        const body = { email, password };
+        await newUser(body);
+      } else {
+        throw new Error("Password and confirmation did not match!");
+      }
     } catch (error) {
       addToast({
         title: " Registration Error",
@@ -78,7 +99,7 @@ function Signup() {
         <div className="row shadow rounded-3 bg-white p-5 justify-content-center">
           <div className="col-lg-6 col-md-8 col-sm-10 col-12">
             <h1>Sign Up</h1>
-            <form>
+            <form onSubmit={handleAddUser}>
               <div class="mb-3">
                 <label for="email" class="form-label">
                   Email address
@@ -88,6 +109,10 @@ function Signup() {
                   class="form-control"
                   id="email"
                   aria-describedby="emailHelp"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
                 <div id="emailHelp" class="form-text">
                   We'll never share your email with anyone else.
@@ -98,7 +123,15 @@ function Signup() {
                   Password
                 </label>
 
-                <input type="password" class="form-control" id="password" />
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
                 <div
                   id="password-reqs"
                   class="form-text"
@@ -117,15 +150,21 @@ function Signup() {
                   type="password"
                   class="form-control"
                   id="confirmpassword"
+                  value={confirm}
+                  onChange={(e) => {
+                    setConfirm(e.target.value);
+                  }}
                 />
               </div>
               <div className="d-grid gap-2 d-md-flex justify-content-center">
                 <button type="submit" class="btn btn-primary">
                   Sign Up
                 </button>
-                <button type="button" class="btn btn-outline-primary">
-                  Log In
-                </button>
+                <Link to="/Login">
+                  <button type="button" class="btn btn-outline-primary">
+                    Log In
+                  </button>
+                </Link>
               </div>
             </form>
           </div>

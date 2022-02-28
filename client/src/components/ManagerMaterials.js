@@ -66,6 +66,11 @@ const ManagerMaterials = () => {
       await newMaterial(body);
       clearInput();
       retrieveMaterials();
+      addToast({
+        title: " Success",
+        type: "Success",
+        body: "Successfully added material",
+      });
     } catch (err) {
       addToast({
         title: "Failed to add material",

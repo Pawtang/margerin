@@ -112,7 +112,7 @@ const TransactionManager = () => {
       retrieveTransactions();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Transaction added",
       });
     } catch (error) {
@@ -139,7 +139,7 @@ const TransactionManager = () => {
       clearEdit();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Transaction updated",
       });
     } catch (error) {
@@ -162,7 +162,7 @@ const TransactionManager = () => {
       retrieveTransactions();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Transaction deleted",
       });
     } catch (error) {

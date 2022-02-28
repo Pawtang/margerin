@@ -57,7 +57,7 @@ const ManagerSuppliers = () => {
       retrieveSuppliers();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Supplier added",
       });
     } catch (error) {
@@ -80,7 +80,7 @@ const ManagerSuppliers = () => {
       retrieveSuppliers();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Supplier updated",
       });
     } catch (error) {
@@ -101,7 +101,7 @@ const ManagerSuppliers = () => {
       retrieveSuppliers();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Supplier deleted",
       });
     } catch (error) {

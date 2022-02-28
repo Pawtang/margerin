@@ -4,6 +4,14 @@ const cors = require("cors");
 const pool = require("./db");
 const bcrypt = require("bcrypt");
 
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const { dirname, join } = require("path");
+const { fileURLToPath } = require("url");
+
+dotenv.config();
+// const __dirname = dirname(fileURLToPath(import.meta.url));
+
 //middleware
 app.use(cors());
 app.use(express.json()); //req.body
@@ -16,15 +24,47 @@ app.post("/register", async (req, res) => {
     const { email, password } = req.body;
     const hashbrowns = await bcrypt.hash(password, 10);
     const newUser = await pool.query(
-      `INSERT INTO user (email, hash) VALUES($1, $2) RETURNING *`,
+      `INSERT INTO users (email, hash) VALUES($1, $2) RETURNING *`,
       [email, hashbrowns]
     );
     res.status(200).json(newUser.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(400).json("Registration failed");
+    if (error.code == "23505") {
+      res.status(409).json("Email is already in use");
+    } else res.status(400).json("Registration failed");
   }
 });
+
+app.get("/login", async (req, res) => {
+  const { email, password } = req.body;
+  console.log("email, password:", email, password);
+  try {
+    const databaseHash = await pool.query(
+      `SELECT users.hash FROM users WHERE (users.email = '${email}')`
+    );
+    if (validate(password, databaseHash)) {
+      console.log(res.json(databaseHash.rows));
+      // res.status(200).json();
+    }
+  } catch (error) {
+    console.error(error);
+    if (error.code == "23505") {
+      res.status(409).json("Email is already in use");
+    } else res.status(400).json("Registration failed");
+  }
+});
+
+const validate = async (password, hash) => {
+  const validation = bcrypt.compare(
+    myPlaintextPassword,
+    hash,
+    function (err, result) {
+      console.log(result);
+      return result;
+    }
+  );
+};
 
 /* ----------------------------- CREATE METHODS ----------------------------- */
 //create a product

@@ -1,9 +1,35 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import { useToasts } from "../contexts/ToastContext";
 
 import _ from "lodash";
 
 const Login = () => {
+  const URL_SERVER = "http://localhost:5000";
+  const { addToast } = useToasts();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(`${URL_SERVER}/login`);
+      if (!response.ok) {
+        const res = response.json();
+        throw new Error(res.message);
+      }
+      const res = await response.json();
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: "Login failed",
+      });
+    }
+  };
+
   return (
     <Fragment>
       <Navbar opacity={"nav-opaque"} />
@@ -34,7 +60,9 @@ const Login = () => {
             </div>
             <div className="d-grid gap-2 d-md-flex justify-content-center">
               <button class="btn btn-primary">Log In</button>
-              <button class="btn btn-outline-primary">Sign Up</button>
+              <Link to="/Signup">
+                <button class="btn btn-outline-primary">Sign Up</button>
+              </Link>
             </div>
           </div>
         </div>

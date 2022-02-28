@@ -16,9 +16,15 @@ const ToastManager = (props) => {
             <Toast animation={"true"} className={"fader"}>
               <Toast.Header closeButton={false}>
                 {toast.type == "Success" ? (
-                  <i class="bi bi-hand-thumbs-up-fill"></i>
+                  <i
+                    className="bi bi-hand-thumbs-up-fill text-success me-2"
+                    style={{ fontSize: "1.2rem" }}
+                  ></i>
                 ) : (
-                  <i class="bi bi-exclamation-triangle-fill"></i>
+                  <i
+                    className="bi bi-exclamation-triangle-fill text-danger me-2"
+                    style={{ fontSize: "1.2rem" }}
+                  ></i>
                 )}
                 <strong className="me-auto"> {toast.title}</strong>
                 <small>{toast.type}</small>

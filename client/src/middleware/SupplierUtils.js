@@ -21,7 +21,8 @@ export const getSuppliers = async () => {
     if (!response.ok) {
       throw new Error(response.message);
     }
-    return response.json();
+    const res = await response.json();
+    return res;
   } catch (err) {
     console.error(err);
     throw new Error("Failed to load suppliers");
