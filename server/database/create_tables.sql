@@ -93,3 +93,10 @@ CREATE TABLE IF NOT EXISTS users (
 );
 -- 2/18/22
 ALTER TABLE product ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);
+--3/8/2022
+
+ALTER TABLE product ADD userID INT;
+ALTER TABLE product_has_material ADD userID INT;
+ALTER TABLE supplier ADD userID INT;
+ALTER TABLE material ADD userID INT;
+ALTER TABLE transaction ADD userID INT;

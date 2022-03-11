@@ -1,15 +1,18 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const dotenv = require("dotenv");
-const cookieParser = require("cookie-parser");
-const { dirname, join } = require("path");
-const { fileURLToPath } = require("url");
+// const dotenv = require("dotenv");
+// const cookieParser = require("cookie-parser");
+// const { dirname, join } = require("path");
+// const { fileURLToPath } = require("url");
 
-dotenv.config();
+// dotenv.config();
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 
 //middleware
@@ -18,6 +21,18 @@ app.use(express.json()); //req.body
 
 //ROUTES//
 /* ----------------------------- Authentication ----------------------------- */
+
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; //undefined or token
+  if (token == null) return res.status(401).json("Authentication Failed");
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.status(403);
+    req.user = user;
+    next();
+  });
+};
 
 app.post("/register", async (req, res) => {
   try {
@@ -36,34 +51,30 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log("email, password:", email, password);
+  const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
   try {
     const databaseHash = await pool.query(
       `SELECT users.hash FROM users WHERE (users.email = '${email}')`
     );
-    if (validate(password, databaseHash)) {
-      console.log(res.json(databaseHash.rows));
-      // res.status(200).json();
+    const validation = await validate(password, databaseHash.rows[0].hash);
+    if (validation) {
+      res
+        .status(200)
+        .json({ accessToken: accessToken, message: "Login successful" });
+    } else {
+      throw new Error("Incorrect password");
     }
   } catch (error) {
-    console.error(error);
-    if (error.code == "23505") {
-      res.status(409).json("Email is already in use");
-    } else res.status(400).json("Registration failed");
+    console.error(error.message);
+    res.status(401).json("Login failed");
   }
 });
 
 const validate = async (password, hash) => {
-  const validation = bcrypt.compare(
-    myPlaintextPassword,
-    hash,
-    function (err, result) {
-      console.log(result);
-      return result;
-    }
-  );
+  const validation = await bcrypt.compare(password, hash);
+  return validation;
 };
 
 /* ----------------------------- CREATE METHODS ----------------------------- */
@@ -603,20 +614,20 @@ app.delete("/transaction/:transactionID", async (req, res) => {
 
 /* ------------------------------- END METHODS ------------------------------ */
 
-app.use((req, res, next) => {
-  const error = new Error("Not found");
-  error.status(404);
-  next(error);
-});
+// app.use((req, res, next) => {
+//   const error = new Error("Not found");
+//   error.status(404);
+//   next(error);
+// });
 
-app.use((error, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-    },
-  });
-});
+// app.use((error, req, res, next) => {
+//   res.status(error.status || 500);
+//   res.json({
+//     error: {
+//       message: error.message,
+//     },
+//   });
+// });
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");

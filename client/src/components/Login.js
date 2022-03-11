@@ -11,23 +11,44 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const getUser = async () => {
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const validateUser = async (body) => {
     try {
-      const response = await fetch(`${URL_SERVER}/login`);
+      const response = await fetch(`${URL_SERVER}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
       if (!response.ok) {
-        const res = response.json();
-        throw new Error(res.message);
+        const res = await response.json();
+        throw new Error(res);
       }
-      const res = await response.json();
-      console.log(res);
+      clearInputs();
+      addToast({
+        title: " Success",
+        type: "Success",
+        body: "Login successful",
+      });
     } catch (error) {
-      console.error(error);
+      console.error("Custom error", error);
       addToast({
         title: " Database Error",
         type: "Error",
-        body: "Login failed",
+        body: error.message,
       });
     }
+  };
+
+  const handleLogin = async (e) => {
+    try {
+      e.preventDefault();
+      const body = { email, password };
+      await validateUser(body);
+    } catch (error) {}
   };
 
   return (
@@ -38,32 +59,47 @@ const Login = () => {
           <div className="col-lg-6 col-md-8 col-sm-10 col-12">
             <h1>Log In</h1>
 
-            <div class="mb-3">
-              <label for="email" class="form-label">
-                Email address
-              </label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                aria-describedby="emailHelp"
-              />
-              <div id="emailHelp" class="form-text">
-                We'll never share your email with anyone else.
+            <form
+              action=""
+              onSubmit={(e) => {
+                handleLogin(e);
+              }}
+            >
+              <div class="mb-3">
+                <label for="email" class="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  aria-describedby="emailHelp"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <div id="emailHelp" class="form-text">
+                  We'll never share your email with anyone else.
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">
-                Password
-              </label>
-              <input type="password" class="form-control" id="password" />
-            </div>
-            <div className="d-grid gap-2 d-md-flex justify-content-center">
-              <button class="btn btn-primary">Log In</button>
-              <Link to="/Signup">
-                <button class="btn btn-outline-primary">Sign Up</button>
-              </Link>
-            </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="d-grid gap-2 d-md-flex justify-content-center">
+                <button class="btn btn-primary">Log In</button>
+                <Link to="/Signup">
+                  <button class="btn btn-outline-primary">Sign Up</button>
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>
