@@ -24,7 +24,8 @@ app.use(express.json()); //req.body
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; //undefined or token
+  const token = authHeader && authHeader.split(" ")[1]; //undefined or token, split after "Bearer"
+  console.log(authHeader, token);
   if (token == null) return res.status(401).json("Authentication Failed");
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {

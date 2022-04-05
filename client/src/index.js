@@ -12,6 +12,7 @@ import ManagerMaterials from "./components/ManagerMaterials";
 import ManagerTransactions from "./components/ManagerTransactions";
 import ToastManager from "./components/ToastManager";
 import { ToastProvider } from "./contexts/ToastContext";
+import { UserProvider } from "./contexts/UserContext";
 import "./styles/main.css";
 import "./styles/Styles.css";
 import "./styles/AppPage.css";
@@ -41,7 +42,9 @@ const App = () => {
 ReactDOM.render(
   <BrowserRouter>
     <ToastProvider>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </ToastProvider>
   </BrowserRouter>,
   document.getElementById("root")

@@ -8,11 +8,12 @@ export function userStatus() {
 }
 
 export const UserProvider = ({ children }) => {
+  const [userID, setUserID] = useState("");
+
   return (
     <UserContext.Provider
       value={{
-        toasts,
-        addToast,
+        userID,
       }}
     >
       {children}
