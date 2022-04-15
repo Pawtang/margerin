@@ -1,10 +1,11 @@
 import { ErrorHandling } from "./ErrorHandling";
 const URL_SERVER = "http://localhost:5000";
 
-export const deleteSupplier = async (supplierID) => {
+export const deleteSupplier = async (supplierID, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/supplier/${supplierID}`, {
       method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
       throw new Error(response.message);
@@ -15,9 +16,11 @@ export const deleteSupplier = async (supplierID) => {
   }
 };
 
-export const getSuppliers = async () => {
+export const getSuppliers = async (token) => {
   try {
-    const response = await fetch(`${URL_SERVER}/suppliers`);
+    const response = await fetch(`${URL_SERVER}/suppliers`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!response.ok) {
       throw new Error(response.message);
     }
@@ -29,11 +32,14 @@ export const getSuppliers = async () => {
   }
 };
 
-export const newSupplier = async (body) => {
+export const newSupplier = async (body, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/supplier/new`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(body),
     });
     if (!response.ok) {
@@ -45,11 +51,14 @@ export const newSupplier = async (body) => {
   }
 };
 
-export const editSupplier = async (supplierID, body) => {
+export const editSupplier = async (supplierID, body, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/supplier/edit/${supplierID}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(body),
     });
     console.log("");

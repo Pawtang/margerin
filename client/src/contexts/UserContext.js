@@ -1,19 +1,21 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import _ from "lodash";
+import { useLocalStorage } from "../components/hooks/useLocalStorage";
 
 const UserContext = React.createContext();
 
-export function userStatus() {
+export function useTokens() {
   return useContext(UserContext);
 }
 
 export const UserProvider = ({ children }) => {
-  const [userID, setUserID] = useState("");
+  const [token, setToken] = useLocalStorage("token", "");
 
   return (
     <UserContext.Provider
       value={{
-        userID,
+        token,
+        setToken,
       }}
     >
       {children}

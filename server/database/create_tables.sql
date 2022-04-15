@@ -100,3 +100,11 @@ ALTER TABLE product_has_material ADD userID INT;
 ALTER TABLE supplier ADD userID INT;
 ALTER TABLE material ADD userID INT;
 ALTER TABLE transaction ADD userID INT;
+
+--4/7/22
+CREATE TABLE IF NOT EXISTS web_sessions (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    userid INTEGER,
+    FOREIGN KEY (userid) REFERENCES users (id),
+    token VARCHAR(200) UNIQUE NOT NULL
+);

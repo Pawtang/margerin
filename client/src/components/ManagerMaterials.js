@@ -10,10 +10,12 @@ import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
 import { useToasts } from "../contexts/ToastContext";
 import { ErrorHandling } from "../middleware/ErrorHandling";
+import { useTokens } from "../contexts/UserContext";
 import Navbar from "./Navbar";
 import _ from "lodash";
 
 const ManagerMaterials = () => {
+  const { token } = useTokens();
   const { addToast } = useToasts();
   const [materials, setMaterials] = useState([]);
   /* ------------------------------ New Material ------------------------------ */
@@ -40,13 +42,13 @@ const ManagerMaterials = () => {
       editMaterialName,
       editMaterialDescription,
     };
-    await editMaterial(id, body);
+    await editMaterial(id, body, token);
     retrieveMaterials();
   };
 
   const retrieveMaterials = async () => {
     try {
-      const array = await getMaterials();
+      const array = await getMaterials(token);
       setMaterials(array);
     } catch (err) {
       addToast({
@@ -63,7 +65,7 @@ const ManagerMaterials = () => {
         newMaterialName,
         newMaterialDescription,
       };
-      await newMaterial(body);
+      await newMaterial(body, token);
       clearInput();
       retrieveMaterials();
       addToast({
@@ -82,7 +84,7 @@ const ManagerMaterials = () => {
 
   const handleDeleteMaterial = async (materialID) => {
     try {
-      await deleteMaterial(materialID, addToast);
+      await deleteMaterial(materialID, token);
       setMaterials(
         materials.filter((material) => material.material_id !== materialID)
       );

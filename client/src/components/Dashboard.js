@@ -13,8 +13,10 @@ import {
 } from "../middleware/DashboardUtils";
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
+import { useTokens } from "../contexts/UserContext";
 
 const Dashboard = () => {
+  const { token } = useTokens();
   const { addToast } = useToasts();
   const [displayedProduct, setDisplayedProduct] = useState({});
   const [newProductName, setNewProductName] = useState("");
@@ -28,8 +30,9 @@ const Dashboard = () => {
 
   //How to trigger rendering?
   const renderProducts = async () => {
+    console.log("render products token:", token);
     try {
-      const productArray = await getProducts();
+      const productArray = await getProducts(token);
       if (_.isEmpty(productArray)) return; //Maybe?
       setProducts(productArray);
       setDisplayedProduct(productArray[0]);
@@ -53,7 +56,7 @@ const Dashboard = () => {
     try {
       e.preventDefault();
       const body = { newProductName, newProductDescription };
-      await addProduct(body);
+      await addProduct(body, token);
       clearEntry("productModal");
       renderProducts();
       addToast({
@@ -79,7 +82,7 @@ const Dashboard = () => {
     try {
       const productID = displayedProduct.product_id;
       const body = { productYield };
-      await updateYield(productID, body);
+      await updateYield(productID, body, token);
     } catch (error) {
       addToast({
         title: "Database error",
@@ -93,7 +96,7 @@ const Dashboard = () => {
     try {
       const productID = displayedProduct.product_id;
       const body = { productPrice };
-      await updatePrice(productID, body);
+      await updatePrice(productID, body, token);
     } catch (error) {
       addToast({
         title: "Database error",

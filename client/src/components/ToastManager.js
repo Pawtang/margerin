@@ -13,7 +13,7 @@ const ToastManager = (props) => {
         {/* <Toast show={showToast} onClose={console.log("")}> */}
         {toasts.map((toast) => {
           return (
-            <Toast animation={"true"} className={"fader"}>
+            <Toast animation={"true"} className={"fader"} key={toasts.length}>
               <Toast.Header closeButton={false}>
                 {toast.type == "Success" ? (
                   <i

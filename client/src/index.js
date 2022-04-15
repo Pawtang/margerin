@@ -16,8 +16,8 @@ import { UserProvider } from "./contexts/UserContext";
 import "./styles/main.css";
 import "./styles/Styles.css";
 import "./styles/AppPage.css";
-import ProductProfile from "./components/ProductProfile";
-import ProductHasMaterials from "./components/ProductHasMaterials";
+// import ProductProfile from "./components/ProductProfile";
+// import ProductHasMaterials from "./components/ProductHasMaterials";
 
 const App = () => {
   return (

@@ -1,7 +1,9 @@
 import { displayProduct } from "../middleware/DashboardUtils";
 import { React, useState } from "react";
+import { useTokens } from "../contexts/UserContext";
 
 export const ProductSearch = (props) => {
+  const { token } = useTokens();
   const [search, setSearch] = useState("");
   const { setDisplayedProduct, products, setProductYield, setProductPrice } =
     props;
@@ -52,7 +54,8 @@ export const ProductSearch = (props) => {
                   className="btn btn-outline-primary"
                   onClick={async () => {
                     const productData = await displayProduct(
-                      product.product_id
+                      product.product_id,
+                      token
                     );
                     setDisplayedProduct(productData);
                     setProductYield(productData.yield);

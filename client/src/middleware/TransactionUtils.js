@@ -1,9 +1,11 @@
 import { ErrorHandling } from "./ErrorHandling";
 const URL_SERVER = "http://localhost:5000";
 
-export const getTransactionData = async () => {
+export const getTransactionData = async (token) => {
   try {
-    const response = await fetch(`${URL_SERVER}/transaction`);
+    const response = await fetch(`${URL_SERVER}/transaction`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
@@ -15,10 +17,11 @@ export const getTransactionData = async () => {
   }
 };
 
-export const deleteTransaction = async (transactionID) => {
+export const deleteTransaction = async (transactionID, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/transaction/${transactionID}`, {
       method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
       const res = await response.json();
@@ -30,11 +33,14 @@ export const deleteTransaction = async (transactionID) => {
   }
 };
 
-export const newTransaction = async (body) => {
+export const newTransaction = async (body, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/transaction`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(body),
     });
     if (!response.ok) {
@@ -47,13 +53,16 @@ export const newTransaction = async (body) => {
   }
 };
 
-export const editTransaction = async (transactionID, body) => {
+export const editTransaction = async (transactionID, body, token) => {
   try {
     const response = await fetch(
       `${URL_SERVER}/transaction/edit/${transactionID}`,
       {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(body),
       }
     );

@@ -15,8 +15,10 @@ import {
 import _ from "lodash";
 import { useToasts } from "../contexts/ToastContext";
 import { ErrorHandling } from "../middleware/ErrorHandling";
+import { useTokens } from "../contexts/UserContext";
 
 const ManagerSuppliers = () => {
+  const { token } = useTokens();
   const { addToast } = useToasts();
   const [suppliers, setSuppliers] = useState([]);
 
@@ -35,7 +37,7 @@ const ManagerSuppliers = () => {
 
   const retrieveSuppliers = async () => {
     try {
-      const array = await getSuppliers();
+      const array = await getSuppliers(token);
       setSuppliers(array);
     } catch (error) {
       addToast({
@@ -46,7 +48,7 @@ const ManagerSuppliers = () => {
     }
   };
 
-  const handleAddSupplier = async () => {
+  const handleAddSupplier = async (token) => {
     try {
       const body = {
         newSupplierName,
@@ -76,7 +78,7 @@ const ManagerSuppliers = () => {
         editSupplierContactName,
         editSupplierPhone,
       };
-      await editSupplier(id, body);
+      await editSupplier(id, body, token);
       retrieveSuppliers();
       addToast({
         title: " Success",
@@ -94,7 +96,7 @@ const ManagerSuppliers = () => {
 
   const handleDeleteSupplier = async (supplierID) => {
     try {
-      await deleteSupplier(supplierID);
+      await deleteSupplier(supplierID, token);
       setSuppliers(
         suppliers.filter((supplier) => supplier.supplier_id !== supplierID)
       );

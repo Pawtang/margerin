@@ -23,8 +23,10 @@ import {
 } from "../middleware/TransactionUtils";
 import { useToasts } from "../contexts/ToastContext";
 import { ErrorHandling } from "../middleware/ErrorHandling";
+import { useTokens } from "../contexts/UserContext";
 
 const TransactionManager = () => {
+  const { token } = useTokens();
   const { addToast } = useToasts();
   const todayDate = new Date().toISOString().split("T")[0];
   /* ----------------------------- New Transaction ---------------------------- */
@@ -52,7 +54,7 @@ const TransactionManager = () => {
 
   const loadLists = async () => {
     try {
-      const allMaterials = await getMaterials();
+      const allMaterials = await getMaterials(token);
       setMaterials(allMaterials);
     } catch (error) {
       addToast({
@@ -73,7 +75,7 @@ const TransactionManager = () => {
     }
 
     try {
-      const supplierList = await getSuppliers();
+      const supplierList = await getSuppliers(token);
       setSuppliers(supplierList);
     } catch (error) {
       addToast({
@@ -86,7 +88,7 @@ const TransactionManager = () => {
 
   const retrieveTransactions = async () => {
     try {
-      const array = await getTransactionData();
+      const array = await getTransactionData(token);
       setTransactions(array);
     } catch (error) {
       addToast({
@@ -108,7 +110,7 @@ const TransactionManager = () => {
         newTransactionQuantity,
       };
       clearNew();
-      await newTransaction(body);
+      await newTransaction(body, token);
       retrieveTransactions();
       addToast({
         title: " Success",
@@ -134,7 +136,7 @@ const TransactionManager = () => {
         editTransactionQuantity,
         editTransactionDate,
       };
-      await editTransaction(id, body);
+      await editTransaction(id, body, token);
       retrieveTransactions();
       clearEdit();
       addToast({
@@ -153,7 +155,7 @@ const TransactionManager = () => {
 
   const handleDeleteTransaction = async (transactionID) => {
     try {
-      await deleteTransaction(transactionID);
+      await deleteTransaction(transactionID, token);
       setTransactions(
         transactions.filter(
           (transaction) => transaction.transaction_id !== transactionID

@@ -2,10 +2,12 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
+import { useTokens } from "../contexts/UserContext";
 
 import _ from "lodash";
 
 const Login = () => {
+  const { setToken } = useTokens();
   const URL_SERVER = "http://localhost:5000";
   const { addToast } = useToasts();
   const [email, setEmail] = useState("");
@@ -15,7 +17,6 @@ const Login = () => {
     setEmail("");
     setPassword("");
   };
-
   const validateUser = async (body) => {
     try {
       const response = await fetch(`${URL_SERVER}/login`, {
@@ -23,10 +24,13 @@ const Login = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+
       if (!response.ok) {
         const res = await response.json();
         throw new Error(res);
       }
+      const res = await response.json();
+      setToken(res.accessToken);
       clearInputs();
       addToast({
         title: " Success",
@@ -65,8 +69,8 @@ const Login = () => {
                 handleLogin(e);
               }}
             >
-              <div class="mb-3">
-                <label for="email" class="form-label">
+              <div className="mb-3">
+                <label htmlFor="email" class="form-label">
                   Email address
                 </label>
                 <input
@@ -81,8 +85,8 @@ const Login = () => {
                   We'll never share your email with anyone else.
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">
+              <div className="mb-3">
+                <label htmlFor="password" class="form-label">
                   Password
                 </label>
                 <input

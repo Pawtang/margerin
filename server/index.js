@@ -22,16 +22,39 @@ app.use(express.json()); //req.body
 //ROUTES//
 /* ----------------------------- Authentication ----------------------------- */
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
+const authenticateToken = async (req, res, next) => {
+  const authHeader = req.header("Authorization");
   const token = authHeader && authHeader.split(" ")[1]; //undefined or token, split after "Bearer"
   console.log(authHeader, token);
   if (token == null) return res.status(401).json("Authentication Failed");
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.status(403);
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
+    if (err) {
+      console.error(err);
+      if (err.name == "TokenExpiredError") {
+        //delete from DB
+        //return something
+        //https://www.npmjs.com/package/jsonwebtoken
+        console.log("This is actually true");
+      }
+      return res.status(403).send("Authorization expired, please log back in");
+    }
+    const checkExists = await pool.query(
+      `SELECT * FROM web_sessions WHERE token = '${token}' AND userid = ${user.id}`
+    );
+    if (checkExists.rowCount == 0) {
+      console.error("Not authorized, punk hack0r!");
+      return res
+        .status(403)
+        .send("Begone with thy injection, fool of the net!");
+    }
     req.user = user;
     next();
+  });
+};
+
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: 3000000,
   });
 };
 
@@ -43,7 +66,12 @@ app.post("/register", async (req, res) => {
       `INSERT INTO users (email, hash) VALUES($1, $2) RETURNING *`,
       [email, hashbrowns]
     );
-    res.status(200).json(newUser.rows[0]);
+    const accessToken = createToken(newUser.rows[0].id);
+    const postSession = await pool.query(
+      `INSERT INTO web_sessions (email, token) VALUES($1, $2) RETURNING *`,
+      [email, accessToken]
+    );
+    res.status(200).json(postSession.rows[0]);
   } catch (error) {
     console.error(error);
     if (error.code == "23505") {
@@ -54,13 +82,18 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
   try {
     const databaseHash = await pool.query(
-      `SELECT users.hash FROM users WHERE (users.email = '${email}')`
+      `SELECT * FROM users WHERE (users.email = '${email}')`
     );
+    const id = databaseHash.rows[0].id;
     const validation = await validate(password, databaseHash.rows[0].hash);
     if (validation) {
+      const accessToken = createToken(id);
+      const postSession = await pool.query(
+        `INSERT INTO web_sessions (userid, token) VALUES($1, $2) RETURNING *`,
+        [id, accessToken]
+      );
       res
         .status(200)
         .json({ accessToken: accessToken, message: "Login successful" });
@@ -80,7 +113,7 @@ const validate = async (password, hash) => {
 
 /* ----------------------------- CREATE METHODS ----------------------------- */
 //create a product
-app.post("/product", async (req, res) => {
+app.post("/product", authenticateToken, async (req, res) => {
   try {
     const { newProductName, newProductDescription } = req.body;
     console.log("back end", req.body);
@@ -100,7 +133,7 @@ app.post("/product", async (req, res) => {
 });
 
 //create a material
-app.post("/material", async (req, res) => {
+app.post("/material", authenticateToken, async (req, res) => {
   try {
     const { newMaterialName, newMaterialDescription } = req.body;
     const newMaterial = await pool.query(
@@ -118,7 +151,7 @@ app.post("/material", async (req, res) => {
 });
 
 //create a supplier
-app.post("/supplier", async (req, res) => {
+app.post("/supplier", authenticateToken, async (req, res) => {
   try {
     const { newSupplierName } = req.body;
     const newSupplier = await pool.query(
@@ -136,7 +169,7 @@ app.post("/supplier", async (req, res) => {
 });
 
 //create a supplier detailed
-app.post("/supplier/new", async (req, res) => {
+app.post("/supplier/new", authenticateToken, async (req, res) => {
   try {
     const {
       newSupplierName,
@@ -155,7 +188,7 @@ app.post("/supplier/new", async (req, res) => {
 });
 
 //Add a material to a product
-app.post("/productHasMaterial", async (req, res) => {
+app.post("/productHasMaterial", authenticateToken, async (req, res) => {
   try {
     const { productID, addMaterial, newUnit, newQuantity, isPerUnit } =
       req.body;
@@ -174,7 +207,7 @@ app.post("/productHasMaterial", async (req, res) => {
 });
 
 //add a transaction to a material
-app.post("/materialHasTransaction", async (req, res) => {
+app.post("/materialHasTransaction", authenticateToken, async (req, res) => {
   try {
     console.log("Request body for materialHasTransaction:", req.body);
     const {
@@ -200,7 +233,7 @@ app.post("/materialHasTransaction", async (req, res) => {
 });
 
 //add a transaction to a material
-app.post("/transaction", async (req, res) => {
+app.post("/transaction", authenticateToken, async (req, res) => {
   try {
     console.log("Request body for materialHasTransaction:", req.body);
     const {
@@ -227,7 +260,7 @@ app.post("/transaction", async (req, res) => {
 /* ----------------------------- UPDATE METHODS ----------------------------- */
 
 //Update price of an item
-app.put("/product/price/:id", async (req, res) => {
+app.put("/product/price/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { productPrice } = req.body;
@@ -244,7 +277,7 @@ app.put("/product/price/:id", async (req, res) => {
   }
 });
 
-app.put("/product/yield/:id", async (req, res) => {
+app.put("/product/yield/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { productYield } = req.body;
@@ -262,7 +295,7 @@ app.put("/product/yield/:id", async (req, res) => {
   }
 });
 
-app.put("/supplier/edit/:id", async (req, res) => {
+app.put("/supplier/edit/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { editSupplierName, editSupplierContactName, editSupplierPhone } =
@@ -280,7 +313,7 @@ app.put("/supplier/edit/:id", async (req, res) => {
   }
 });
 
-app.put("/transaction/edit/:id", async (req, res) => {
+app.put("/transaction/edit/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -304,7 +337,7 @@ app.put("/transaction/edit/:id", async (req, res) => {
   }
 });
 
-app.put("/material/edit/:id", async (req, res) => {
+app.put("/material/edit/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { editMaterialName, editMaterialDescription } = req.body;
@@ -326,7 +359,7 @@ app.put("/material/edit/:id", async (req, res) => {
   }
 });
 
-app.put("/productHasMaterial/edit/:id", async (req, res) => {
+app.put("/productHasMaterial/edit/:id", authenticateToken, async (req, res) => {
   console.log("index req, body:", req.params, req.body);
   try {
     const { id } = req.params;
@@ -350,10 +383,10 @@ app.put("/productHasMaterial/edit/:id", async (req, res) => {
 
 /* ------------------------------- GET METHODS ------------------------------ */
 //Get all products
-app.get("/products", async (req, res) => {
+app.get("/products", authenticateToken, async (req, res) => {
   try {
     const getAllProducts = await pool.query(
-      `SELECT * FROM product ORDER BY product_name ASC`
+      `SELECT * FROM product WHERE userid = ${req.user.id} ORDER BY product_name ASC`
     );
     res.status(200).json(getAllProducts.rows);
   } catch (error) {
@@ -367,10 +400,10 @@ app.get("/products", async (req, res) => {
 });
 
 //Get all materials
-app.get("/materials", async (req, res) => {
+app.get("/materials", authenticateToken, async (req, res) => {
   try {
     const getAllMaterials = await pool.query(
-      `SELECT * FROM material ORDER BY material_name ASC`
+      `SELECT * FROM material WHERE userid = ${req.user.id} ORDER BY material_name ASC`
     );
     res.status(200).json(getAllMaterials.rows);
   } catch (error) {
@@ -399,10 +432,10 @@ app.get("/units", async (req, res) => {
 });
 
 //Get all suppliers
-app.get("/suppliers", async (req, res) => {
+app.get("/suppliers", authenticateToken, async (req, res) => {
   try {
     const getAllSuppliers = await pool.query(
-      `SELECT * FROM supplier ORDER BY supplier_name ASC`
+      `SELECT * FROM supplier WHERE userid = ${req.user.id} ORDER BY supplier_name ASC`
     );
     res.status(200).json(getAllSuppliers.rows);
   } catch (error) {
@@ -416,11 +449,11 @@ app.get("/suppliers", async (req, res) => {
 });
 
 //get a product
-app.get("/product/:id", async (req, res) => {
+app.get("/product/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const getProduct = await pool.query(
-      `SELECT * FROM product WHERE product_id = ${id}`
+      `SELECT * FROM product WHERE product_id = ${id} AND userid = ${req.user.id}`
     );
     res.status(200).json(getProduct.rows[0]);
   } catch (error) {
@@ -435,7 +468,7 @@ app.get("/product/:id", async (req, res) => {
 
 //Get all materials for product
 // TODO: Get the average as part of this function?
-app.get("/productHasMaterials/:id", async (req, res) => {
+app.get("/productHasMaterials/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const relatedMaterials = await pool.query(
@@ -467,7 +500,7 @@ app.get("/productHasMaterials/:id", async (req, res) => {
 });
 
 //Get all transactions for material
-app.get("/materialHasTransactions/:id", async (req, res) => {
+app.get("/materialHasTransactions/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -487,7 +520,7 @@ app.get("/materialHasTransactions/:id", async (req, res) => {
   }
 });
 
-app.get("/transaction", async (req, res) => {
+app.get("/transaction", authenticateToken, async (req, res) => {
   try {
     const transactionData = await pool.query(
       `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_id, u.unit_name, s.supplier_id, s.supplier_name, m.material_id, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) ORDER BY t.transaction_date DESC`
@@ -506,7 +539,7 @@ app.get("/transaction", async (req, res) => {
 /* ----------------------------- DELETE METHODS ----------------------------- */
 
 //TODO: Delete all product_id's from phm table
-app.delete("/product/:id", async (req, res) => {
+app.delete("/product/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = await pool.query(
@@ -528,23 +561,27 @@ app.delete("/product/:id", async (req, res) => {
   }
 });
 
-app.delete("/productHasMaterial/:phmID", async (req, res) => {
-  try {
-    const { phmID } = req.params;
-    const deleteMaterial = await pool.query(
-      `DELETE FROM product_has_material WHERE phm_id = ${phmID}`
-    );
-    res.status(200).json("Material deleted!");
-  } catch (error) {
-    res.status(400).json({
-      errorCode: error.code,
-      errorMessage: error.detail,
-    });
-    console.error(error.message);
+app.delete(
+  "/productHasMaterial/:phmID",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { phmID } = req.params;
+      const deleteMaterial = await pool.query(
+        `DELETE FROM product_has_material WHERE phm_id = ${phmID}`
+      );
+      res.status(200).json("Material deleted!");
+    } catch (error) {
+      res.status(400).json({
+        errorCode: error.code,
+        errorMessage: error.detail,
+      });
+      console.error(error.message);
+    }
   }
-});
+);
 
-app.delete("/supplier/:supplierID", async (req, res) => {
+app.delete("/supplier/:supplierID", authenticateToken, async (req, res) => {
   try {
     const { supplierID } = req.params;
     const deleteSupplier = await pool.query(
@@ -560,7 +597,7 @@ app.delete("/supplier/:supplierID", async (req, res) => {
   }
 });
 
-app.delete("/material/:materialID", async (req, res) => {
+app.delete("/material/:materialID", authenticateToken, async (req, res) => {
   try {
     const { materialID } = req.params;
     const deleteMaterial = await pool.query(
@@ -578,6 +615,7 @@ app.delete("/material/:materialID", async (req, res) => {
 
 app.delete(
   "/materialHasTransaction/:materialID/:transactionID",
+  authenticateToken,
   async (req, res) => {
     try {
       const { materialID, transactionID } = req.params;
@@ -596,22 +634,26 @@ app.delete(
   }
 );
 
-app.delete("/transaction/:transactionID", async (req, res) => {
-  try {
-    const { transactionID } = req.params;
-    const deleteTransaction = await pool.query(
-      `DELETE FROM transaction WHERE transaction_id = ${transactionID}`
-    );
-    res.status(200).json("Transaction deleted!");
-  } catch (error) {
-    res.status(400);
-    res.json({
-      errorCode: error.code,
-      errorMessage: error.detail,
-    });
-    console.error("DELETE error in Index", error);
+app.delete(
+  "/transaction/:transactionID",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { transactionID } = req.params;
+      const deleteTransaction = await pool.query(
+        `DELETE FROM transaction WHERE transaction_id = ${transactionID}`
+      );
+      res.status(200).json("Transaction deleted!");
+    } catch (error) {
+      res.status(400);
+      res.json({
+        errorCode: error.code,
+        errorMessage: error.detail,
+      });
+      console.error("DELETE error in Index", error);
+    }
   }
-});
+);
 
 /* ------------------------------- END METHODS ------------------------------ */
 

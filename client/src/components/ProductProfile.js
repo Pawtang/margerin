@@ -1,9 +1,11 @@
 import React, { Fragment } from "react";
 import _ from "lodash";
 import ProductHasMaterials from "./ProductHasMaterials";
-import { useToasts } from "../contexts/ToastContext";
+// import { useToasts } from "../contexts/ToastContext";
+import { useTokens } from "../contexts/UserContext";
 
 const ProductProfile = (props) => {
+  const { token } = useTokens();
   const {
     renderProducts,
     deleteProduct,
@@ -31,7 +33,7 @@ const ProductProfile = (props) => {
                 className="btn btn-outline-danger"
                 type="button"
                 onClick={async () => {
-                  await deleteProduct(displayedProduct.product_id);
+                  await deleteProduct(displayedProduct.product_id, token);
                   renderProducts();
                 }}
               >
@@ -89,7 +91,7 @@ const ProductProfile = (props) => {
                     type="text"
                     value={productAverageCost}
                     aria-label="Product Unit Cost"
-                    // readOnly
+                    readOnly
                     id="ProductCost"
                   />
                 </div>
@@ -139,7 +141,7 @@ const ProductProfile = (props) => {
                     type="text"
                     // value={`$${}`}
                     aria-label="Product Unit Cost"
-                    // readOnly
+                    readOnly
                     id="ProductCost"
                     value={
                       !isNaN(productAverageCost)

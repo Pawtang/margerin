@@ -1,9 +1,12 @@
 import { ErrorHandling } from "./ErrorHandling";
 const URL_SERVER = "http://localhost:5000";
 
-export const getMaterials = async () => {
+export const getMaterials = async (token) => {
   try {
-    const response = await fetch(`${URL_SERVER}/materials`);
+    const response = await fetch(`${URL_SERVER}/materials`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
@@ -15,9 +18,13 @@ export const getMaterials = async () => {
   }
 };
 
-export const getMaterialsForProduct = async (id) => {
+export const getMaterialsForProduct = async (id, token) => {
   try {
-    const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`);
+    console.log("get Materials token", token);
+    const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
@@ -29,9 +36,15 @@ export const getMaterialsForProduct = async (id) => {
   }
 };
 
-export const getTransactionsForMaterial = async (id) => {
+export const getTransactionsForMaterial = async (id, token) => {
   try {
-    const response = await fetch(`${URL_SERVER}/materialHasTransactions/${id}`);
+    const response = await fetch(
+      `${URL_SERVER}/materialHasTransactions/${id}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
@@ -43,12 +56,13 @@ export const getTransactionsForMaterial = async (id) => {
   }
 };
 
-export const addMaterialToProduct = async (body) => {
+export const addMaterialToProduct = async (body, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterial`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });
@@ -63,12 +77,13 @@ export const addMaterialToProduct = async (body) => {
   }
 };
 
-export const addTransactionForMaterial = async (body) => {
+export const addTransactionForMaterial = async (body, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/materialHasTransaction`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(body),
     });
@@ -83,9 +98,12 @@ export const addTransactionForMaterial = async (body) => {
   }
 };
 
-export const getUnits = async () => {
+export const getUnits = async (token) => {
   try {
-    const response = await fetch(`${URL_SERVER}/units`);
+    const response = await fetch(`${URL_SERVER}/units`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
@@ -97,9 +115,12 @@ export const getUnits = async () => {
   }
 };
 
-export const getSuppliers = async () => {
+export const getSuppliers = async (token) => {
   try {
-    const response = await fetch(`${URL_SERVER}/suppliers`);
+    const response = await fetch(`${URL_SERVER}/suppliers`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
@@ -111,10 +132,11 @@ export const getSuppliers = async () => {
   }
 };
 
-export const deleteMaterialFromProduct = async (phmID) => {
+export const deleteMaterialFromProduct = async (phmID, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/productHasMaterial/${phmID}`, {
       method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
       const res = await response.json();
@@ -126,13 +148,16 @@ export const deleteMaterialFromProduct = async (phmID) => {
   }
 };
 
-export const editProductHasMaterial = async (phmID, body) => {
+export const editProductHasMaterial = async (phmID, body, token) => {
   try {
     const response = await fetch(
       `${URL_SERVER}/productHasMaterial/edit/${phmID}`,
       {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(body),
       }
     );
@@ -148,13 +173,15 @@ export const editProductHasMaterial = async (phmID, body) => {
 
 export const deleteTransactionFromMaterial = async (
   materialID,
-  transactionID
+  transactionID,
+  token
 ) => {
   try {
     const response = await fetch(
       `${URL_SERVER}/materialHasTransaction/${materialID}/${transactionID}`,
       {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     if (!response.ok) {
@@ -166,11 +193,14 @@ export const deleteTransactionFromMaterial = async (
   }
 };
 
-export const newMaterial = async (body) => {
+export const newMaterial = async (body, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/material`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(body),
     });
     if (!response.ok) {
@@ -183,11 +213,14 @@ export const newMaterial = async (body) => {
   }
 };
 
-export const newSupplier = async (body) => {
+export const newSupplier = async (body, token) => {
   try {
     const response = await fetch(`${URL_SERVER}/supplier`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(body),
     });
     if (!response.ok) {

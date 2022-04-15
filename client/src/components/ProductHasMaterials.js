@@ -11,6 +11,7 @@ import HeaderColumn from "./elements/HeaderColumn";
 import SelectWithToggleColumn from "./elements/SelectWithToggleColumn";
 import IsPerUnitCheck from "./elements/IsPerUnitCheck";
 import { useToasts } from "../contexts/ToastContext";
+import { useTokens } from "../contexts/UserContext";
 
 import {
   getMaterials,
@@ -30,6 +31,7 @@ import {
 const ProductHasMaterials = (props) => {
   //General Purpose
 
+  const { token } = useTokens();
   const { addToast } = useToasts();
   const productID = props.productID;
   const productYield = props.productYield;
@@ -72,7 +74,10 @@ const ProductHasMaterials = (props) => {
   /* --------------------------- Transaction Methods -------------------------- */
   const retrieveTransactionsForMaterial = async () => {
     if (_.isEmpty(modalMaterial)) return;
-    const array = await getTransactionsForMaterial(modalMaterial.material_id);
+    const array = await getTransactionsForMaterial(
+      modalMaterial.material_id,
+      token
+    );
     setTransactionsForMaterial(array);
   };
 
@@ -120,8 +125,8 @@ const ProductHasMaterials = (props) => {
   const handleAddMaterialToProduct = async () => {
     try {
       const body = { productID, addMaterial, newUnit, newQuantity, isPerUnit };
-      await addMaterialToProduct(body);
-      const response = await getMaterialsForProduct(productID);
+      await addMaterialToProduct(body, token);
+      const response = await getMaterialsForProduct(productID, token);
       setMaterialsForProduct(response);
       setAddMaterial("");
       setNewUnit("1");
@@ -143,7 +148,7 @@ const ProductHasMaterials = (props) => {
   const handleEditProductHasMaterial = async (phmID) => {
     try {
       const body = { editMaterial, editQuantity, editUnit, editIsPerUnit };
-      await editProductHasMaterial(phmID, body);
+      await editProductHasMaterial(phmID, body, token);
       retrieveMaterialsForProduct();
       addToast({
         title: " Success",
@@ -171,7 +176,7 @@ const ProductHasMaterials = (props) => {
     try {
       const body = { newMaterialName, newMaterialDescription };
       await newMaterial(body);
-      const materials = await getMaterials();
+      const materials = await getMaterials(token);
       setMaterials(materials);
       clearMaterialEntry();
       addToast({
@@ -249,9 +254,9 @@ const ProductHasMaterials = (props) => {
   };
 
   const loadLists = async () => {
-    const allMaterials = await getMaterials();
+    const allMaterials = await getMaterials(token);
     const unitList = await getUnits();
-    const supplierList = await getSuppliers();
+    const supplierList = await getSuppliers(token);
     setMaterials(allMaterials);
     setUnits(unitList);
     setSuppliers(supplierList);
@@ -295,7 +300,7 @@ const ProductHasMaterials = (props) => {
   }, []);
 
   const retrieveMaterialsForProduct = async () => {
-    const array = await getMaterialsForProduct(productID);
+    const array = await getMaterialsForProduct(productID, token);
     setMaterialsForProduct([...array]);
   };
 
