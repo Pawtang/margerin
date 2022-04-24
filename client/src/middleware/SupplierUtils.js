@@ -1,4 +1,4 @@
-import { ErrorHandling } from "./ErrorHandling";
+// import { ErrorHandling } from "./ErrorHandling";
 const URL_SERVER = "http://localhost:5000";
 
 export const deleteSupplier = async (supplierID, token) => {
@@ -34,6 +34,7 @@ export const getSuppliers = async (token) => {
 
 export const newSupplier = async (body, token) => {
   try {
+    console.log(token);
     const response = await fetch(`${URL_SERVER}/supplier/new`, {
       method: "POST",
       headers: {

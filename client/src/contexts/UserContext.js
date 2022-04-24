@@ -10,12 +10,15 @@ export function useTokens() {
 
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useLocalStorage("token", "");
+  const [user, setUser] = useState("");
 
   return (
     <UserContext.Provider
       value={{
         token,
         setToken,
+        user,
+        setUser,
       }}
     >
       {children}

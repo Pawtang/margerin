@@ -14,7 +14,7 @@ import {
 } from "../middleware/SupplierUtils";
 import _ from "lodash";
 import { useToasts } from "../contexts/ToastContext";
-import { ErrorHandling } from "../middleware/ErrorHandling";
+// import { ErrorHandling } from "../middleware/ErrorHandling";
 import { useTokens } from "../contexts/UserContext";
 
 const ManagerSuppliers = () => {
@@ -55,7 +55,7 @@ const ManagerSuppliers = () => {
         newSupplierContactName,
         newSupplierPhone,
       };
-      await newSupplier(body);
+      await newSupplier(body, token);
       retrieveSuppliers();
       addToast({
         title: " Success",

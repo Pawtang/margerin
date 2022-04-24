@@ -2,17 +2,21 @@ import { React, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
+import { useTokens } from "../contexts/UserContext";
 
 function Signup() {
   const URL_SERVER = "http://localhost:5000";
   const { addToast } = useToasts();
-
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
+  const { setToken, setUser } = useTokens();
+
   const clearInputs = () => {
     setEmail("");
+    setUsername("");
     setPassword("");
     setConfirm("");
   };
@@ -34,6 +38,8 @@ function Signup() {
         type: "Success",
         body: "Registration successful",
       });
+      const res = await response.json();
+      console.log("signup response:", res);
     } catch (err) {
       console.error(err.message);
       throw new Error(err.message);
@@ -100,6 +106,24 @@ function Signup() {
           <div className="col-lg-6 col-md-8 col-sm-10 col-12">
             <h1>Sign Up</h1>
             <form onSubmit={handleAddUser}>
+              <div class="mb-3">
+                <label for="username" class="form-label">
+                  Project Name
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  aria-describedby="usernameHelp"
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
+                <div id="emailHelp" class="form-text">
+                  Project or personal name. You can change this later.
+                </div>
+              </div>
               <div class="mb-3">
                 <label for="email" class="form-label">
                   Email address

@@ -7,11 +7,12 @@ import { useTokens } from "../contexts/UserContext";
 import _ from "lodash";
 
 const Login = () => {
-  const { setToken } = useTokens();
   const URL_SERVER = "http://localhost:5000";
   const { addToast } = useToasts();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { setToken, setUser } = useTokens();
 
   const clearInputs = () => {
     setEmail("");
@@ -30,7 +31,9 @@ const Login = () => {
         throw new Error(res);
       }
       const res = await response.json();
+      console.log("login res", res);
       setToken(res.accessToken);
+      // setUser(res.user);
       clearInputs();
       addToast({
         title: " Success",

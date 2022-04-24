@@ -54,18 +54,20 @@ const authenticateToken = async (req, res, next) => {
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 3000000,
+    expiresIn: 30,
   });
 };
 
 app.post("/register", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
     const hashbrowns = await bcrypt.hash(password, 10);
     const newUser = await pool.query(
-      `INSERT INTO users (email, hash) VALUES($1, $2) RETURNING *`,
-      [email, hashbrowns]
+      `INSERT INTO users (username, email, hash) VALUES($1, $2, $3) RETURNING *`,
+      [username, email, hashbrowns]
     );
+    const userid = newUser.rows;
+    console.log(userid);
     const accessToken = createToken(newUser.rows[0].id);
     const postSession = await pool.query(
       `INSERT INTO web_sessions (email, token) VALUES($1, $2) RETURNING *`,
@@ -118,7 +120,8 @@ app.post("/product", authenticateToken, async (req, res) => {
     const { newProductName, newProductDescription } = req.body;
     console.log("back end", req.body);
     const newProduct = await pool.query(
-      `INSERT INTO product (product_name, product_description) VALUES('${newProductName}', '${newProductDescription}') RETURNING *`
+      `INSERT INTO product (product_name, product_description, userid) VALUES($1, $2, $3) RETURNING *`,
+      [newProductName, newProductDescription, req.user.id]
     );
     // console.log(newProduct);
     res.status(200).json(newProduct.rows);
@@ -137,7 +140,8 @@ app.post("/material", authenticateToken, async (req, res) => {
   try {
     const { newMaterialName, newMaterialDescription } = req.body;
     const newMaterial = await pool.query(
-      `INSERT INTO material (material_name, material_description) VALUES('${newMaterialName}', '${newMaterialDescription}') RETURNING *`
+      `INSERT INTO material (material_name, material_description, userid) VALUES($1, $2, $3) RETURNING *`,
+      [newMaterialName, newMaterialDescription, req.user.id]
     );
     res.status(200).json(newMaterial.rows);
   } catch (error) {
@@ -155,7 +159,8 @@ app.post("/supplier", authenticateToken, async (req, res) => {
   try {
     const { newSupplierName } = req.body;
     const newSupplier = await pool.query(
-      `INSERT INTO supplier (supplier_name) VALUES('${newSupplierName}') RETURNING *`
+      `INSERT INTO supplier (supplier_name, userid) VALUES($1, $2) RETURNING *`,
+      [newSupplierName, req.user.id]
     );
     res.status(200).json(newSupplier.rows[0]);
   } catch (error) {
@@ -178,7 +183,13 @@ app.post("/supplier/new", authenticateToken, async (req, res) => {
       newSupplierRating,
     } = req.body;
     const newSupplier = await pool.query(
-      `INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating) VALUES('${newSupplierName}', '${newSupplierContactName}', '${newSupplierphone}', '${newSupplierRating}') RETURNING *`
+      `INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating, userid) VALUES($1, $2, $3, $4) RETURNING *`,
+      [
+        newSupplierName,
+        newSupplierContactName,
+        newSupplierphone,
+        newSupplierRating,
+      ]
     );
     res.status(200).json(newSupplier.rows[0]);
   } catch (error) {
@@ -193,7 +204,8 @@ app.post("/productHasMaterial", authenticateToken, async (req, res) => {
     const { productID, addMaterial, newUnit, newQuantity, isPerUnit } =
       req.body;
     const productHasMaterial = await pool.query(
-      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity, is_per_unit) VALUES('${productID}', '${addMaterial}', '${newUnit}', '${newQuantity}', '${isPerUnit}') RETURNING *`
+      `INSERT INTO product_has_material (product_id, material_id, unit_id, quantity, is_per_unit, userid) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [productID, addMaterial, newUnit, newQuantity, isPerUnit, req.user.id]
     );
     res.status(200).json(productHasMaterial.rows);
   } catch (error) {
@@ -219,7 +231,16 @@ app.post("/materialHasTransaction", authenticateToken, async (req, res) => {
       transactionDate,
     } = req.body;
     const productHasMaterial = await pool.query(
-      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${transactionSupplier}, ${materialID}, ${transactionUnit}, ${transactionCost},${transactionQuantity}, TO_DATE('${transactionDate}', 'YYYY-MM-DD') ) RETURNING *`
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date, userid) VALUES($1, $2, $3, $4, $5, TO_DATE('$6', 'YYYY-MM-DD'), $7) RETURNING *`,
+      [
+        transactionSupplier,
+        materialID,
+        transactionUnit,
+        transactionCost,
+        transactionQuantity,
+        transactionDate,
+        req.user.id,
+      ]
     );
     res.status(200).json(productHasMaterial.rows);
   } catch (error) {
@@ -245,7 +266,16 @@ app.post("/transaction", authenticateToken, async (req, res) => {
       newTransactionQuantity,
     } = req.body;
     const newTransaction = await pool.query(
-      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date) VALUES(${newTransactionSupplier}, ${newTransactionMaterial}, ${newTransactionUnit}, ${newTransactionCost},${newTransactionQuantity}, TO_DATE('${newTransactionDate}', 'YYYY-MM-DD') ) RETURNING *`
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date, userid) VALUES($1, $2, $3, $4,$5, TO_DATE('$6', 'YYYY-MM-DD'), '$7' ) RETURNING *`,
+      [
+        newTransactionSupplier,
+        newTransactionMaterial,
+        newTransactionUnit,
+        newTransactionCost,
+        newTransactionQuantity,
+        newTransactionDate,
+        req.user.id,
+      ]
     );
     res.status(200).json(newTransaction.rows);
   } catch (error) {
@@ -265,7 +295,8 @@ app.put("/product/price/:id", authenticateToken, async (req, res) => {
     const { id } = req.params;
     const { productPrice } = req.body;
     const updatePrice = await pool.query(
-      `UPDATE product SET price = '${productPrice}' WHERE product_id = ${id}`
+      `UPDATE product SET price = '$1' WHERE product_id = $2`,
+      [productPrice, id]
     );
     res.status(200).json(updatePrice.rows);
   } catch (error) {
@@ -283,7 +314,8 @@ app.put("/product/yield/:id", authenticateToken, async (req, res) => {
     const { productYield } = req.body;
     console.log("id, yield: ", id, productYield);
     const updateYield = await pool.query(
-      `UPDATE product SET yield = '${productYield}' WHERE product_id = ${id}`
+      `UPDATE product SET yield = '$1' WHERE product_id = $2`,
+      [productYield, id]
     );
     res.status(200).json(updateYield.rows);
   } catch (error) {
@@ -301,7 +333,8 @@ app.put("/supplier/edit/:id", authenticateToken, async (req, res) => {
     const { editSupplierName, editSupplierContactName, editSupplierPhone } =
       req.body;
     const updateSupplier = await pool.query(
-      `UPDATE supplier SET supplier_name = '${editSupplierName}', contact_name = '${editSupplierContactName}', supplier_phone = '${editSupplierPhone}' WHERE supplier_id = ${id}`
+      `UPDATE supplier SET supplier_name = '$1', contact_name = '$2', supplier_phone = '$3' WHERE supplier_id = ${id}`,
+      [editSupplierName, editSupplierContactName, editSupplierPhone]
     );
     res.status(200).json(updateSupplier.rows);
   } catch (error) {
@@ -474,12 +507,12 @@ app.get("/productHasMaterials/:id", authenticateToken, async (req, res) => {
     const relatedMaterials = await pool.query(
       `SELECT  m.material_id, m.material_name, phm.quantity, phm.is_per_unit, u.unit_name, u.unit_id, phm.phm_id FROM material m 
       INNER JOIN product_has_material phm ON (m.material_id = phm.material_id) 
-      INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id}) ORDER BY m.material_name ASC;`
+      INNER JOIN unit u ON (u.unit_id = phm.unit_id) WHERE (product_id = ${id}) AND phm.userid = ${req.user.id} ORDER BY m.material_name ASC;`
     );
     const reformattedArray = await Promise.all(
       relatedMaterials.rows.map(async (material) => {
         const returned = await pool.query(
-          `SELECT SUM(cost::numeric / quantity::numeric) / COUNT(cost) AS avgcost FROM transaction WHERE material_id = '${material.material_id}' AND unit_id = '${material.unit_id}'`
+          `SELECT SUM(cost::numeric / quantity::numeric) / COUNT(cost) AS avgcost FROM transaction WHERE material_id = '${material.material_id}' AND unit_id = '${material.unit_id}' AND transaction.userid = ${req.user.id}`
         );
 
         return {

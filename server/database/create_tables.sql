@@ -108,3 +108,5 @@ CREATE TABLE IF NOT EXISTS web_sessions (
     FOREIGN KEY (userid) REFERENCES users (id),
     token VARCHAR(200) UNIQUE NOT NULL
 );
+--4/15/22
+ALTER TABLE users ADD username VARCHAR(200);

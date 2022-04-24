@@ -1,8 +1,12 @@
 import { React } from "react";
 import { Link } from "react-router-dom";
+import { useTokens } from "../contexts/UserContext";
+
 import "../styles/Navbar.css";
 const Navbar = (props) => {
   const { opacity } = props;
+  const { token } = useTokens();
+  console.log(token);
   return (
     <nav
       className={`navbar main-nav ${opacity} navbar-expand-lg navbar-dark p-md-3`}
