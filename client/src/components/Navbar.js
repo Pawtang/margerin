@@ -1,12 +1,14 @@
 import { React } from "react";
 import { Link } from "react-router-dom";
 import { useTokens } from "../contexts/UserContext";
+import _ from "lodash";
 
 import "../styles/Navbar.css";
 const Navbar = (props) => {
   const { opacity } = props;
-  const { token } = useTokens();
-  console.log(token);
+  const { token, logOut } = useTokens();
+
+  // console.log(token);
   return (
     <nav
       className={`navbar main-nav ${opacity} navbar-expand-lg navbar-dark p-md-3`}
@@ -47,16 +49,28 @@ const Navbar = (props) => {
                 <button className="btn btn-outline-light">About</button>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/Login">
-                <button className="btn btn-outline-light">Log In</button>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/Signup">
-                <button className="btn btn-outline-light">Sign Up</button>
-              </Link>
-            </li>
+            {_.isEmpty(token) ? (
+              <li className="nav-item">
+                <Link to="/Login">
+                  <button className="btn btn-outline-light">Log In</button>
+                </Link>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <Link to="/">
+                  <button className="btn btn-outline-light" onClick={logOut}>
+                    Log Out
+                  </button>
+                </Link>
+              </li>
+            )}
+            {_.isEmpty(token) && (
+              <li className="nav-item">
+                <Link to="/Signup">
+                  <button className="btn btn-outline-light">Sign Up</button>
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

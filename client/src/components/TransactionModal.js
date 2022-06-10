@@ -1,4 +1,5 @@
 import React from "react";
+import { useTokens } from "../contexts/UserContext";
 import Transactions from "./Transactions";
 
 const TransactionModal = (props) => {

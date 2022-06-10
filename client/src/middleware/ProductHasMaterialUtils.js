@@ -20,7 +20,6 @@ export const getMaterials = async (token) => {
 
 export const getMaterialsForProduct = async (id, token) => {
   try {
-    console.log("get Materials token", token);
     const response = await fetch(`${URL_SERVER}/productHasMaterials/${id}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
@@ -161,7 +160,6 @@ export const editProductHasMaterial = async (phmID, body, token) => {
         body: JSON.stringify(body),
       }
     );
-    console.log(phmID, body);
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);
@@ -204,7 +202,6 @@ export const newMaterial = async (body, token) => {
       body: JSON.stringify(body),
     });
     if (!response.ok) {
-      console.log("Error in PHMUtils");
       const res = await response.json();
       throw new Error(res.message);
     }

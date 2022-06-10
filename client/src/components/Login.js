@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
@@ -55,8 +55,13 @@ const Login = () => {
       e.preventDefault();
       const body = { email, password };
       await validateUser(body);
-    } catch (error) {}
+      return true;
+    } catch (error) {
+      throw new Error("login failure");
+    }
   };
+
+  const navigate = useNavigate();
 
   return (
     <Fragment>
@@ -70,6 +75,7 @@ const Login = () => {
               action=""
               onSubmit={(e) => {
                 handleLogin(e);
+                navigate("/dashboard");
               }}
             >
               <div className="mb-3">

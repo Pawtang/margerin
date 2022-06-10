@@ -92,7 +92,7 @@ const ProductHasMaterials = (props) => {
         transactionQuantity,
         transactionDate,
       };
-      await addTransactionForMaterial(body);
+      await addTransactionForMaterial(body, token);
       await retrieveTransactionsForMaterial();
       await retrieveMaterialsForProduct();
       clearTransactionEntry();
@@ -107,7 +107,7 @@ const ProductHasMaterials = (props) => {
 
   const handleDeleteTransaction = async (transactionID) => {
     const materialID = modalMaterial.material_id;
-    await deleteTransactionFromMaterial(materialID, transactionID);
+    await deleteTransactionFromMaterial(materialID, transactionID, token);
     setTransactionsForMaterial(
       transactionsForMaterial.filter(
         (transaction) => transaction.transaction_id !== transactionID
@@ -181,7 +181,7 @@ const ProductHasMaterials = (props) => {
       clearMaterialEntry();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Material added",
       });
     } catch (error) {
@@ -202,7 +202,7 @@ const ProductHasMaterials = (props) => {
       setSuppliers(suppliers);
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Supplier added",
       });
     } catch (error) {
@@ -216,14 +216,14 @@ const ProductHasMaterials = (props) => {
 
   const handleDeleteMaterial = async (phmID) => {
     try {
-      await deleteMaterialFromProduct(phmID);
+      await deleteMaterialFromProduct(phmID, token);
       setMaterialsForProduct(
         materialsForProduct.filter((material) => material.phm_id !== phmID)
       );
       retrieveMaterialsForProduct();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Material deleted",
       });
     } catch (error) {

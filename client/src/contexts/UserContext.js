@@ -12,6 +12,12 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useLocalStorage("token", "");
   const [user, setUser] = useState("");
 
+  const logOut = () => {
+    setUser("");
+    setToken("");
+  };
+  console.log(token, user);
+
   return (
     <UserContext.Provider
       value={{
@@ -19,6 +25,7 @@ export const UserProvider = ({ children }) => {
         setToken,
         user,
         setUser,
+        logOut,
       }}
     >
       {children}

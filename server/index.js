@@ -25,16 +25,19 @@ app.use(express.json()); //req.body
 const authenticateToken = async (req, res, next) => {
   const authHeader = req.header("Authorization");
   const token = authHeader && authHeader.split(" ")[1]; //undefined or token, split after "Bearer"
-  console.log(authHeader, token);
   if (token == null) return res.status(401).json("Authentication Failed");
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
     if (err) {
       console.error(err);
       if (err.name == "TokenExpiredError") {
+        await pool.query(
+          `DELETE FROM web_sessions WHERE token = '$1' AND userid = $2`,
+          [token, user.id]
+        );
         //delete from DB
         //return something
         //https://www.npmjs.com/package/jsonwebtoken
-        console.log("This is actually true");
+        console.log("Removed from list");
       }
       return res.status(403).send("Authorization expired, please log back in");
     }
@@ -54,7 +57,7 @@ const authenticateToken = async (req, res, next) => {
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 30,
+    expiresIn: 30000,
   });
 };
 
@@ -231,7 +234,7 @@ app.post("/materialHasTransaction", authenticateToken, async (req, res) => {
       transactionDate,
     } = req.body;
     const productHasMaterial = await pool.query(
-      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date, userid) VALUES($1, $2, $3, $4, $5, TO_DATE('$6', 'YYYY-MM-DD'), $7) RETURNING *`,
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date, userid) VALUES($1, $2, $3, $4, $5, TO_DATE($6, 'YYYY-MM-DD'), $7) RETURNING *`,
       [
         transactionSupplier,
         materialID,
@@ -295,7 +298,7 @@ app.put("/product/price/:id", authenticateToken, async (req, res) => {
     const { id } = req.params;
     const { productPrice } = req.body;
     const updatePrice = await pool.query(
-      `UPDATE product SET price = '$1' WHERE product_id = $2`,
+      `UPDATE product SET price = $1 WHERE product_id = $2`,
       [productPrice, id]
     );
     res.status(200).json(updatePrice.rows);
@@ -314,7 +317,7 @@ app.put("/product/yield/:id", authenticateToken, async (req, res) => {
     const { productYield } = req.body;
     console.log("id, yield: ", id, productYield);
     const updateYield = await pool.query(
-      `UPDATE product SET yield = '$1' WHERE product_id = $2`,
+      `UPDATE product SET yield = $1 WHERE product_id = $2`,
       [productYield, id]
     );
     res.status(200).json(updateYield.rows);
@@ -333,8 +336,8 @@ app.put("/supplier/edit/:id", authenticateToken, async (req, res) => {
     const { editSupplierName, editSupplierContactName, editSupplierPhone } =
       req.body;
     const updateSupplier = await pool.query(
-      `UPDATE supplier SET supplier_name = '$1', contact_name = '$2', supplier_phone = '$3' WHERE supplier_id = ${id}`,
-      [editSupplierName, editSupplierContactName, editSupplierPhone]
+      `UPDATE supplier SET supplier_name = '$1', contact_name = '$2', supplier_phone = '$3' WHERE supplier_id = $4`,
+      [editSupplierName, editSupplierContactName, editSupplierPhone, id]
     );
     res.status(200).json(updateSupplier.rows);
   } catch (error) {
