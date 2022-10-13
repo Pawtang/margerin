@@ -8,7 +8,7 @@ import "../styles/main.css";
 const Landing = () => {
   return (
     <Fragment>
-      <Navbar opacity={""} />
+      <Navbar opacity={"opacity-50"} />
       <div className="container-fluid background position-sticky">
         {/* <div className="blurry"></div> */}
         {/* <nav className="navbar bg-transparent">
