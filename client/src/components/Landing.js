@@ -8,8 +8,8 @@ import "../styles/main.css";
 const Landing = () => {
   return (
     <Fragment>
-      <Navbar opacity={"opacity-50"} />
       <div className="container-fluid background position-sticky">
+        <Navbar opacity={"opacity-50"} />
         {/* <div className="blurry"></div> */}
         {/* <nav className="navbar bg-transparent">
           <div className="container justify-content-end mt-4">
@@ -28,11 +28,22 @@ const Landing = () => {
             <h1 className="white display-6">
               Take the guesswork out of product costing
             </h1>
-            <Link to="dashboard">
-              <button className="btn btn-lg btn-outline-light mt-2">
-                Try a Demo
-              </button>
-            </Link>
+            <div className="btn-group">
+              <div>
+                <Link to="signup">
+                  <button className="btn btn-lg btn-outline-light mt-2">
+                    Sign Up
+                  </button>
+                </Link>
+              </div>
+              <div>
+                <Link to="login">
+                  <button className="btn btn-lg btn-outline-light mt-2">
+                    Log In
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

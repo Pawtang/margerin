@@ -1,13 +1,17 @@
 import { React } from "react";
 import { Link } from "react-router-dom";
 
+import { useTokens } from "../contexts/UserContext";
+
 const AppNav = () => {
+  const token = useTokens();
+  console.log("AppNav token:", token);
   return (
     <>
       <div className="container ">
         <nav className="navbar navbar-expand-lg navbar-light bg-light ">
           <div className="container-fluid ">
-            <div className="navbar-brand">Resource Manager</div>
+            <div className="navbar-brand">{}</div>
             <button
               className="navbar-toggler"
               type="button"

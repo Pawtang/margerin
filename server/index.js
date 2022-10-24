@@ -57,7 +57,7 @@ const authenticateToken = async (req, res, next) => {
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 30000,
+    expiresIn: 300,
   });
 };
 
@@ -69,12 +69,12 @@ app.post("/register", async (req, res) => {
       `INSERT INTO users (username, email, hash) VALUES($1, $2, $3) RETURNING *`,
       [username, email, hashbrowns]
     );
-    const userid = newUser.rows;
+    const userid = newUser.rows[0].id;
     console.log(userid);
-    const accessToken = createToken(newUser.rows[0].id);
+    const accessToken = createToken(userid);
     const postSession = await pool.query(
-      `INSERT INTO web_sessions (email, token) VALUES($1, $2) RETURNING *`,
-      [email, accessToken]
+      `INSERT INTO web_sessions (userid, token) VALUES($1, $2) RETURNING *`,
+      [userid, accessToken]
     );
     res.status(200).json(postSession.rows[0]);
   } catch (error) {
@@ -89,7 +89,8 @@ app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const databaseHash = await pool.query(
-      `SELECT * FROM users WHERE (users.email = '${email}')`
+      `SELECT * FROM users WHERE (users.email = $1)`,
+      [email]
     );
     const id = databaseHash.rows[0].id;
     const validation = await validate(password, databaseHash.rows[0].hash);
@@ -559,7 +560,8 @@ app.get("/materialHasTransactions/:id", authenticateToken, async (req, res) => {
 app.get("/transaction", authenticateToken, async (req, res) => {
   try {
     const transactionData = await pool.query(
-      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_id, u.unit_name, s.supplier_id, s.supplier_name, m.material_id, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) ORDER BY t.transaction_date DESC`
+      `SELECT t.transaction_id, t.cost, t.quantity, t.transaction_date, u.unit_id, u.unit_name, s.supplier_id, s.supplier_name, m.material_id, m.material_name FROM transaction t INNER JOIN unit u ON (t.unit_id = u.unit_id) INNER JOIN supplier s ON (t.supplier_id = s.supplier_id) INNER JOIN material m ON (t.material_id = m.material_id) WHERE t.userid = $1 ORDER BY t.transaction_date DESC`,
+      [req.user.id]
     );
     res.status(200).json(transactionData.rows);
   } catch (error) {
@@ -690,6 +692,28 @@ app.delete(
     }
   }
 );
+
+app.delete("/logout", authenticateToken, async (req, res) => {
+  const token = req.header("Authorization").split(" ")[1]; //undefined or token, split after "Bearer"
+  console.log(req.user.id.toString());
+  console.log(req.user.id);
+  try {
+    const { userID } = req.user.id.toString();
+    const logoutres = await pool.query(
+      `DELETE FROM web_sessions WHERE token = $1`,
+      [token]
+    );
+    console.log(logoutres);
+    res.status(200).json("Logged out");
+  } catch (error) {
+    res.status(400);
+    res.json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
+    console.error("Log out failed", error);
+  }
+});
 
 /* ------------------------------- END METHODS ------------------------------ */
 

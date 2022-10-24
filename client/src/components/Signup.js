@@ -1,5 +1,5 @@
 import { React, useState, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
@@ -11,8 +11,8 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-
   const { setToken, setUser } = useTokens();
+  const navigate = useNavigate();
 
   const clearInputs = () => {
     setEmail("");
@@ -40,6 +40,8 @@ function Signup() {
       });
       const res = await response.json();
       console.log("signup response:", res);
+      setToken(res.token);
+      navigate("/dashboard");
     } catch (err) {
       console.error(err.message);
       throw new Error(err.message);

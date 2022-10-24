@@ -34,11 +34,13 @@ const Navbar = (props) => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="mx-auto"></div>
           <ul className="navbar-nav">
-            <li className="nav-item me-0">
-              <Link to="/dashboard">
-                <button className="btn btn-outline-light">Dashboard</button>
-              </Link>
-            </li>
+            {!_.isEmpty(token) && (
+              <li className="nav-item me-0">
+                <Link to="/dashboard">
+                  <button className="btn btn-outline-light">Dashboard</button>
+                </Link>
+              </li>
+            )}
             <li className="nav-item">
               <Link to="/contact">
                 <button className="btn btn-outline-light">Contact</button>

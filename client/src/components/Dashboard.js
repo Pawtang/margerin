@@ -31,25 +31,27 @@ const Dashboard = () => {
   //How to trigger rendering?
   const renderProducts = async () => {
     console.log("render products token:", token);
-    try {
-      const productArray = await getProducts(token);
-      if (_.isEmpty(productArray)) return; //Maybe?
-      setProducts(productArray);
-      setDisplayedProduct(productArray[0]);
-      setProductYield(productArray[0].yield);
-      setProductPrice(productArray[0].price);
-    } catch (error) {
-      addToast({
-        title: " Database Error",
-        type: "Error",
-        body: error.message,
-      });
+    if (token) {
+      try {
+        const productArray = await getProducts(token);
+        if (_.isEmpty(productArray)) return; //Maybe?
+        setProducts(productArray);
+        setDisplayedProduct(productArray[0]);
+        setProductYield(productArray[0].yield);
+        setProductPrice(productArray[0].price);
+      } catch (error) {
+        addToast({
+          title: " Database Error",
+          type: "Error",
+          body: error.message,
+        });
+      }
     }
   };
 
   useEffect(() => {
     renderProducts();
-  }, []);
+  }, [token]);
 
   /* ------------------------------- Add Product ------------------------------ */
   const handleAddProduct = async (e) => {

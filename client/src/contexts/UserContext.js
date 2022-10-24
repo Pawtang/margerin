@@ -3,6 +3,7 @@ import _ from "lodash";
 import { useLocalStorage } from "../components/hooks/useLocalStorage";
 
 const UserContext = React.createContext();
+const URL_SERVER = "http://localhost:5000";
 
 export function useTokens() {
   return useContext(UserContext);
@@ -11,12 +12,16 @@ export function useTokens() {
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useLocalStorage("token", "");
   const [user, setUser] = useState("");
+  // console.log("token:", token, "user:", user);
 
-  const logOut = () => {
+  const logOut = async () => {
+    console.log("token:", token, "user:", user);
+    try {
+      await deleteSession(token);
+    } catch (err) {}
     setUser("");
     setToken("");
   };
-  console.log(token, user);
 
   return (
     <UserContext.Provider
@@ -31,4 +36,20 @@ export const UserProvider = ({ children }) => {
       {children}
     </UserContext.Provider>
   );
+};
+
+export const deleteSession = async (token) => {
+  try {
+    const response = await fetch(`${URL_SERVER}/logout`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) {
+      const res = await response.json();
+      throw new Error(res.message);
+    }
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to sign out");
+  }
 };

@@ -11,7 +11,6 @@ const Login = () => {
   const { addToast } = useToasts();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const { setToken, setUser } = useTokens();
 
   const clearInputs = () => {
