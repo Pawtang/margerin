@@ -254,12 +254,20 @@ const ProductHasMaterials = (props) => {
   };
 
   const loadLists = async () => {
-    const allMaterials = await getMaterials(token);
-    const unitList = await getUnits();
-    const supplierList = await getSuppliers(token);
-    setMaterials(allMaterials);
-    setUnits(unitList);
-    setSuppliers(supplierList);
+    try {
+      const allMaterials = await getMaterials(token);
+      const unitList = await getUnits();
+      const supplierList = await getSuppliers(token);
+      setMaterials(allMaterials);
+      setUnits(unitList);
+      setSuppliers(supplierList);
+    } catch (error) {
+      addToast({
+        title: `Error`,
+        type: "Error",
+        body: "Failed to load data",
+      });
+    }
   };
 
   const calculateProductCost = () => {

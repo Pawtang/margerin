@@ -1,11 +1,20 @@
-import { React, Fragment, useState } from "react";
+import { React, Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
 import "../styles/Styles.css";
 import "../styles/main.css";
 
+import { useTokens } from "../contexts/UserContext";
+
 const Landing = () => {
+  const { checkToken } = useTokens();
+
+  useEffect(() => {
+    checkToken();
+    console.log("Trigger");
+  }, []);
+
   return (
     <Fragment>
       <div className="container-fluid background position-sticky">
@@ -29,20 +38,23 @@ const Landing = () => {
               Take the guesswork out of product costing
             </h1>
             <div className="btn-group">
-              <div>
-                <Link to="signup">
-                  <button className="btn btn-lg btn-outline-light mt-2">
-                    Sign Up
-                  </button>
-                </Link>
-              </div>
-              <div>
-                <Link to="login">
-                  <button className="btn btn-lg btn-outline-light mt-2">
-                    Log In
-                  </button>
-                </Link>
-              </div>
+              <Link to="signup">
+                <button
+                  type="button"
+                  className="btn btn-lg btn-outline-light mt-2"
+                >
+                  Sign Up
+                </button>
+              </Link>
+
+              <Link to="login">
+                <button
+                  type="button"
+                  className="btn btn-lg btn-outline-light mt-2"
+                >
+                  Log In
+                </button>
+              </Link>
             </div>
           </div>
         </div>

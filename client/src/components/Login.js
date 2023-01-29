@@ -32,7 +32,8 @@ const Login = () => {
       const res = await response.json();
       console.log("login res", res);
       setToken(res.accessToken);
-      // setUser(res.user);
+      setUser(res.user);
+      console.log(res.user);
       clearInputs();
       addToast({
         title: " Success",

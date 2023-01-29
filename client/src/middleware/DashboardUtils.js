@@ -11,8 +11,7 @@ export const displayProduct = async (id, token) => {
     }
     return await response.json();
   } catch (err) {
-    console.error(err);
-    throw new Error("Failed to display product");
+    throw err;
   }
 };
 
@@ -29,11 +28,10 @@ export const addProduct = async (body, token) => {
     });
     if (!response.ok) {
       const res = await response.json();
-      throw new Error(res.message);
+      throw new Error(res);
     }
   } catch (err) {
-    console.error(err);
-    throw new Error("Failed to add product");
+    throw new Error(err.status, err.message);
   }
 };
 
@@ -50,7 +48,6 @@ export const getProducts = async (token) => {
     const res = await response.json();
     return res;
   } catch (err) {
-    console.error(err);
     throw new Error("Failed to get products");
   }
 };

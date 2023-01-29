@@ -5,15 +5,27 @@ import { Transition } from "react-transition-group";
 import { useToasts } from "../contexts/ToastContext";
 
 const ToastManager = (props) => {
-  const duration = 300;
   const { toasts } = useToasts();
+  const [toastsToShow, setToastsToShow] = useState(toasts);
+
+  useEffect(() => {
+    console.log(toasts);
+    setToastsToShow(toasts);
+  }, [toasts]);
+  // useEffect(() => {}, [toastsToShow]);
   return (
     <>
       <ToastContainer className="p-3 z-super" position="bottom-end">
         {/* <Toast show={showToast} onClose={console.log("")}> */}
-        {toasts.map((toast) => {
+        {toastsToShow.map((toast, i) => {
           return (
-            <Toast animation={"true"} className={"fader"} key={toasts.length}>
+            <Toast
+              autohide
+              delay={500}
+              animation={"true"}
+              className={"fader"}
+              key={i}
+            >
               <Toast.Header closeButton={false}>
                 {toast.type == "Success" ? (
                   <i

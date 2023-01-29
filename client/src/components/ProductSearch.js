@@ -1,8 +1,10 @@
 import { displayProduct } from "../middleware/DashboardUtils";
 import { React, useState } from "react";
 import { useTokens } from "../contexts/UserContext";
+import { useToasts } from "../contexts/ToastContext";
 
 export const ProductSearch = (props) => {
+  const { addToast } = useToasts();
   const { token } = useTokens();
   const [search, setSearch] = useState("");
   const { setDisplayedProduct, products, setProductYield, setProductPrice } =
@@ -53,18 +55,26 @@ export const ProductSearch = (props) => {
                 <button
                   className="btn btn-outline-primary"
                   onClick={async () => {
-                    const productData = await displayProduct(
-                      product.product_id,
-                      token
-                    );
-                    setDisplayedProduct(productData);
-                    setProductYield(productData.yield);
-                    setProductPrice(productData.price);
-                    console.log(
-                      "ProductSearch product price:",
-                      productData.price
-                    );
-                    setSearch("");
+                    try {
+                      const productData = await displayProduct(
+                        product.product_id,
+                        token
+                      );
+                      setDisplayedProduct(productData);
+                      setProductYield(productData.yield);
+                      setProductPrice(productData.price);
+                      console.log(
+                        "ProductSearch product price:",
+                        productData.price
+                      );
+                      setSearch("");
+                    } catch (error) {
+                      addToast({
+                        title: " Database Error",
+                        type: "Error",
+                        body: error.message,
+                      });
+                    }
                   }}
                 >
                   <div className="row">

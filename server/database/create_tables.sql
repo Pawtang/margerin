@@ -110,3 +110,8 @@ CREATE TABLE IF NOT EXISTS web_sessions (
 );
 --4/15/22
 ALTER TABLE users ADD username VARCHAR(200);
+
+--11/22/22
+ALTER TABLE product DROP CONSTRAINT product_product_name_key;
+
+ALTER TABLE product ADD CONSTRAINT product_uniqueness_by_id UNIQUE (product_name, userid);

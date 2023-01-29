@@ -23,32 +23,31 @@ app.use(express.json()); //req.body
 /* ----------------------------- Authentication ----------------------------- */
 
 const authenticateToken = async (req, res, next) => {
+  // console.log("Check");
   const authHeader = req.header("Authorization");
   const token = authHeader && authHeader.split(" ")[1]; //undefined or token, split after "Bearer"
-  if (token == null) return res.status(401).json("Authentication Failed");
+  if (token == null || token == "")
+    return res.status(401).json("Authentication Failed");
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
     if (err) {
       console.error(err);
       if (err.name == "TokenExpiredError") {
-        await pool.query(
-          `DELETE FROM web_sessions WHERE token = '$1' AND userid = $2`,
-          [token, user.id]
-        );
+        await pool
+          .query(`DELETE FROM web_sessions WHERE token = '$1'`, [token])
+          .catch((error) => console.error(error));
         //delete from DB
         //return something
         //https://www.npmjs.com/package/jsonwebtoken
-        console.log("Removed from list");
+        // console.log("Removed from list");
       }
-      return res.status(403).send("Authorization expired, please log back in");
+      return res.status(401).json("Authorization expired, please log back in");
     }
     const checkExists = await pool.query(
-      `SELECT * FROM web_sessions WHERE token = '${token}' AND userid = ${user.id}`
+      `SELECT * FROM web_sessions WHERE token = '${token}'`
     );
     if (checkExists.rowCount == 0) {
-      console.error("Not authorized, punk hack0r!");
-      return res
-        .status(403)
-        .send("Begone with thy injection, fool of the net!");
+      // console.error("Authorization expired, please log back in");
+      return res.status(401).json("Authorization expired, please log back in");
     }
     req.user = user;
     next();
@@ -57,9 +56,20 @@ const authenticateToken = async (req, res, next) => {
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 300,
+    expiresIn: 214748000,
   });
 };
+
+// app.get("/tokentest", authenticateToken, async (req, res) => {
+//   try {
+//     // console.log("hey", req);
+//     res.status(200);
+//   } catch (err) {
+//     console.log("Shit");
+//     console.error(err);
+//     res.status(666);
+//   }
+// });
 
 app.post("/register", async (req, res) => {
   try {
@@ -70,7 +80,7 @@ app.post("/register", async (req, res) => {
       [username, email, hashbrowns]
     );
     const userid = newUser.rows[0].id;
-    console.log(userid);
+    // console.log(userid);
     const accessToken = createToken(userid);
     const postSession = await pool.query(
       `INSERT INTO web_sessions (userid, token) VALUES($1, $2) RETURNING *`,
@@ -122,7 +132,7 @@ const validate = async (password, hash) => {
 app.post("/product", authenticateToken, async (req, res) => {
   try {
     const { newProductName, newProductDescription } = req.body;
-    console.log("back end", req.body);
+    // console.log("back end", req.body);
     const newProduct = await pool.query(
       `INSERT INTO product (product_name, product_description, userid) VALUES($1, $2, $3) RETURNING *`,
       [newProductName, newProductDescription, req.user.id]
@@ -225,7 +235,7 @@ app.post("/productHasMaterial", authenticateToken, async (req, res) => {
 //add a transaction to a material
 app.post("/materialHasTransaction", authenticateToken, async (req, res) => {
   try {
-    console.log("Request body for materialHasTransaction:", req.body);
+    // console.log("Request body for materialHasTransaction:", req.body);
     const {
       transactionSupplier,
       materialID,
@@ -260,7 +270,7 @@ app.post("/materialHasTransaction", authenticateToken, async (req, res) => {
 //add a transaction to a material
 app.post("/transaction", authenticateToken, async (req, res) => {
   try {
-    console.log("Request body for materialHasTransaction:", req.body);
+    // console.log("Request body for materialHasTransaction:", req.body);
     const {
       newTransactionDate,
       newTransactionMaterial,
@@ -316,7 +326,7 @@ app.put("/product/yield/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const { productYield } = req.body;
-    console.log("id, yield: ", id, productYield);
+    // console.log("id, yield: ", id, productYield);
     const updateYield = await pool.query(
       `UPDATE product SET yield = $1 WHERE product_id = $2`,
       [productYield, id]
@@ -397,7 +407,7 @@ app.put("/material/edit/:id", authenticateToken, async (req, res) => {
 });
 
 app.put("/productHasMaterial/edit/:id", authenticateToken, async (req, res) => {
-  console.log("index req, body:", req.params, req.body);
+  // console.log("index req, body:", req.params, req.body);
   try {
     const { id } = req.params;
     const { editMaterial, editUnit, editQuantity, editIsPerUnit } = req.body;
@@ -454,7 +464,7 @@ app.get("/materials", authenticateToken, async (req, res) => {
 });
 
 //Get all units
-app.get("/units", async (req, res) => {
+app.get("/units", authenticateToken, async (req, res) => {
   try {
     const getAllUnits = await pool.query(`SELECT * FROM unit`);
     res.status(200).json(getAllUnits.rows);
@@ -695,15 +705,15 @@ app.delete(
 
 app.delete("/logout", authenticateToken, async (req, res) => {
   const token = req.header("Authorization").split(" ")[1]; //undefined or token, split after "Bearer"
-  console.log(req.user.id.toString());
-  console.log(req.user.id);
+  // console.log(req.user.id.toString());
+  // console.log(req.user.id);
   try {
     const { userID } = req.user.id.toString();
     const logoutres = await pool.query(
       `DELETE FROM web_sessions WHERE token = $1`,
       [token]
     );
-    console.log(logoutres);
+    // console.log(logoutres);
     res.status(200).json("Logged out");
   } catch (error) {
     res.status(400);

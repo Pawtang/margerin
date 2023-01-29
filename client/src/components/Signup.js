@@ -52,7 +52,7 @@ function Signup() {
     try {
       e.preventDefault();
       if (password === confirm) {
-        const body = { email, password };
+        const body = { username, email, password };
         await newUser(body);
       } else {
         throw new Error("Password and confirmation did not match!");

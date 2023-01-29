@@ -14,6 +14,7 @@ import {
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { token } = useTokens();
@@ -89,7 +90,7 @@ const Dashboard = () => {
       addToast({
         title: "Database error",
         type: "Error",
-        body: error.toString(),
+        body: error.message,
       });
     }
   };
@@ -107,6 +108,8 @@ const Dashboard = () => {
       });
     }
   };
+
+  const navigate = useNavigate();
 
   return (
     <Fragment>
