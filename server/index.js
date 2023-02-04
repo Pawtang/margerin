@@ -28,6 +28,10 @@ const authenticateToken = async (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1]; //undefined or token, split after "Bearer"
   if (token == null || token == "")
     return res.status(401).json("Authentication Failed");
+  // return res.status(401).json({
+  //   errorCode: error.code,
+  //   errorMessage: error.detail,
+  // });
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
     if (err) {
       console.error(err);
@@ -144,8 +148,8 @@ app.post("/product", authenticateToken, async (req, res) => {
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    console.error(error.message);
-    res.status(400).json("Failed to create a new product");
+    // console.error(error.message);
+    // res.status(400).json("Failed to create a new product");
   }
 });
 
@@ -163,8 +167,8 @@ app.post("/material", authenticateToken, async (req, res) => {
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    res.status(400).json("Failed to create a new material");
-    console.error(error.message);
+    // res.status(400).json("Failed to create a new material");
+    // console.error(error.message);
   }
 });
 
@@ -182,8 +186,8 @@ app.post("/supplier", authenticateToken, async (req, res) => {
       errorCode: error.code,
       errorMessage: error.detail,
     });
-    res.status(400).json("Failed to create a new supplier");
-    console.error(error.message);
+    // res.status(400).json("Failed to create a new supplier");
+    // console.error(error.message);
   }
 });
 

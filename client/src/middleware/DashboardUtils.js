@@ -7,11 +7,14 @@ export const displayProduct = async (id, token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
-      throw new Error(response.message);
+      if (response.status == 401) {
+        throw new Error("Authentication failed");
+      }
+      throw new Error("Failed to display product");
     }
     return await response.json();
   } catch (err) {
-    throw err;
+    throw new Error(err);
   }
 };
 
