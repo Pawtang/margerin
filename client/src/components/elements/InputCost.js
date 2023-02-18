@@ -5,7 +5,7 @@ const InputCost = (props) => {
   const { display, value, setter, currentState } = props;
   useEffect(() => {
     !_.isEmpty(currentState) && setter(currentState);
-  }, []);
+  });
 
   return (
     <div className={display}>

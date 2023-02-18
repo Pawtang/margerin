@@ -175,7 +175,7 @@ const ProductHasMaterials = (props) => {
     e.preventDefault();
     try {
       const body = { newMaterialName, newMaterialDescription };
-      await newMaterial(body);
+      await newMaterial(body, token);
       const materials = await getMaterials(token);
       setMaterials(materials);
       clearMaterialEntry();
@@ -197,7 +197,7 @@ const ProductHasMaterials = (props) => {
     e.preventDefault();
     try {
       const body = { newSupplierName };
-      await newSupplier(body);
+      await newSupplier(body, token);
       const suppliers = await getSuppliers();
       setSuppliers(suppliers);
       addToast({
@@ -256,7 +256,7 @@ const ProductHasMaterials = (props) => {
   const loadLists = async () => {
     try {
       const allMaterials = await getMaterials(token);
-      const unitList = await getUnits();
+      const unitList = await getUnits(token);
       const supplierList = await getSuppliers(token);
       setMaterials(allMaterials);
       setUnits(unitList);
@@ -265,7 +265,7 @@ const ProductHasMaterials = (props) => {
       addToast({
         title: `Error`,
         type: "Error",
-        body: "Failed to load data",
+        body: error.message,
       });
     }
   };

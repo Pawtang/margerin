@@ -64,7 +64,7 @@ const TransactionManager = () => {
       });
     }
     try {
-      const unitList = await getUnits();
+      const unitList = await getUnits(token);
       setUnits(unitList);
     } catch (error) {
       addToast({
@@ -244,7 +244,7 @@ const TransactionManager = () => {
             />
             <SelectColumn
               display={"col-2"}
-              id={"selectSupplier"}
+              // id={"selectSupplier"}
               label={"Supplier"}
               list={suppliers}
               itemkey={"supplier_name"}
@@ -263,7 +263,7 @@ const TransactionManager = () => {
             />
             <SelectColumn
               display={"col-2"}
-              id={"selectUnit"}
+              // id={"selectUnit"}
               label={"Unit"}
               list={units}
               itemkey={"unit_name"}

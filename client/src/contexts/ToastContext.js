@@ -10,7 +10,7 @@ export function useToasts() {
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
-  const toastTimeout = 500;
+  const toastTimeout = 2000;
 
   const addToast = (toast) => {
     setToasts((prevToasts) => [...prevToasts, toast]);

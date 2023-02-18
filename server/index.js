@@ -92,7 +92,7 @@ app.post("/register", async (req, res) => {
     );
     res.status(200).json(postSession.rows[0]);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     if (error.code == "23505") {
       res.status(409).json("Email is already in use");
     } else res.status(400).json("Registration failed");
@@ -121,8 +121,8 @@ app.post("/login", async (req, res) => {
       throw new Error("Incorrect password");
     }
   } catch (error) {
-    console.error(error.message);
-    res.status(401).json("Login failed");
+    // console.error(error.message);
+    res.status(401).json(error.message);
   }
 });
 
@@ -194,24 +194,18 @@ app.post("/supplier", authenticateToken, async (req, res) => {
 //create a supplier detailed
 app.post("/supplier/new", authenticateToken, async (req, res) => {
   try {
-    const {
-      newSupplierName,
-      newSupplierContactName,
-      newSupplierphone,
-      newSupplierRating,
-    } = req.body;
+    const { newSupplierName, newSupplierContactName, newSupplierphone } =
+      req.body;
     const newSupplier = await pool.query(
-      `INSERT INTO supplier (supplier_name, contact_name, supplier_phone, supplier_rating, userid) VALUES($1, $2, $3, $4) RETURNING *`,
-      [
-        newSupplierName,
-        newSupplierContactName,
-        newSupplierphone,
-        newSupplierRating,
-      ]
+      `INSERT INTO supplier (supplier_name, contact_name, supplier_phone, userid) VALUES($1, $2, $3, $4) RETURNING *`,
+      [newSupplierName, newSupplierContactName, newSupplierphone, req.user.id]
     );
     res.status(200).json(newSupplier.rows[0]);
   } catch (error) {
-    res.status(400).json("Failed to create a new supplier");
+    res.status(400).json({
+      errorCode: error.code,
+      errorMessage: error.detail,
+    });
     console.error(error.message);
   }
 });
@@ -233,6 +227,7 @@ app.post("/productHasMaterial", authenticateToken, async (req, res) => {
       errorMessage: error.message,
     });
     console.error("Index: productHasMaterial POST: ", error.message);
+    console.log(error.message, error.code);
   }
 });
 
@@ -274,7 +269,7 @@ app.post("/materialHasTransaction", authenticateToken, async (req, res) => {
 //add a transaction to a material
 app.post("/transaction", authenticateToken, async (req, res) => {
   try {
-    // console.log("Request body for materialHasTransaction:", req.body);
+    console.log("Request body for materialHasTransaction:", req.body);
     const {
       newTransactionDate,
       newTransactionMaterial,
@@ -284,7 +279,7 @@ app.post("/transaction", authenticateToken, async (req, res) => {
       newTransactionQuantity,
     } = req.body;
     const newTransaction = await pool.query(
-      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date, userid) VALUES($1, $2, $3, $4,$5, TO_DATE('$6', 'YYYY-MM-DD'), '$7' ) RETURNING *`,
+      `INSERT INTO transaction (supplier_id, material_id, unit_id, cost, quantity, transaction_date, userid) VALUES($1, $2, $3, $4, $5, TO_DATE($6, 'YYYY-MM-DD'), $7) RETURNING *`,
       [
         newTransactionSupplier,
         newTransactionMaterial,
@@ -351,7 +346,7 @@ app.put("/supplier/edit/:id", authenticateToken, async (req, res) => {
     const { editSupplierName, editSupplierContactName, editSupplierPhone } =
       req.body;
     const updateSupplier = await pool.query(
-      `UPDATE supplier SET supplier_name = '$1', contact_name = '$2', supplier_phone = '$3' WHERE supplier_id = $4`,
+      `UPDATE supplier SET supplier_name = $1, contact_name = $2, supplier_phone = $3 WHERE supplier_id = $4`,
       [editSupplierName, editSupplierContactName, editSupplierPhone, id]
     );
     res.status(200).json(updateSupplier.rows);
@@ -473,8 +468,7 @@ app.get("/units", authenticateToken, async (req, res) => {
     const getAllUnits = await pool.query(`SELECT * FROM unit`);
     res.status(200).json(getAllUnits.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
       errorMessage: error.detail,
     });

@@ -11,7 +11,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const { setToken, setUser } = useTokens();
+  const { setToken } = useTokens();
   const navigate = useNavigate();
 
   const clearInputs = () => {

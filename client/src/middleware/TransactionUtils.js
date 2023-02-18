@@ -1,4 +1,4 @@
-import { ErrorHandling } from "./ErrorHandling";
+// import { ErrorHandling } from "./ErrorHandling";
 const URL_SERVER = "http://localhost:5000";
 
 export const getTransactionData = async (token) => {
@@ -49,7 +49,7 @@ export const newTransaction = async (body, token) => {
     }
   } catch (err) {
     console.error(err);
-    throw new Error("Failed to load units");
+    throw new Error("Something went wrong!");
   }
 };
 

@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
 
-import _ from "lodash";
+// import _ from "lodash";
 
 const Login = () => {
   const URL_SERVER = "http://localhost:5000";

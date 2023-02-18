@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import _ from "lodash";
 import { useLocalStorage } from "../components/hooks/useLocalStorage";
-import { Router, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = React.createContext();
 const URL_SERVER = "http://localhost:5000";
@@ -25,10 +25,10 @@ export const UserProvider = ({ children }) => {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (response != 200) {
+        if (response !== 200) {
           setToken("");
           navigate("/");
-          // throw new Error("You are not logged in");
+          throw new Error("You are not logged in");
         }
       } catch (err) {
         console.error(err);

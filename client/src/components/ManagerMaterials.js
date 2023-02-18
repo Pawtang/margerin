@@ -9,7 +9,7 @@ import { getMaterials } from "../middleware/ProductHasMaterialUtils";
 import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
 import { useToasts } from "../contexts/ToastContext";
-import { ErrorHandling } from "../middleware/ErrorHandling";
+// import { ErrorHandling } from "../middleware/ErrorHandling";
 import { useTokens } from "../contexts/UserContext";
 import Navbar from "./Navbar";
 import _ from "lodash";
@@ -77,7 +77,7 @@ const ManagerMaterials = () => {
       addToast({
         title: "Failed to add material",
         type: "Error",
-        body: err,
+        body: err.message,
       });
     }
   };

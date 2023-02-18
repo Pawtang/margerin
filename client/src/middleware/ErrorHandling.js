@@ -10,7 +10,6 @@ const dictionary = {
   42804: "Incorrect datatype",
   "08003": "No connection to database",
   "08006": "Connection failure",
-  42804: "Incorrect datatype",
   22000: "Data exception",
 };
 

@@ -8,11 +8,17 @@ export const deleteSupplier = async (supplierID, token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
-      throw new Error(response.message);
+      // console.log("Res:", await response.json());
+      throw new Error(response.json());
     }
   } catch (err) {
-    console.error(err);
-    throw new Error("Failed to delete supplier");
+    if ((err.errorCode = "23503")) {
+      throw new Error(
+        "Could not delete the supplier because it is referenced in an existing transaction"
+      );
+    } else {
+      throw new Error("Something went wrong!");
+    }
   }
 };
 
@@ -22,19 +28,18 @@ export const getSuppliers = async (token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
-      throw new Error(response.message);
+      throw new Error(response.json());
     }
     const res = await response.json();
     return res;
   } catch (err) {
-    console.error(err);
-    throw new Error("Failed to load suppliers");
+    throw new Error("Something went wrong");
   }
 };
 
 export const newSupplier = async (body, token) => {
   try {
-    console.log(token);
+    // console.log(token);
     const response = await fetch(`${URL_SERVER}/supplier/new`, {
       method: "POST",
       headers: {
@@ -44,16 +49,17 @@ export const newSupplier = async (body, token) => {
       body: JSON.stringify(body),
     });
     if (!response.ok) {
-      throw new Error(response.message);
+      throw new Error(response.json());
     }
   } catch (err) {
-    console.error(err);
-    throw new Error("Failed to add supplier");
+    // console.error("err contents", err);
+    throw new Error("Something went wrong");
   }
 };
 
 export const editSupplier = async (supplierID, body, token) => {
   try {
+    console.log(body);
     const response = await fetch(`${URL_SERVER}/supplier/edit/${supplierID}`, {
       method: "PUT",
       headers: {
@@ -62,12 +68,10 @@ export const editSupplier = async (supplierID, body, token) => {
       },
       body: JSON.stringify(body),
     });
-    console.log("");
     if (!response.ok) {
-      throw new Error(response.message);
+      throw new Error(response.json());
     }
   } catch (err) {
-    console.error(err);
-    throw new Error("Failed to add supplier");
+    throw new Error(err.errorCode);
   }
 };

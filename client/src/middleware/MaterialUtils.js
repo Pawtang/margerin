@@ -9,7 +9,7 @@ export const deleteMaterial = async (materialID, token) => {
     });
     if (!response.ok) {
       const res = await response.json();
-      throw new Error(res.message);
+      throw new Error(response.json());
     }
   } catch (err) {
     console.error(err.message);
@@ -31,7 +31,7 @@ export const editMaterial = async (materialID, body, token) => {
     console.log("");
     if (!response.ok) {
       const res = await response.json();
-      throw new Error(res.message);
+      throw new Error(response.json());
     }
   } catch (err) {
     console.error(err.message);

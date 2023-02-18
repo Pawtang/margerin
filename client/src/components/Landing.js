@@ -1,4 +1,4 @@
-import { React, Fragment, useState, useEffect } from "react";
+import { React, Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
@@ -37,24 +37,19 @@ const Landing = () => {
             <h1 className="white display-6">
               Take the guesswork out of product costing
             </h1>
-            <div className="btn-group">
-              <Link to="signup">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-outline-light mt-2"
-                >
-                  Sign Up
-                </button>
-              </Link>
 
-              <Link to="login">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-outline-light mt-2"
-                >
-                  Log In
-                </button>
-              </Link>
+            <div className="">
+              <div className="m-6 p-6">
+                <Link to="signup" className="btn btn-lg btn-outline-light mt-2">
+                  Sign Up
+                </Link>
+              </div>
+
+              <div className="m-6">
+                <Link to="login" className="btn btn-lg btn-outline-light mt-2">
+                  Login
+                </Link>
+              </div>
             </div>
           </div>
         </div>

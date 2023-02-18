@@ -14,7 +14,7 @@ import {
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { token } = useTokens();
@@ -31,22 +31,20 @@ const Dashboard = () => {
 
   //How to trigger rendering?
   const renderProducts = async () => {
-    console.log("render products token:", token);
-    if (token) {
-      try {
-        const productArray = await getProducts(token);
-        if (_.isEmpty(productArray)) return; //Maybe?
-        setProducts(productArray);
-        setDisplayedProduct(productArray[0]);
-        setProductYield(productArray[0].yield);
-        setProductPrice(productArray[0].price);
-      } catch (error) {
-        addToast({
-          title: " Database Error",
-          type: "Error",
-          body: error.message,
-        });
-      }
+    // console.log("render products token:", token);
+    try {
+      const productArray = await getProducts(token);
+      if (_.isEmpty(productArray)) return; //Maybe?
+      setProducts(productArray);
+      setDisplayedProduct(productArray[0]);
+      setProductYield(productArray[0].yield);
+      setProductPrice(productArray[0].price);
+    } catch (error) {
+      addToast({
+        title: " Database Error",
+        type: "Error",
+        body: error.message,
+      });
     }
   };
 
@@ -60,7 +58,7 @@ const Dashboard = () => {
       e.preventDefault();
       const body = { newProductName, newProductDescription };
       await addProduct(body, token);
-      clearEntry("productModal");
+      clearEntry();
       renderProducts();
       addToast({
         title: `${newProductName} added!`,
@@ -109,7 +107,7 @@ const Dashboard = () => {
     }
   };
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <Fragment>

@@ -48,7 +48,7 @@ const ManagerSuppliers = () => {
     }
   };
 
-  const handleAddSupplier = async (token) => {
+  const handleAddSupplier = async () => {
     try {
       const body = {
         newSupplierName,
@@ -56,6 +56,7 @@ const ManagerSuppliers = () => {
         newSupplierPhone,
       };
       await newSupplier(body, token);
+      clearEntry();
       retrieveSuppliers();
       addToast({
         title: " Success",
@@ -113,6 +114,12 @@ const ManagerSuppliers = () => {
         body: error.message,
       });
     }
+  };
+
+  const clearEntry = () => {
+    setNewSupplierName("");
+    setNewSupplierContactName("");
+    setNewSupplierPhone("");
   };
 
   const clearEdit = () => {
