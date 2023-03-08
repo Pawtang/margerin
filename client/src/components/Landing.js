@@ -1,6 +1,7 @@
 import { React, Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import _ from "lodash";
 
 import "../styles/Styles.css";
 import "../styles/main.css";
@@ -8,7 +9,7 @@ import "../styles/main.css";
 import { useTokens } from "../contexts/UserContext";
 
 const Landing = () => {
-  const { checkToken } = useTokens();
+  const { checkToken, token } = useTokens();
 
   useEffect(() => {
     checkToken();
@@ -38,19 +39,38 @@ const Landing = () => {
               Take the guesswork out of product costing
             </h1>
 
-            <div className="">
-              <div className="m-6 p-6">
-                <Link to="signup" className="btn btn-lg btn-outline-light mt-2">
-                  Sign Up
-                </Link>
+            {!_.isEmpty(token) ? (
+              <div className="">
+                <div className="m-6 p-6">
+                  <Link
+                    to="dashboard"
+                    className="btn btn-lg btn-outline-light mt-2"
+                  >
+                    Dashboard
+                  </Link>
+                </div>
               </div>
+            ) : (
+              <div className="">
+                <div className="m-6 p-6">
+                  <Link
+                    to="signup"
+                    className="btn btn-lg btn-outline-light mt-2"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
 
-              <div className="m-6">
-                <Link to="login" className="btn btn-lg btn-outline-light mt-2">
-                  Login
-                </Link>
+                <div className="m-6">
+                  <Link
+                    to="login"
+                    className="btn btn-lg btn-outline-light mt-2"
+                  >
+                    Login
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

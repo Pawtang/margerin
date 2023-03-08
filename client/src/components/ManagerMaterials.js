@@ -92,7 +92,7 @@ const ManagerMaterials = () => {
       addToast({
         title: "Failed to delete material",
         type: "Error",
-        body: err,
+        body: err.message,
       });
     }
   };

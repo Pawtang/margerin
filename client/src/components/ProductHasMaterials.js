@@ -152,7 +152,7 @@ const ProductHasMaterials = (props) => {
       retrieveMaterialsForProduct();
       addToast({
         title: " Success",
-        type: "Error",
+        type: "Success",
         body: "Product updated",
       });
     } catch (error) {
@@ -262,6 +262,7 @@ const ProductHasMaterials = (props) => {
       setUnits(unitList);
       setSuppliers(supplierList);
     } catch (error) {
+      console.error(error);
       addToast({
         title: `Error`,
         type: "Error",

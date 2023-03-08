@@ -49,14 +49,19 @@ export const getProducts = async (token) => {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log(response);
     if (!response.ok) {
-      const res = await response.json();
-      throw new Error(res.json());
+      console.log(response.status);
+      throw new Error(response.status);
     }
     const res = await response.json();
     return res;
   } catch (err) {
-    throw new Error(err);
+    if (parseInt(err.message) === 401) {
+      throw new Error("Authentication failed");
+    } else {
+      throw new Error("Failed to get products");
+    }
   }
 };
 

@@ -14,7 +14,8 @@ import {
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
-// import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { token } = useTokens();
@@ -26,12 +27,12 @@ const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [productPrice, setProductPrice] = useState("");
   const [productAverageCost, setProductAverageCost] = useState("");
+  const navigate = useNavigate();
 
   /* ------------------------------ List Products ----------------------------- */
 
   //How to trigger rendering?
   const renderProducts = async () => {
-    // console.log("render products token:", token);
     try {
       const productArray = await getProducts(token);
       if (_.isEmpty(productArray)) return; //Maybe?
@@ -49,7 +50,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    renderProducts();
+    if (!_.isEmpty(token)) {
+      renderProducts();
+    }
+    //  else navigate("/Login");
   }, [token]);
 
   /* ------------------------------- Add Product ------------------------------ */

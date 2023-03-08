@@ -8,12 +8,16 @@ export const deleteMaterial = async (materialID, token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
-      const res = await response.json();
       throw new Error(response.json());
     }
   } catch (err) {
-    console.error(err.message);
-    throw new Error("Failed to delete material");
+    if ((err.errorCode = "23503")) {
+      throw new Error(
+        "Could not delete the material because it is referenced in an existing transaction"
+      );
+    } else {
+      throw new Error("Something went wrong!");
+    }
   }
 };
 
@@ -30,7 +34,6 @@ export const editMaterial = async (materialID, body, token) => {
     });
     console.log("");
     if (!response.ok) {
-      const res = await response.json();
       throw new Error(response.json());
     }
   } catch (err) {

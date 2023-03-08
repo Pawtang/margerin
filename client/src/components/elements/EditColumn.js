@@ -19,7 +19,7 @@ const EditColumn = (props) => {
 
   useEffect(() => {
     !_.isEmpty(currentState) && setNewValue(currentState);
-  });
+  }, []);
 
   return (
     <div className={display}>

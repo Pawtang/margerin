@@ -26,12 +26,10 @@ const authenticateToken = async (req, res, next) => {
   // console.log("Check");
   const authHeader = req.header("Authorization");
   const token = authHeader && authHeader.split(" ")[1]; //undefined or token, split after "Bearer"
-  if (token == null || token == "")
+  if (token == null || token == "") {
     return res.status(401).json("Authentication Failed");
-  // return res.status(401).json({
-  //   errorCode: error.code,
-  //   errorMessage: error.detail,
-  // });
+    // return res.sendStatus(401);
+  }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
     if (err) {
       console.error(err);
@@ -60,20 +58,20 @@ const authenticateToken = async (req, res, next) => {
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 214748000,
+    expiresIn: 10,
   });
 };
 
-// app.get("/tokentest", authenticateToken, async (req, res) => {
-//   try {
-//     // console.log("hey", req);
-//     res.status(200);
-//   } catch (err) {
-//     console.log("Shit");
-//     console.error(err);
-//     res.status(666);
-//   }
-// });
+app.get("/tokentest", authenticateToken, async (req, res) => {
+  try {
+    // console.log("hey", req);
+    res.status(200);
+  } catch (err) {
+    console.log("Shit");
+    console.error(err);
+    res.status(666);
+  }
+});
 
 app.post("/register", async (req, res) => {
   try {
@@ -436,10 +434,9 @@ app.get("/products", authenticateToken, async (req, res) => {
     );
     res.status(200).json(getAllProducts.rows);
   } catch (error) {
-    res.status(400);
-    res.json({
+    res.status(400).json({
       errorCode: error.code,
-      errorMessage: error.detail,
+      errorMessage: error.message,
     });
     console.error("Get all products", error.message);
   }
