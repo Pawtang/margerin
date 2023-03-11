@@ -2,13 +2,16 @@ import { displayProduct } from "../middleware/DashboardUtils";
 import { React, useState } from "react";
 import { useTokens } from "../contexts/UserContext";
 import { useToasts } from "../contexts/ToastContext";
+import { useNavigate } from "react-router-dom";
 
 export const ProductSearch = (props) => {
   const { addToast } = useToasts();
-  const { token } = useTokens();
+  const { token, logOut } = useTokens();
   const [search, setSearch] = useState("");
   const { setDisplayedProduct, products, setProductYield, setProductPrice } =
     props;
+
+  const navigate = useNavigate();
 
   return (
     <div className="col-12 col-md-3 border-end">
@@ -69,6 +72,10 @@ export const ProductSearch = (props) => {
                       );
                       setSearch("");
                     } catch (error) {
+                      if (error.message === "401") {
+                        logOut();
+                        navigate("/");
+                      }
                       addToast({
                         title: " Database Error",
                         type: "Error",

@@ -58,7 +58,7 @@ const authenticateToken = async (req, res, next) => {
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 10,
+    expiresIn: 2,
   });
 };
 

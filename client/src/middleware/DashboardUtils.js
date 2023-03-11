@@ -7,16 +7,14 @@ export const displayProduct = async (id, token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
-      if (response.status === 401) {
-        throw new Error(response.json());
-      } else {
-        throw new Error(response.json());
-      }
+      const res = await response.json();
+      throw new Error(res);
     }
     return await response.json();
   } catch (err) {
-    if (err.status === 401) {
-      throw new Error("Authentication failed");
+    console.log("error", err);
+    if (parseInt(err.message) === 401) {
+      throw new Error(err.message);
     } else {
       throw new Error("Failed to display product");
     }
@@ -51,14 +49,14 @@ export const getProducts = async (token) => {
     });
     console.log(response);
     if (!response.ok) {
-      console.log(response.status);
-      throw new Error(response.status);
+      const res = await response.json();
+      throw new Error(res.json());
     }
     const res = await response.json();
     return res;
   } catch (err) {
     if (parseInt(err.message) === 401) {
-      throw new Error("Authentication failed");
+      throw new Error(err.message);
     } else {
       throw new Error("Failed to get products");
     }

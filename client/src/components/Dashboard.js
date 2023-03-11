@@ -14,11 +14,10 @@ import {
 import Navbar from "./Navbar";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
-import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const { token } = useTokens();
+  const { token, logOut } = useTokens();
   const { addToast } = useToasts();
   const [displayedProduct, setDisplayedProduct] = useState({});
   const [newProductName, setNewProductName] = useState("");
@@ -28,7 +27,6 @@ const Dashboard = () => {
   const [productPrice, setProductPrice] = useState("");
   const [productAverageCost, setProductAverageCost] = useState("");
   const navigate = useNavigate();
-
   /* ------------------------------ List Products ----------------------------- */
 
   //How to trigger rendering?
@@ -41,6 +39,11 @@ const Dashboard = () => {
       setProductYield(productArray[0].yield);
       setProductPrice(productArray[0].price);
     } catch (error) {
+      console.log("error", error.message);
+      if (error.message === "401") {
+        logOut();
+        navigate("/");
+      }
       addToast({
         title: " Database Error",
         type: "Error",
@@ -53,7 +56,6 @@ const Dashboard = () => {
     if (!_.isEmpty(token)) {
       renderProducts();
     }
-    //  else navigate("/Login");
   }, [token]);
 
   /* ------------------------------- Add Product ------------------------------ */
