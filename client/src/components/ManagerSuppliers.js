@@ -14,7 +14,6 @@ import {
 } from "../middleware/SupplierUtils";
 import _ from "lodash";
 import { useToasts } from "../contexts/ToastContext";
-// import { ErrorHandling } from "../middleware/ErrorHandling";
 import { useTokens } from "../contexts/UserContext";
 
 const ManagerSuppliers = () => {

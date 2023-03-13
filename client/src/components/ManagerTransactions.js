@@ -22,7 +22,6 @@ import {
   editTransaction,
 } from "../middleware/TransactionUtils";
 import { useToasts } from "../contexts/ToastContext";
-import { ErrorHandling } from "../middleware/ErrorHandling";
 import { useTokens } from "../contexts/UserContext";
 
 const TransactionManager = () => {
