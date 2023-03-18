@@ -19,6 +19,8 @@
 // })
 
 const errorHandling = (error, req, res, next) => {
+  console.log(error);
+  console.log(error.code);
   return res.status(400).send(error.message);
 };
 

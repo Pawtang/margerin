@@ -115,3 +115,6 @@ ALTER TABLE users ADD username VARCHAR(200);
 ALTER TABLE product DROP CONSTRAINT product_product_name_key;
 
 ALTER TABLE product ADD CONSTRAINT product_uniqueness_by_id UNIQUE (product_name, userid);
+
+--3/16/2023
+ALTER TABLE product DROP CONSTRAINT name_uniqueness 

@@ -116,7 +116,7 @@ const Transactions = (props) => {
           label={"Unit"}
           list={units}
           itemkey={"unit_name"}
-          id={"unit_id"}
+          // id={"unit_id"}
           currentState={1}
           newValue={transactionUnit}
           setNewValue={setTransactionUnit}

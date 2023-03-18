@@ -52,23 +52,23 @@ const Landing = () => {
               </div>
             ) : (
               <div className="">
-                <div className="m-6 p-6">
+                <span className="m-12 p-6 inline">
                   <Link
                     to="signup"
                     className="btn btn-lg btn-outline-light mt-2"
                   >
                     Sign Up
                   </Link>
-                </div>
+                </span>
 
-                <div className="m-6">
+                <span className="m-6 inline w-25">
                   <Link
                     to="login"
-                    className="btn btn-lg btn-outline-light mt-2"
+                    className="btn btn-lg btn-outline-light mt-2 mx-3"
                   >
                     Login
                   </Link>
-                </div>
+                </span>
               </div>
             )}
           </div>

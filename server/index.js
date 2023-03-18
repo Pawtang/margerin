@@ -42,7 +42,7 @@ const authenticateToken = async (req, res, next) => {
         //delete from DB
         //return something
         //https://www.npmjs.com/package/jsonwebtoken
-        // console.log("Removed from list");
+        console.log("Removed from list");
       }
       return res.status(401).json("Authorization expired, please log back in");
     }

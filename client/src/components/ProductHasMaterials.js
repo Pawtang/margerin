@@ -198,7 +198,7 @@ const ProductHasMaterials = (props) => {
     try {
       const body = { newSupplierName };
       await newSupplier(body, token);
-      const suppliers = await getSuppliers();
+      const suppliers = await getSuppliers(token);
       setSuppliers(suppliers);
       addToast({
         title: " Success",
@@ -278,13 +278,13 @@ const ProductHasMaterials = (props) => {
     }
 
     const batchAccumulator = (acc, material) => {
-      if (material.is_per_unit == false) {
+      if (material.is_per_unit === false) {
         return acc + Number(material.avgcost) * material.quantity;
       } else return acc;
     };
 
     const perUnitAccumulator = (acc, material) => {
-      if (material.is_per_unit == true) {
+      if (material.is_per_unit === true) {
         return acc + Number(material.avgcost) * material.quantity;
       } else return acc;
     };
@@ -403,10 +403,10 @@ const ProductHasMaterials = (props) => {
             label={"Units"}
             list={units}
             itemkey={"unit_name"}
+            id={"unit_id"}
             currentState={1}
             newValue={newUnit}
             setNewValue={setNewUnit}
-            id={"unit_id"}
           />
 
           <IsPerUnitCheck
