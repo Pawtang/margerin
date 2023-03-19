@@ -117,4 +117,9 @@ ALTER TABLE product DROP CONSTRAINT product_product_name_key;
 ALTER TABLE product ADD CONSTRAINT product_uniqueness_by_id UNIQUE (product_name, userid);
 
 --3/16/2023
-ALTER TABLE product DROP CONSTRAINT name_uniqueness 
+ALTER TABLE supplier DROP CONSTRAINT name_uniqueness;
+ALTER TABLE supplier ADD CONSTRAINT name_uniqueness_by_id UNIQUE (supplier_name, userid);
+
+--3/18/2023
+ALTER TABLE material DROP CONSTRAINT material_material_name_key;
+ALTER TABLE material ADD CONSTRAINT material_uniqueness_by_id UNIQUE (material_name, userid);

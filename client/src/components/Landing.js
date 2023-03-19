@@ -2,6 +2,7 @@ import { React, Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import _ from "lodash";
+import Footer from "./Footer";
 
 import "../styles/Styles.css";
 import "../styles/main.css";
@@ -124,6 +125,7 @@ const Landing = () => {
             </p>
           </div>
         </div>
+        <Footer></Footer>
       </div>
     </Fragment>
   );

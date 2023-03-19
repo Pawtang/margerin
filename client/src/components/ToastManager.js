@@ -9,7 +9,7 @@ const ToastManager = (props) => {
   const [toastsToShow, setToastsToShow] = useState(toasts);
 
   useEffect(() => {
-    console.log(toasts);
+    // console.log(toasts);
     setToastsToShow(toasts);
   }, [toasts]);
   // useEffect(() => {}, [toastsToShow]);

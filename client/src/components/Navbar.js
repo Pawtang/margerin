@@ -41,11 +41,11 @@ const Navbar = (props) => {
                 </Link>
               </li>
             )}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/contact">
                 <button className="btn btn-outline-light">Contact</button>
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link to="/about">
                 <button className="btn btn-outline-light">About</button>

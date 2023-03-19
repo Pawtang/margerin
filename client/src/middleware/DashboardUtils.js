@@ -12,7 +12,6 @@ export const displayProduct = async (id, token) => {
     }
     return await response.json();
   } catch (err) {
-    console.log("error", err);
     if (parseInt(err.message) === 401) {
       throw new Error(err.message);
     } else {
@@ -23,7 +22,6 @@ export const displayProduct = async (id, token) => {
 
 export const addProduct = async (body, token) => {
   try {
-    console.log("Front end", body);
     const response = await fetch(`${URL_SERVER}/product`, {
       method: "POST",
       headers: {
@@ -47,7 +45,6 @@ export const getProducts = async (token) => {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(response);
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.json());
@@ -109,7 +106,6 @@ export const updateYield = async (id, body, token) => {
       },
       body: JSON.stringify(body),
     });
-    console.log("updateYield Response:", response.status);
     if (!response.ok) {
       const res = await response.json();
       throw new Error(res.message);

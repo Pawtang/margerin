@@ -243,7 +243,7 @@ const ProductHasMaterials = (props) => {
 
   const clearTransactionEntry = () => {
     setTransactionSupplier("");
-    setTransactionUnit("");
+    setTransactionUnit("1");
     setTransactionCost("0.00");
     setTransactionQuantity("0");
     setTransactionDate(todayDate);

@@ -112,11 +112,11 @@ const Transactions = (props) => {
         {/* ---------------------------------- Unit ---------------------------------- */}
         <SelectColumn
           display={"col-2"}
-          id={"selectUnit"}
+          // id={"selectUnit"}
           label={"Unit"}
           list={units}
           itemkey={"unit_name"}
-          // id={"unit_id"}
+          id={"unit_id"}
           currentState={1}
           newValue={transactionUnit}
           setNewValue={setTransactionUnit}
