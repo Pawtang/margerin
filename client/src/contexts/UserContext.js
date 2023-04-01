@@ -4,7 +4,7 @@ import { useLocalStorage } from "../components/hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 
 const UserContext = React.createContext();
-const URL_SERVER = "http://localhost:5000";
+const URL_SERVER = process.env.BEURL;
 
 export function useTokens() {
   return useContext(UserContext);

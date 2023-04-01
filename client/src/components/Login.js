@@ -7,7 +7,7 @@ import { useTokens } from "../contexts/UserContext";
 // import _ from "lodash";
 
 const Login = () => {
-  const URL_SERVER = "http://localhost:5000";
+  const URL_SERVER = process.env.BEURL;
   const { addToast } = useToasts();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +19,7 @@ const Login = () => {
   };
   const validateUser = async (body) => {
     try {
+      console.log(URL_SERVER, body);
       const response = await fetch(`${URL_SERVER}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

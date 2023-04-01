@@ -6,7 +6,7 @@ const cors = require("cors");
 const pool = require("./db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const errorHandling = require("./middleware/ErrorHandling");
+const errorHandling = require("./middleware/errorHandling");
 
 // const dotenv = require("dotenv");
 // const cookieParser = require("cookie-parser");
@@ -627,6 +627,8 @@ app.delete("/logout", authenticateToken, async (req, res, next) => {
 //   });
 // });
 
-app.listen(5000, () => {
-  console.log("server has started on port 5000");
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+  console.log(`server has started on port ${port}`);
 });

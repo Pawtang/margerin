@@ -5,7 +5,7 @@ import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
 
 function Signup() {
-  const URL_SERVER = "http://localhost:5000";
+  const URL_SERVER = process.env.BEURL;
   const { addToast } = useToasts();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
