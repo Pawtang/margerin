@@ -6,7 +6,7 @@ const cors = require("cors");
 const pool = require("./db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const errorHandling = require("./middleware/ErrorHandling");
+const errorHandling = require("./middleware/errorHandling");
 
 // const dotenv = require("dotenv");
 // const cookieParser = require("cookie-parser");

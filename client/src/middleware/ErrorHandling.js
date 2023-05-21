@@ -1,4 +1,4 @@
-export const ErrorHandling = (errorCode) => {
+export const errorHandling = (errorCode) => {
   const dictionary = {
     23000: "Integrity contraint violation",
     23001: "Restricted violation",
