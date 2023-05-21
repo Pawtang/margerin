@@ -7,7 +7,8 @@ const pool = require("./db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const errorHandling = require("./middleware/errorHandling");
-app.use(cors({ origin: "https://curvy-push-production.up.railway.app" }));
+// app.use(cors({ origin: "https://curvy-push-production.up.railway.app" }));
+app.use(cors({ origin: "https://www.marger.in" }));
 app.use(express.json()); //req.body
 app.use(errorHandling);
 const port = process.env.REACT_APP_PORT || 5000;
