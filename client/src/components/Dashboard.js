@@ -39,7 +39,6 @@ const Dashboard = () => {
       setProductYield(productArray[0].yield);
       setProductPrice(productArray[0].price);
     } catch (error) {
-      console.log("error", error.message);
       if (error.message === "401") {
         logOut();
         navigate("/");

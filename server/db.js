@@ -8,6 +8,6 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
 });
 
-console.log(process.env.PGPORT);
+// console.log(process.env.PGPORT);
 
 module.exports = pool;

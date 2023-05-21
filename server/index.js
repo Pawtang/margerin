@@ -7,25 +7,15 @@ const pool = require("./db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const errorHandling = require("./middleware/errorHandling");
-
-// const dotenv = require("dotenv");
-// const cookieParser = require("cookie-parser");
-// const { dirname, join } = require("path");
-// const { fileURLToPath } = require("url");
-
-// dotenv.config();
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-
-//middleware
 app.use(cors());
 app.use(express.json()); //req.body
 app.use(errorHandling);
+const port = process.env.REACT_APP_PORT || 5000;
 
 //ROUTES//
 /* ----------------------------- Authentication ----------------------------- */
 
 const authenticateToken = async (req, res, next) => {
-  // console.log("Check");
   const authHeader = req.header("Authorization");
   const token = authHeader && authHeader.split(" ")[1]; //undefined or token, split after "Bearer"
   if (token == null || token == "") {
@@ -39,10 +29,6 @@ const authenticateToken = async (req, res, next) => {
         await pool
           .query(`DELETE FROM web_sessions WHERE token = '$1'`, [token])
           .catch((error) => console.error(error));
-        //delete from DB
-        //return something
-        //https://www.npmjs.com/package/jsonwebtoken
-        console.log("Removed from list");
       }
       return res.status(401).json("Authorization expired, please log back in");
     }
@@ -50,7 +36,6 @@ const authenticateToken = async (req, res, next) => {
       `SELECT * FROM web_sessions WHERE token = '${token}'`
     );
     if (checkExists.rowCount == 0) {
-      // console.error("Authorization expired, please log back in");
       return res.status(401).json("Authorization expired, please log back in");
     }
     req.user = user;
@@ -66,7 +51,6 @@ const createToken = (id) => {
 
 app.get("/tokentest", authenticateToken, async (req, res, next) => {
   try {
-    // console.log("hey", req);
     res.status(200);
   } catch (error) {
     next(error);
@@ -82,7 +66,7 @@ app.post("/register", async (req, res, next) => {
       [username, email, hashbrowns]
     );
     const userid = newUser.rows[0].id;
-    // console.log(userid);
+
     const accessToken = createToken(userid);
     const postSession = await pool.query(
       `INSERT INTO web_sessions (userid, token) VALUES($1, $2) RETURNING *`,
@@ -133,12 +117,12 @@ const validate = async (password, hash) => {
 app.post("/product", authenticateToken, async (req, res, next) => {
   try {
     const { newProductName, newProductDescription } = req.body;
-    // console.log("back end", req.body);
+
     const newProduct = await pool.query(
       `INSERT INTO product (product_name, product_description, userid) VALUES($1, $2, $3) RETURNING *`,
       [newProductName, newProductDescription, req.user.id]
     );
-    // console.log(newProduct);
+
     res.status(200).json(newProduct.rows);
   } catch (error) {
     next(error);
@@ -209,7 +193,6 @@ app.post(
   authenticateToken,
   async (req, res, next) => {
     try {
-      // console.log("Request body for materialHasTransaction:", req.body);
       const {
         transactionSupplier,
         materialID,
@@ -240,7 +223,6 @@ app.post(
 //add a transaction to a material
 app.post("/transaction", authenticateToken, async (req, res, next) => {
   try {
-    console.log("Request body for materialHasTransaction:", req.body);
     const {
       newTransactionDate,
       newTransactionMaterial,
@@ -292,7 +274,7 @@ app.put("/product/yield/:id", authenticateToken, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { productYield } = req.body;
-    // console.log("id, yield: ", id, productYield);
+
     const updateYield = await pool.query(
       `UPDATE product SET yield = $1 WHERE product_id = $2`,
       [productYield, id]
@@ -355,7 +337,6 @@ app.put(
   "/productHasMaterial/edit/:id",
   authenticateToken,
   async (req, res, next) => {
-    // console.log("index req, body:", req.params, req.body);
     try {
       const { id } = req.params;
       const { editMaterial, editUnit, editQuantity, editIsPerUnit } = req.body;
@@ -595,15 +576,14 @@ app.delete(
 
 app.delete("/logout", authenticateToken, async (req, res, next) => {
   const token = req.header("Authorization").split(" ")[1]; //undefined or token, split after "Bearer"
-  // console.log(req.user.id.toString());
-  // console.log(req.user.id);
+
   try {
     const { userID } = req.user.id.toString();
     const logoutres = await pool.query(
       `DELETE FROM web_sessions WHERE token = $1`,
       [token]
     );
-    // console.log(logoutres);
+
     res.status(200).json("Logged out");
   } catch (error) {
     next(error);
@@ -627,6 +607,6 @@ app.delete("/logout", authenticateToken, async (req, res, next) => {
 //   });
 // });
 
-app.listen(5000, () => {
-  console.log("server has started on port 5000");
+app.listen(port, () => {
+  console.log(`server has started on port ${5000}`);
 });

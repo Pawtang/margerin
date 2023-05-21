@@ -8,7 +8,6 @@ const Navbar = (props) => {
   const { opacity } = props;
   const { token, logOut } = useTokens();
 
-  // console.log(token);
   return (
     <nav
       className={`navbar main-nav ${opacity} navbar-expand-lg navbar-dark p-md-3`}

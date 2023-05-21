@@ -14,7 +14,6 @@ const Landing = () => {
 
   useEffect(() => {
     checkToken();
-    console.log("Trigger");
   }, []);
 
   return (

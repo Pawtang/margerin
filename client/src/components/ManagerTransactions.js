@@ -57,7 +57,6 @@ const TransactionManager = () => {
       setMaterials(materialList);
       !_.isEmpty(materialList) &&
         setNewTransactionMaterial(materialList[0].material_id);
-      console.log(materialList);
     } catch (error) {
       addToast({
         title: " Database Error",

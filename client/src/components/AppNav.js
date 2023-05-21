@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 // import { useTokens } from "../contexts/UserContext";
 
 const AppNav = () => {
-  // const token = useTokens();
-  // console.log("AppNav token:", token);
   return (
     <>
       <div className="container ">

@@ -15,7 +15,6 @@ const SelectColumn = (props) => {
 
   useEffect(() => {
     setNewValue(currentState);
-    console.log(label, newValue);
   }, []);
 
   return (

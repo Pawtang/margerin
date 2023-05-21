@@ -1,4 +1,4 @@
-const URL_SERVER = "http://localhost:5000";
+const URL_SERVER = process.env.REACT_APP_URL;
 
 export const deleteSupplier = async (supplierID, token) => {
   try {
@@ -7,7 +7,6 @@ export const deleteSupplier = async (supplierID, token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!response.ok) {
-      // console.log("Res:", await response.json());
       throw new Error(response.json());
     }
   } catch (err) {
@@ -38,7 +37,6 @@ export const getSuppliers = async (token) => {
 
 export const newSupplier = async (body, token) => {
   try {
-    // console.log(token);
     const response = await fetch(`${URL_SERVER}/supplier/new`, {
       method: "POST",
       headers: {
@@ -58,7 +56,6 @@ export const newSupplier = async (body, token) => {
 
 export const editSupplier = async (supplierID, body, token) => {
   try {
-    console.log(body);
     const response = await fetch(`${URL_SERVER}/supplier/edit/${supplierID}`, {
       method: "PUT",
       headers: {
