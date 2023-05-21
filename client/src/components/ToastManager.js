@@ -15,7 +15,10 @@ const ToastManager = (props) => {
   // useEffect(() => {}, [toastsToShow]);
   return (
     <>
-      <ToastContainer className="p-3 z-super" position="bottom-end">
+      <ToastContainer
+        className="p-3 z-super position-static"
+        position="bottom-end"
+      >
         {/* <Toast show={showToast} onClose={console.log("")}> */}
         {toastsToShow.map((toast, i) => {
           return (

@@ -53,8 +53,11 @@ const TransactionManager = () => {
 
   const loadLists = async () => {
     try {
-      const allMaterials = await getMaterials(token);
-      setMaterials(allMaterials);
+      const materialList = await getMaterials(token);
+      setMaterials(materialList);
+      !_.isEmpty(materialList) &&
+        setNewTransactionMaterial(materialList[0].material_id);
+      console.log(materialList);
     } catch (error) {
       addToast({
         title: " Database Error",
@@ -76,6 +79,8 @@ const TransactionManager = () => {
     try {
       const supplierList = await getSuppliers(token);
       setSuppliers(supplierList);
+      !_.isEmpty(supplierList) &&
+        setNewTransactionSupplier(supplierList[0].supplier_id);
     } catch (error) {
       addToast({
         title: " Database Error",
@@ -238,6 +243,7 @@ const TransactionManager = () => {
               list={materials}
               itemkey={"material_name"}
               id={"material_id"}
+              // currentState={materials[0].material_id}
               newValue={newTransactionMaterial}
               setNewValue={setNewTransactionMaterial}
             />
@@ -248,6 +254,7 @@ const TransactionManager = () => {
               list={suppliers}
               itemkey={"supplier_name"}
               id={"supplier_id"}
+              // currentState={suppliers[0].supplier_id}
               newValue={newTransactionSupplier}
               setNewValue={setNewTransactionSupplier}
             />
