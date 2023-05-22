@@ -12,9 +12,10 @@ const errorHandling = require("./middleware/errorHandling");
 app.use(
   cors({
     origin: [
-      "https://www.marger.in",
-      "https://curvy-push-production.up.railway.app",
-      "https://margerin-server.up.railway.app",
+      "https://www.marger.in/*",
+      "https://curvy-push-production.up.railway.app/*",
+      "https://margerin-server.up.railway.app/*",
+      "https://margerin-server.up.railway.app/register",
     ],
   })
 );
