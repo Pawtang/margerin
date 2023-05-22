@@ -12,9 +12,9 @@ const errorHandling = require("./middleware/errorHandling");
 app.use(
   cors({
     origin: [
-      "https://www.marger.in/*",
-      "https://curvy-push-production.up.railway.app/*",
-      "https://margerin-server.up.railway.app/*",
+      "https://www.marger.in",
+      "margerin-client.up.railway.app",
+      "https://margerin-server.up.railway.app",
       "https://margerin-server.up.railway.app/register",
     ],
   })
@@ -22,7 +22,10 @@ app.use(
 
 app.use(express.json()); //req.body
 app.use(errorHandling);
-const port = process.env.REACT_APP_PORT || 5000;
+// for local
+// const port = process.env.REACT_APP_PORT || 5000;
+//  for deploy
+const port = process.env.PORT || 3000;
 
 //ROUTES//
 /* ----------------------------- Authentication ----------------------------- */
@@ -619,6 +622,6 @@ app.delete("/logout", authenticateToken, async (req, res, next) => {
 //   });
 // });
 
-app.listen(port, () => {
-  console.log(`server has started on port ${5000}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`server has started on port ${port}`);
 });
