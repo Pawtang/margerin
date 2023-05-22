@@ -14,7 +14,7 @@ app.use(
     origin: [
       "https://www.marger.in",
       "https://curvy-push-production.up.railway.app",
-      "margerin-server.up.railway.app",
+      "https://margerin-server.up.railway.app",
     ],
   })
 );
