@@ -4,7 +4,7 @@ import { useLocalStorage } from "../components/hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 
 const UserContext = React.createContext();
-const URL_SERVER = "http://localhost:5000";
+const URL_SERVER = process.env.REACT_APP_URL;
 
 export function useTokens() {
   return useContext(UserContext);
@@ -13,14 +13,12 @@ export function useTokens() {
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useLocalStorage("token", "");
   const [user, setUser] = useState("");
-  // console.log("token:", token, "user:", user);
 
   const navigate = useNavigate();
 
   const checkToken = async () => {
     if (!_.isEmpty(token)) {
       try {
-        // console.log(token);
         const response = await fetch(`${URL_SERVER}/tokentest`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
@@ -38,7 +36,6 @@ export const UserProvider = ({ children }) => {
   };
 
   const logOut = async () => {
-    // console.log("token:", token, "user:", user);
     try {
       await deleteSession(token);
     } catch (err) {}

@@ -7,7 +7,7 @@ import { useTokens } from "../contexts/UserContext";
 // import _ from "lodash";
 
 const Login = () => {
-  const URL_SERVER = "http://localhost:5000";
+  const URL_SERVER = process.env.REACT_APP_URL;
   const { addToast } = useToasts();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,10 +30,10 @@ const Login = () => {
         throw new Error(res);
       }
       const res = await response.json();
-      console.log("login res", res);
+
       setToken(res.accessToken);
       setUser(res.user);
-      console.log(res.user);
+
       clearInputs();
       addToast({
         title: " Success",
@@ -79,37 +79,37 @@ const Login = () => {
               }}
             >
               <div className="mb-3">
-                <label htmlFor="email" class="form-label">
+                <label htmlFor="email" className="form-label">
                   Email address
                 </label>
                 <input
                   type="email"
-                  class="form-control"
+                  className="form-control"
                   id="email"
                   aria-describedby="emailHelp"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <div id="emailHelp" class="form-text">
+                <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
                 </div>
               </div>
               <div className="mb-3">
-                <label htmlFor="password" class="form-label">
+                <label htmlFor="password" className="form-label">
                   Password
                 </label>
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="d-grid gap-2 d-md-flex justify-content-center">
-                <button class="btn btn-primary">Log In</button>
+                <button className="btn btn-primary">Log In</button>
                 <Link to="/Signup">
-                  <button class="btn btn-outline-primary">Sign Up</button>
+                  <button className="btn btn-outline-primary">Sign Up</button>
                 </Link>
               </div>
             </form>

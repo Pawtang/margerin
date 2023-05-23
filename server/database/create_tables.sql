@@ -92,7 +92,8 @@ CREATE TABLE IF NOT EXISTS users (
     hash VARCHAR(200) NOT NULL
 );
 -- 2/18/22
-ALTER TABLE product ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);
+-- WTF is this?
+-- ALTER TABLE product ADD CONSTRAINT name_uniqueness UNIQUE (supplier_name);
 --3/8/2022
 
 ALTER TABLE product ADD userID INT;

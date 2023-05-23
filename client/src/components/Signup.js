@@ -5,7 +5,7 @@ import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
 
 function Signup() {
-  const URL_SERVER = "http://localhost:5000";
+  const URL_SERVER = process.env.REACT_APP_URL;
   const { addToast } = useToasts();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -39,7 +39,7 @@ function Signup() {
         body: "Registration successful",
       });
       const res = await response.json();
-      console.log("signup response:", res);
+
       setToken(res.token);
       navigate("/dashboard");
     } catch (err) {
@@ -69,19 +69,19 @@ function Signup() {
   return (
     <Fragment>
       <Navbar opacity={"nav-opaque"} />
-      <div class="modal fade " id="strongpassword" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Password Requirements</h5>
+      <div className="modal fade " id="strongpassword" tabindex="-1">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Password Requirements</h5>
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <ul>
                 <li>8+ Characters</li>
                 <li>Don't use something easy to guess like "password123"</li>
@@ -90,10 +90,10 @@ function Signup() {
                 </li>
               </ul>
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-primary"
+                className="btn btn-primary"
                 data-bs-dismiss="modal"
               >
                 OK, I get it!
@@ -108,13 +108,13 @@ function Signup() {
           <div className="col-lg-6 col-md-8 col-sm-10 col-12">
             <h1>Sign Up</h1>
             <form onSubmit={handleAddUser}>
-              <div class="mb-3">
-                <label for="username" class="form-label">
+              <div className="mb-3">
+                <label for="username" className="form-label">
                   Project Name
                 </label>
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="username"
                   aria-describedby="usernameHelp"
                   value={username}
@@ -122,17 +122,17 @@ function Signup() {
                     setUsername(e.target.value);
                   }}
                 />
-                <div id="emailHelp" class="form-text">
+                <div id="emailHelp" className="form-text">
                   Project or personal name. You can change this later.
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">
+              <div className="mb-3">
+                <label for="email" className="form-label">
                   Email address
                 </label>
                 <input
                   type="email"
-                  class="form-control"
+                  className="form-control"
                   id="email"
                   aria-describedby="emailHelp"
                   value={email}
@@ -140,18 +140,18 @@ function Signup() {
                     setEmail(e.target.value);
                   }}
                 />
-                <div id="emailHelp" class="form-text">
+                <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">
+              <div className="mb-3">
+                <label for="password" className="form-label">
                   Password
                 </label>
 
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
                   id="password"
                   value={password}
                   onChange={(e) => {
@@ -160,7 +160,7 @@ function Signup() {
                 />
                 <div
                   id="password-reqs"
-                  class="form-text"
+                  className="form-text"
                   data-bs-toggle="modal"
                   data-bs-target="#strongpassword"
                   style={{ cursor: "pointer" }}
@@ -168,13 +168,13 @@ function Signup() {
                   Use a strong password
                 </div>
               </div>
-              <div class="mb-3">
-                <label for="confirmpassword" class="form-label">
+              <div className="mb-3">
+                <label for="confirmpassword" className="form-label">
                   Confirm Password
                 </label>
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
                   id="confirmpassword"
                   value={confirm}
                   onChange={(e) => {
@@ -183,11 +183,11 @@ function Signup() {
                 />
               </div>
               <div className="d-grid gap-2 d-md-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" className="btn btn-primary">
                   Sign Up
                 </button>
                 <Link to="/Login">
-                  <button type="button" class="btn btn-outline-primary">
+                  <button type="button" className="btn btn-outline-primary">
                     Log In
                   </button>
                 </Link>

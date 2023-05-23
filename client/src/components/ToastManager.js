@@ -9,14 +9,15 @@ const ToastManager = (props) => {
   const [toastsToShow, setToastsToShow] = useState(toasts);
 
   useEffect(() => {
-    // console.log(toasts);
     setToastsToShow(toasts);
   }, [toasts]);
-  // useEffect(() => {}, [toastsToShow]);
+
   return (
     <>
-      <ToastContainer className="p-3 z-super" position="bottom-end">
-        {/* <Toast show={showToast} onClose={console.log("")}> */}
+      <ToastContainer
+        className="p-3 z-super position-static"
+        position="bottom-end"
+      >
         {toastsToShow.map((toast, i) => {
           return (
             <Toast

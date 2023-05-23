@@ -1,4 +1,4 @@
-const URL_SERVER = "http://localhost:5000";
+const URL_SERVER = process.env.REACT_APP_URL;
 
 export const deleteMaterial = async (materialID, token) => {
   try {
@@ -31,7 +31,7 @@ export const editMaterial = async (materialID, body, token) => {
       },
       body: JSON.stringify(body),
     });
-    console.log("");
+
     if (!response.ok) {
       throw new Error(response.json());
     }

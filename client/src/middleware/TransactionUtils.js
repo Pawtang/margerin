@@ -1,4 +1,4 @@
-const URL_SERVER = "http://localhost:5000";
+const URL_SERVER = process.env.REACT_APP_URL;
 
 export const getTransactionData = async (token) => {
   try {
