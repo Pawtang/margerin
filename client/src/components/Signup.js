@@ -69,7 +69,7 @@ function Signup() {
   return (
     <Fragment>
       <Navbar opacity={"nav-opaque"} />
-      <div className="modal fade " id="strongpassword" tabindex="-1">
+      {/* <div className="modal fade " id="strongpassword" tabindex="-1">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
@@ -101,7 +101,7 @@ function Signup() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white p-5 justify-content-center">
@@ -109,7 +109,7 @@ function Signup() {
             <h1>Sign Up</h1>
             <form onSubmit={handleAddUser}>
               <div className="mb-3">
-                <label for="username" className="form-label">
+                <label htmlFor="username" className="form-label">
                   Project Name
                 </label>
                 <input
@@ -121,17 +121,20 @@ function Signup() {
                   onChange={(e) => {
                     setUsername(e.target.value);
                   }}
+                  autoComplete="name"
+                  minLength={1}
                 />
                 <div id="emailHelp" className="form-text">
                   Project or personal name. You can change this later.
                 </div>
               </div>
               <div className="mb-3">
-                <label for="email" className="form-label">
+                <label htmlFor="email" className="form-label">
                   Email address
                 </label>
                 <input
                   type="email"
+                  name="email"
                   className="form-control"
                   id="email"
                   aria-describedby="emailHelp"
@@ -139,13 +142,15 @@ function Signup() {
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
+                  autoComplete="email"
+                  minLength={3}
                 />
                 <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
                 </div>
               </div>
               <div className="mb-3">
-                <label for="password" className="form-label">
+                <label htmlFor="password" className="form-label">
                   Password
                 </label>
 
@@ -157,19 +162,22 @@ function Signup() {
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
+                  autoComplete="new-password"
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
                 />
                 <div
                   id="password-reqs"
                   className="form-text"
-                  data-bs-toggle="modal"
-                  data-bs-target="#strongpassword"
-                  style={{ cursor: "pointer" }}
+                  // data-bs-toggle="modal"
+                  // data-bs-target="#strongpassword"
+                  // style={{ cursor: "pointer" }}
                 >
-                  Use a strong password
+                  Password must contain eight characters, at least one letter,
+                  one number, and one special character
                 </div>
               </div>
               <div className="mb-3">
-                <label for="confirmpassword" className="form-label">
+                <label htmlFor="confirmpassword" className="form-label">
                   Confirm Password
                 </label>
                 <input
@@ -180,6 +188,7 @@ function Signup() {
                   onChange={(e) => {
                     setConfirm(e.target.value);
                   }}
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
                 />
               </div>
               <div className="d-grid gap-2 d-md-flex justify-content-center">

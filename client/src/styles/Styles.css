@@ -122,3 +122,8 @@ h2 {
 .fader {
   transition: all 2ms;
 }
+
+input:invalid {
+  outline: 2px solid rgb(223, 148, 148);
+  outline-offset: 3px;
+}

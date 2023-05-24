@@ -27,38 +27,35 @@ const Login = () => {
 
       if (!response.ok) {
         const res = await response.json();
+        console.log(res);
         throw new Error(res);
       }
       const res = await response.json();
 
       setToken(res.accessToken);
       setUser(res.user);
-
       clearInputs();
+      navigate("/dashboard");
       addToast({
         title: " Success",
         type: "Success",
         body: "Login successful",
       });
     } catch (error) {
-      console.error("Custom error", error);
+      // console.error("Custom error", error);
       addToast({
         title: " Database Error",
         type: "Error",
         body: error.message,
       });
+      // navigate("/");
     }
   };
 
   const handleLogin = async (e) => {
-    try {
-      e.preventDefault();
-      const body = { email, password };
-      await validateUser(body);
-      return true;
-    } catch (error) {
-      throw new Error("login failure");
-    }
+    e.preventDefault();
+    const body = { email, password };
+    await validateUser(body);
   };
 
   const navigate = useNavigate();
@@ -75,7 +72,6 @@ const Login = () => {
               action=""
               onSubmit={(e) => {
                 handleLogin(e);
-                navigate("/dashboard");
               }}
             >
               <div className="mb-3">
@@ -84,11 +80,13 @@ const Login = () => {
                 </label>
                 <input
                   type="email"
+                  name="email"
                   className="form-control"
                   id="email"
                   aria-describedby="emailHelp"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                 />
                 <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
@@ -104,6 +102,7 @@ const Login = () => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
                 />
               </div>
               <div className="d-grid gap-2 d-md-flex justify-content-center">
