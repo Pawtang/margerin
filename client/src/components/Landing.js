@@ -19,7 +19,7 @@ const Landing = () => {
   return (
     <Fragment>
       <div className="container-fluid background position-sticky">
-        <Navbar opacity={"opacity-50"} />
+        {/* <Navbar opacity={"opacity-50"} /> */}
         {/* <div className="blurry"></div> */}
         {/* <nav className="navbar bg-transparent">
           <div className="container justify-content-end mt-4">
