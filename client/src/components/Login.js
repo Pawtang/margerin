@@ -27,7 +27,8 @@ const Login = () => {
 
       if (!response.ok) {
         const res = await response.json();
-        console.log(res);
+        console.log("response", res);
+        // console.log("response", res.message);
         throw new Error(res);
       }
       const res = await response.json();
@@ -42,9 +43,9 @@ const Login = () => {
         body: "Login successful",
       });
     } catch (error) {
-      // console.error("Custom error", error);
+      // console.error("Custom error", error.message);
       addToast({
-        title: " Database Error",
+        title: "Login failed",
         type: "Error",
         body: error.message,
       });
@@ -54,8 +55,10 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const body = { email, password };
-    await validateUser(body);
+    if (email && password) {
+      const body = { email, password };
+      await validateUser(body);
+    }
   };
 
   const navigate = useNavigate();

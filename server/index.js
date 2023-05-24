@@ -104,7 +104,10 @@ app.post("/login", async (req, res, next) => {
       `SELECT * FROM users WHERE (users.email = $1)`,
       [email]
     );
+    if (databaseHash.rows[0] === undefined)
+      throw new Error("User does not exist");
     const id = databaseHash.rows[0].id;
+    // console.log(id);
     const validation = await validate(password, databaseHash.rows[0].hash);
     if (validation) {
       const accessToken = createToken(id);
@@ -614,14 +617,10 @@ app.delete("/logout", authenticateToken, async (req, res, next) => {
 //   next(error);
 // });
 
-// app.use((error, req, res, next) => {
-//   res.status(error.status || 500);
-//   res.json({
-//     error: {
-//       message: error.message,
-//     },
-//   });
-// });
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json(error.message);
+});
 
 app.listen(port, "0.0.0.0", () => {
   console.log(`server has started on port ${port}`);
