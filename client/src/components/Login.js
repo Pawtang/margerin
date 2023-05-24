@@ -27,8 +27,6 @@ const Login = () => {
 
       if (!response.ok) {
         const res = await response.json();
-        console.log("response", res);
-        // console.log("response", res.message);
         throw new Error(res);
       }
       const res = await response.json();
@@ -43,13 +41,11 @@ const Login = () => {
         body: "Login successful",
       });
     } catch (error) {
-      // console.error("Custom error", error.message);
       addToast({
         title: "Login failed",
         type: "Error",
         body: error.message,
       });
-      // navigate("/");
     }
   };
 

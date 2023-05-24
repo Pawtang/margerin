@@ -107,7 +107,7 @@ app.post("/login", async (req, res, next) => {
     if (databaseHash.rows[0] === undefined)
       throw new Error("User does not exist");
     const id = databaseHash.rows[0].id;
-    // console.log(id);
+
     const validation = await validate(password, databaseHash.rows[0].hash);
     if (validation) {
       const accessToken = createToken(id);
