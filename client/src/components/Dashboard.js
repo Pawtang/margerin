@@ -116,7 +116,7 @@ const Dashboard = () => {
 
   return (
     <Fragment>
-      <Navbar opacity={"nav-opaque"} />
+      <Navbar opacity={"nav-opaque"} hamburger={true} />
       <AddPropModal
         itemType="Product"
         handleAddItem={handleAddProduct}

@@ -3,14 +3,13 @@ import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import _ from "lodash";
 import Footer from "./Footer";
+import { useTokens } from "../contexts/UserContext";
 
 import "../styles/Styles.css";
 import "../styles/main.css";
 
-import { useTokens } from "../contexts/UserContext";
-
 const Landing = () => {
-  const { checkToken, token } = useTokens();
+  const { checkToken, token, logOut } = useTokens();
 
   useEffect(() => {
     checkToken();
@@ -18,37 +17,57 @@ const Landing = () => {
 
   return (
     <Fragment>
-      <div className="container-fluid background position-sticky">
+      <div className=" hero-background ">
         {/* <Navbar opacity={"opacity-50"} /> */}
-        {/* <div className="blurry"></div> */}
-        {/* <nav className="navbar bg-transparent">
-          <div className="container justify-content-end mt-4">
-            <button className="btn btn-light me-md-2" type="button">
-              Log In
-            </button>
-            <button className="btn btn-outline-light" type="button">
-              Sign Up
-            </button>
-          </div>
-        </nav> */}
-
-        <div className="container-fluid d-flex align-items-center hero position-fixed">
-          <div className="container titlebox">
+        <div className="container-fluid d-flex align-items-center hero ">
+          <div className="container ">
             <h1 className="title">margerin</h1>
             <h1 className="white display-6">
               Take the guesswork out of product costing
             </h1>
 
             {!_.isEmpty(token) ? (
+              // <div className="">
+              //   <div className="m-6 p-6">
+              //     <span className="m-12 p-6 inline">
+              //       <Link
+              //         to="dashboard"
+              //         className="btn btn-lg btn-outline-light mt-2"
+              //       >
+              //         Dashboard
+              //       </Link>
+              //     </span>
+              //     <span className="m-6 inline w-100">
+              //       <Link to="/">
+              //         <button
+              //           className="btn btn-lg btn-outline-light mt-2"
+              //           onClick={logOut}
+              //         >
+              //           Log Out
+              //         </button>
+              //       </Link>
+              //     </span>
+              //   </div>
+              // </div>
               <div className="">
-                <div className="m-6 p-6">
+                <span className="m-12 p-6 inline">
                   <Link
                     to="dashboard"
                     className="btn btn-lg btn-outline-light mt-2"
                   >
                     Dashboard
                   </Link>
-                </div>
+                </span>
+
+                <span className="m-6 inline w-25">
+                  <Link
+                    to="/"
+                    className="btn btn-lg btn-outline-light mt-2 mx-3"
+                    onClick={logOut}
+                  >
+                    Log Out
+                  </Link>
+                </span>
               </div>
             ) : (
               <div className="">

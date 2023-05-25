@@ -5,12 +5,12 @@ import _ from "lodash";
 
 import "../styles/Navbar.css";
 const Navbar = (props) => {
-  const { opacity } = props;
+  const { opacity, hamburger } = props;
   const { token, logOut } = useTokens();
 
   return (
     <nav
-      className={`navbar main-nav ${opacity} navbar-expand-lg navbar-dark p-md-3`}
+      className={`navbar ${opacity} navbar-expand-lg navbar-dark p-md-3 super-z`}
     >
       <div className="container">
         <Link to="/" className="navbar-brand">
@@ -18,38 +18,42 @@ const Navbar = (props) => {
             <h3 className="white text-center">m</h3>
           </div>
         </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+        {hamburger && (
+          <>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+          </>
+        )}
 
         <div className="collapse navbar-collapse" id="navbarNav">
           <div className="mx-auto"></div>
           <ul className="navbar-nav">
-            {!_.isEmpty(token) && (
+            {/* {!_.isEmpty(token) && (
               <li className="nav-item me-0">
                 <Link to="/dashboard">
                   <button className="btn btn-outline-light">Dashboard</button>
                 </Link>
               </li>
-            )}
+            )} */}
             {/* <li className="nav-item">
               <Link to="/contact">
                 <button className="btn btn-outline-light">Contact</button>
               </Link>
             </li> */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/about">
                 <button className="btn btn-outline-light">About</button>
               </Link>
-            </li>
+            </li> */}
             {_.isEmpty(token) ? (
               <li className="nav-item">
                 <Link to="/Login">

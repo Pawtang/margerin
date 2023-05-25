@@ -13,10 +13,6 @@ li {
   text-align: center;
 }
 
-.main-nav {
-  height: 80px;
-}
-
 .nav-opaque {
   filter: contrast(150%) brightness(100%);
   background: radial-gradient(

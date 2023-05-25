@@ -13,6 +13,7 @@ const errorHandling = require("./middleware/errorHandling");
 app.use(
   cors({
     origin: [
+      "http://localhost:3000",
       "https://www.marger.in",
       "margerin-client.up.railway.app",
       "https://margerin-server.up.railway.app",
