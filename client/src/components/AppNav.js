@@ -10,7 +10,7 @@ const AppNav = () => {
         <nav className="navbar navbar-expand-lg navbar-light bg-light ">
           <div className="container-fluid ">
             <div className="navbar-brand">{}</div>
-            <button
+            {/* <button
               className="navbar-toggler"
               type="button"
               data-bs-toggle="collapse"
@@ -20,7 +20,7 @@ const AppNav = () => {
               aria-label="Toggle navigation"
             >
               <span className="navbar-toggler-icon"></span>
-            </button>
+            </button> */}
             <div>
               <div className="d-flex">
                 <div className="">

@@ -39,11 +39,11 @@ li {
   height: 60vh;
 }
 
-.background {
-  position: absolute 0 0;
+.hero-background {
+  /* position: absolute 0 0; */
   width: 100vw;
   min-height: 400px;
-  height: 60vh;
+  height: 50vh;
 
   filter: contrast(150%) brightness(100%);
   background: radial-gradient(
@@ -126,4 +126,8 @@ h2 {
 input:invalid {
   outline: 2px solid rgb(223, 148, 148);
   outline-offset: 3px;
+}
+
+.super-z {
+  z-index: 3000;
 }

@@ -24,6 +24,7 @@ export const UserProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response !== 200) {
+          console.log(response);
           setToken("");
           navigate("/");
           throw new Error("You are not logged in");
