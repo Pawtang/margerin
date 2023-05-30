@@ -19,7 +19,7 @@ const SelectWithToggleColumn = (props) => {
   }, []);
 
   return (
-    <div className={display}>
+    <div className={`${display}`}>
       <div className="input-group">
         <select
           className="form-select"

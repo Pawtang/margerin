@@ -94,21 +94,21 @@ const Landing = () => {
         </div>
       </div>
 
-      <div className="container content">
+      <div className="container content bg-white shadow-sm border h-100 p-4">
         <h2>Lightweight and Affordable Tool for Small Businesses</h2>
-        <p>
+        <p className="lead">
           <br />
-          Margerin is a featherweight ERP platform designed to track the cost of
-          materials from your various suppliers over time. With predictive
-          analytics, you can have a clearer idea of how much your products cost
-          to make, and what your real profit margins are.
+          <b>Margerin is a featherweight ERP</b> platform designed to track the
+          cost of materials from your various suppliers over time. With
+          predictive analytics, you can have a clearer idea of how much your
+          products cost to make, and what your real profit margins are.
         </p>
-        <div className="row shadow rounded-3 my-5 bg-white">
-          <div className="col-3 bg-white text-center p-3">
+        <div className="row rounded-3 my-5 bg-white">
+          <div className="col-4 bg-white text-center p-3 border">
             <i className="bi bi-clipboard-data big-icon"></i>
             <p className="text-center">Record material cost data</p>
           </div>
-          <div className="col-9 my-auto p-4">
+          <div className="col my-auto p-4">
             <p>
               As you record material purchase transaction data, Margerin shows
               you the effects of changing costs from your suppliers over time on
@@ -116,26 +116,26 @@ const Landing = () => {
             </p>
           </div>
         </div>
-        <div className="row shadow rounded my-5 bg-white">
-          <div className="col-3 bg-white text-center p-3">
-            <i className="bi bi-calculator big-icon"></i>
-            <p className="text-center">
-              Automatically calculate cost of goods sold
-            </p>
-          </div>
-          <div className="col-9 my-auto p-4">
+        <div className="row rounded my-5 bg-white">
+          <div className="col my-auto p-4">
             <p>
               Margerin aggregates previous transactions and gives you the best
               estimate of current real cost to produce a product or assembly.
             </p>
           </div>
+          <div className="col-4 bg-white text-center p-4 border">
+            <i className="bi bi-calculator big-icon"></i>
+            <p className="text-center">
+              Automatically calculate cost of goods sold
+            </p>
+          </div>
         </div>
-        <div className="row shadow rounded my-5 bg-white">
-          <div className="col-3 bg-white text-center p-3">
+        <div className="row rounded my-5 bg-white">
+          <div className="col-4 bg-white text-center p-3 border">
             <i className="bi bi-cash-coin big-icon"></i>
             <p className="text-center">Set prices with confidence</p>
           </div>
-          <div className="col-9 my-auto p-4">
+          <div className="col my-auto p-4">
             <p>
               Margerin helps you determine where your costs should be to
               maintain profitability and set smart prices for different sales
@@ -143,8 +143,8 @@ const Landing = () => {
             </p>
           </div>
         </div>
-        <Footer></Footer>
       </div>
+      <Footer></Footer>
     </Fragment>
   );
 };

@@ -367,75 +367,101 @@ const ProductHasMaterials = (props) => {
         clearEntry={clearSupplierEntry}
       />
 
-      <div className="row mx-auto pt-2 gx-0">
-        <div className="row row-cols-6 pt-3 mx-auto gx-1 ">
-          <HeaderColumn display={"col-3"} headerText={"Material"} />
-          <HeaderColumn display={"col-2"} headerText={"Quantity"} />
-          <HeaderColumn display={"col-2"} headerText={"Unit"} />
-          <HeaderColumn display={"col-1"} headerText={"Per Unit"} />
-          <HeaderColumn display={"col-2"} headerText={"Cost"} />
-          <HeaderColumn display={"col-2"} headerText={""} />
-        </div>
+      <div className="mx-auto pt-2 gx-0 p-2 shadow-sm">
+        <h3>Add Materials</h3>
+        {/* <div className="row pt-3 mx-auto gx-1 "></div> */}
 
-        <div className="row row-cols-6 pt-3 mx-auto gx-1 shadow-sm mb-2">
-          <SelectWithToggleColumn
-            display={"col-3"}
-            label={"Material"}
-            list={materials}
-            itemkey={"material_name"}
-            newValue={addMaterial}
-            setNewValue={setAddMaterial}
-            id={"material_id"}
-            modalID={"#newMaterialModal"}
-          />
-          <EditColumn
-            display={"col-2"}
-            type={"number"}
-            label={"Quantity"}
-            newValue={newQuantity}
-            setNewValue={setNewQuantity}
-            placeholder={"0"}
-            min={0}
-            step={1}
-          />
-          <SelectColumn
-            display={"col-2"}
-            label={"Units"}
-            list={units}
-            itemkey={"unit_name"}
-            id={"unit_id"}
-            currentState={1}
-            newValue={newUnit}
-            setNewValue={setNewUnit}
-          />
-
-          <IsPerUnitCheck
-            id={"new-ipu-check"}
-            currentState={false}
-            isPerUnit={isPerUnit}
-            setIsPerUnit={setIsPerUnit}
-          />
-
-          {/* Cost */}
-          <div className="col-2 text-center text-muted mx-auto ">
-            <p className="py-1 mx-auto">
-              <i
-                className="bi bi-currency-dollar"
-                style={{ fontSize: "1.2rem" }}
-              ></i>
-            </p>
+        <div className="p-3 mx-auto gx-1  mb-2 row">
+          <div className="col-12 col-md-3 col-sm-6">
+            <HeaderColumn display={""} headerText={"Material"} />
+            <SelectWithToggleColumn
+              display={"col-12"}
+              label={"Material"}
+              list={materials}
+              itemkey={"material_name"}
+              newValue={addMaterial}
+              setNewValue={setAddMaterial}
+              id={"material_id"}
+              modalID={"#newMaterialModal"}
+            />
+          </div>
+          <div className="col-12 col-md-2 col-sm-6">
+            <HeaderColumn display={" "} headerText={"Quantity"} />
+            <EditColumn
+              display={""}
+              type={"number"}
+              label={"Quantity"}
+              newValue={newQuantity}
+              setNewValue={setNewQuantity}
+              placeholder={"0"}
+              min={0}
+              step={1}
+            />
+          </div>
+          <div className="col-12 col-md-3 col-sm-6">
+            <HeaderColumn display={""} headerText={"Unit"} />
+            <SelectColumn
+              display={""}
+              label={"Units"}
+              list={units}
+              itemkey={"unit_name"}
+              id={"unit_id"}
+              currentState={1}
+              newValue={newUnit}
+              setNewValue={setNewUnit}
+            />
+          </div>
+          {/* Second set */}
+          <div className="col-md-1 col-sm-2">
+            <HeaderColumn display={""} headerText={""} />
+            <IsPerUnitCheck
+              display={""}
+              id={"new-ipu-check"}
+              currentState={false}
+              isPerUnit={isPerUnit}
+              setIsPerUnit={setIsPerUnit}
+            />
           </div>
 
-          <div className="col-2 text-center d-grid pb-4">
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => handleAddMaterialToProduct()}
-            >
-              Add Material
-            </button>
+          <div className="col-md-3 col-sm-4">
+            <HeaderColumn display={""} headerText={""} />
+            <div className="text-center d-grid">
+              <button
+                className="btn btn-outline-primary"
+                onClick={() => handleAddMaterialToProduct()}
+              >
+                Add Material
+                {/* <i
+                  className="bi bi-plus-lg lh-1"
+                  style={{ fontSize: "1rem" }}
+                ></i> */}
+              </button>
+            </div>
           </div>
         </div>
         {/* --------------------------- Enumerated Existing -------------------------- */}
+        <h3>Bill of Materials</h3>
+        <div className="p-3 mx-auto gx-1 mb-2 row">
+          <div className="col-3">
+            <HeaderColumn display={""} headerText={"Material"} />
+          </div>
+          <div className="col-2">
+            <HeaderColumn display={""} headerText={"Quantity"} />
+          </div>
+          <div className="col-2">
+            <HeaderColumn display={""} headerText={"Unit"} />
+          </div>
+          <div className="col-1">
+            <HeaderColumn display={""} headerText={"Per Unit?"} />
+          </div>
+          <div className="col-2">
+            <HeaderColumn display={""} headerText={"Cost"} />
+          </div>
+          <div className="col-2">
+            <HeaderColumn display={""} headerText={"Edit"} />
+          </div>
+        </div>
+
         {!_.isEmpty(materialsForProduct) &&
           materialsForProduct.map((material) => {
             return material.phm_id !== rowToEdit ? (

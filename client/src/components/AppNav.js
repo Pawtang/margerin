@@ -21,28 +21,26 @@ const AppNav = () => {
             >
               <span className="navbar-toggler-icon"></span>
             </button> */}
-            <div>
-              <div className="d-flex">
-                <div className="">
-                  <Link className="text-link" to="/dashboard">
-                    Dashboard
-                  </Link>
-                </div>
-                <div className="">
-                  <Link className="text-link" to="/suppliers">
-                    Suppliers
-                  </Link>
-                </div>
-                <div className="">
-                  <Link className="text-link" to="/materials">
-                    Materials
-                  </Link>
-                </div>
-                <div className="">
-                  <Link className="text-link" to="/transactions">
-                    Transactions
-                  </Link>
-                </div>
+            <div className="row">
+              <div className="col-6 col-sm-3">
+                <Link className="text-link" to="/dashboard">
+                  Dashboard
+                </Link>
+              </div>
+              <div className="col-6 col-sm-3">
+                <Link className="text-link" to="/suppliers">
+                  Suppliers
+                </Link>
+              </div>
+              <div className="col-6 col-sm-3">
+                <Link className="text-link" to="/materials">
+                  Materials
+                </Link>
+              </div>
+              <div className="col-6 col-sm-3">
+                <Link className="text-link" to="/transactions">
+                  Transactions
+                </Link>
               </div>
             </div>
           </div>
