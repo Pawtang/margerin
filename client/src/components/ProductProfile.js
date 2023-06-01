@@ -24,7 +24,7 @@ const ProductProfile = (props) => {
     <Fragment>
       <div className="col-12 col-md-9 p-2 gx-5">
         <div className="row mb-5 shadow-sm p-4 rounded-3">
-          <div className="d-flex flex-row-reverse">
+          <div className="d-flex flex-row-reverse border">
             <div className="btn-group">
               <button className="btn btn-outline-primary" type="button">
                 Edit <i className="bi bi-pencil-square"></i>
