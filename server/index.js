@@ -25,7 +25,7 @@ app.use(
 app.use(express.json()); //req.body
 app.use(errorHandling);
 // for local
-const port = process.env.REACT_APP_PORT || 5000;
+const port = process.env.PORT || process.env.REACT_APP_PORT || 5000;
 //  for deploy
 // const port = process.env.PORT || 3000;
 
