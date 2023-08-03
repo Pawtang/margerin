@@ -22,7 +22,7 @@ const EditColumn = (props) => {
   }, []);
 
   return (
-    <div className={display}>
+    <div className={`${display}`}>
       <input
         type={type}
         className="form-control user-select-all"

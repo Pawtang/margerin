@@ -18,7 +18,7 @@ const SelectColumn = (props) => {
   }, []);
 
   return (
-    <div className={display}>
+    <div className={`${display}`}>
       <select
         className="form-select"
         aria-label={label}
