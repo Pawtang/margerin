@@ -516,7 +516,7 @@ const ProductHasMaterials = (props) => {
                   />
                 </div>
               ) : (
-                <div className="row row-cols-6 border-bottom py-1 mx-auto gx-1">
+                <div className="row  border-bottom py-1 mx-auto gx-1">
                   <SelectWithToggleColumn
                     display={"col-3"}
                     label={"Material"}
@@ -554,9 +554,10 @@ const ProductHasMaterials = (props) => {
                     currentState={material.is_per_unit}
                     isPerUnit={editIsPerUnit}
                     setIsPerUnit={setEditIsPerUnit}
+                    display={"col-1"}
                   />
                   <DisplayColumn
-                    display={"text-muted text-center"}
+                    display={"text-muted text-center border col-2"}
                     content={
                       material.avgcost
                         ? `$${parseFloat(
@@ -566,7 +567,7 @@ const ProductHasMaterials = (props) => {
                     }
                   />
                   <ButtonAcceptColumn
-                    display={"col-2 d-grid"}
+                    display={"col-2 border d-grid"}
                     editHandler={handleEditProductHasMaterial}
                     resourceID={material.phm_id}
                     setRowToEdit={setRowToEdit}
@@ -629,7 +630,7 @@ const ProductHasMaterials = (props) => {
                     </div>
 
                     <div className="row mt-2">
-                      <div className="col-6 mx-auto">
+                      <div className="col-4 mx-auto">
                         <div className="row">
                           <div className="btn-group">
                             <button
