@@ -1,6 +1,8 @@
+import ButtonAcceptColumn from "./ButtonAcceptColumn";
+import ButtonsColumn from "./ButtonsColumn";
+
 const ManagerCard = (props) => {
   const {
-    itemtype,
     id,
     itemName,
     description,
@@ -37,8 +39,10 @@ const ManagerCard = (props) => {
         <div className="card my-4 shadow-sm" key={id}>
           <h5 className="card-header">
             <input
+              className="form-control rounded border-primary"
               type="text"
               value={editName}
+              defaultValue={itemName}
               onChange={(e) => {
                 setEditName(e.target.value);
               }}
@@ -46,14 +50,25 @@ const ManagerCard = (props) => {
           </h5>
           <div className="card-body">
             <div className="row">
-              <p className="card-text">{description}</p>
+              <div className="col-12 d-grid mt-1">
+                <input
+                  className="form-control rounded"
+                  type="text"
+                  defaultValue={description}
+                  value={editDescription}
+                  onChange={(e) => {
+                    setEditDescription(e.target.value);
+                  }}
+                />
+              </div>
             </div>
             <div className="row">
-              <ButtonsColumn
-                display={"text-center d-grid justify-content-end"}
-                ID={id}
-                handleDeleteResource={handleDeleteItem}
+              <ButtonAcceptColumn
+                display={"col-12 d-grid mt-1"}
                 setRowToEdit={setRowToEdit}
+                resourceID={id}
+                editHandler={handleEdit}
+                clearEdit={clearEdit}
               />
             </div>
           </div>

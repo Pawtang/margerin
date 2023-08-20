@@ -1,4 +1,4 @@
-import { React Fragment useState useEffect } from "react";
+import { React, Fragment, useState, useEffect } from "react";
 import AppNav from "./AppNav";
 import HeaderColumn from "./elements/HeaderColumn";
 import DisplayColumn from "./elements/DisplayColumn";
@@ -7,7 +7,7 @@ import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
 import EditColumn from "./elements/EditColumn";
 import ManagerCard from "./elements/ManagerCard";
 import { getMaterials } from "../middleware/ProductHasMaterialUtils";
-import { deleteMaterial editMaterial } from "../middleware/MaterialUtils";
+import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
 import { useToasts } from "../contexts/ToastContext";
 import { useTokens } from "../contexts/UserContext";
@@ -17,15 +17,15 @@ import _ from "lodash";
 const ManagerMaterials = () => {
   const { token } = useTokens();
   const { addToast } = useToasts();
-  const [materials setMaterials] = useState([]);
+  const [materials, setMaterials] = useState([]);
   /* ------------------------------ New Material ------------------------------ */
-  const [newMaterialName setNewMaterialName] = useState("");
-  const [newMaterialDescription setNewMaterialDescription] = useState("");
+  const [newMaterialName, setNewMaterialName] = useState("");
+  const [newMaterialDescription, setNewMaterialDescription] = useState("");
 
   /* ------------------------------ Edit Existing ----------------------------- */
-  const [rowToEdit setRowToEdit] = useState("");
-  const [editMaterialName setEditMaterialName] = useState("");
-  const [editMaterialDescription setEditMaterialDescription] = useState("");
+  const [rowToEdit, setRowToEdit] = useState("");
+  const [editMaterialName, setEditMaterialName] = useState("");
+  const [editMaterialDescription, setEditMaterialDescription] = useState("");
 
   const clearEdit = () => {
     setEditMaterialName("");
@@ -39,10 +39,10 @@ const ManagerMaterials = () => {
 
   const handleEditMaterial = async (id) => {
     const body = {
-      editMaterialName
-      editMaterialDescription
+      editMaterialName,
+      editMaterialDescription,
     };
-    await editMaterial(id body token);
+    await editMaterial(id, body, token);
     retrieveMaterials();
   };
 
@@ -52,9 +52,9 @@ const ManagerMaterials = () => {
       setMaterials(array);
     } catch (err) {
       addToast({
-        title: "Failed to load materials"
-        type: "Error"
-        body: "Failed to edit material"
+        title: "Failed to load materials",
+        type: "Error",
+        body: "Failed to edit material",
       });
     }
   };
@@ -62,44 +62,44 @@ const ManagerMaterials = () => {
   const handleAddMaterial = async () => {
     try {
       const body = {
-        newMaterialName
-        newMaterialDescription
+        newMaterialName,
+        newMaterialDescription,
       };
-      await newMaterial(body token);
+      await newMaterial(body, token);
       clearInput();
       retrieveMaterials();
       addToast({
-        title: " Success"
-        type: "Success"
-        body: "Successfully added material"
+        title: " Success",
+        type: "Success",
+        body: "Successfully added material",
       });
     } catch (err) {
       addToast({
-        title: "Failed to add material"
-        type: "Error"
-        body: err.message
+        title: "Failed to add material",
+        type: "Error",
+        body: err.message,
       });
     }
   };
 
   const handleDeleteMaterial = async (materialID) => {
     try {
-      await deleteMaterial(materialID token);
+      await deleteMaterial(materialID, token);
       setMaterials(
         materials.filter((material) => material.material_id !== materialID)
       );
     } catch (err) {
       addToast({
-        title: "Failed to delete material"
-        type: "Error"
-        body: err.message
+        title: "Failed to delete material",
+        type: "Error",
+        body: err.message,
       });
     }
   };
 
   useEffect(() => {
     retrieveMaterials();
-  } [rowToEdit]);
+  }, [rowToEdit]);
 
   return (
     <Fragment>
@@ -216,73 +216,22 @@ const ManagerMaterials = () => {
           <div className="d-block d-sm-none">
             {!_.isEmpty(materials) &&
               materials.map((material) => {
-                <ManagerCard itemtype = {"Material"}
-                 id = {material.id}
-                itemName = {material.name}
-                description = {material.description}
-                handleDeleteItem = {handleDeleteMaterial}
-                setRowToEdit = {setRowToEdit}
-                editRow = {rowToEdit}
-                editName = {editMaterialName}
-                setEditName = {setEditMaterialName}
-                editDescription = {editMaterialDescription}
-                setEditDescription = {setEditMaterialDescription}
-                handleEdit = {handleEditMaterial}
-                clearEdit = {clearEdit}
-                />
-                return material.material_id !== rowToEdit ? (
-                  <div
-                    className="card my-4 shadow-sm"
-                    key={material.material_id}
-                  >
-                    <h5 className="card-header">{material.material_name}</h5>
-                    <div className="card-body">
-                      <div className="row">
-                        <p className="card-text">
-                          {material.material_description}
-                        </p>
-                      </div>
-                      <div className="row">
-                        <ButtonsColumn
-                          display={"text-center d-grid justify-content-end"}
-                          ID={material.material_id}
-                          handleDeleteResource={handleDeleteMaterial}
-                          setRowToEdit={setRowToEdit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className="row row-cols-5 border-bottom py-2 mb-2 gx-2"
-                    key={material.material_id}
-                  >
-                    <EditColumn
-                      display={"col-5"}
-                      type={"text"}
-                      label={"Name"}
-                      newValue={editMaterialName}
-                      setNewValue={setEditMaterialName}
-                      placeholder={"Material Name"}
-                      currentState={material.material_name}
-                    />
-                    <EditColumn
-                      display={"col-5"}
-                      type={"text"}
-                      label={"Description"}
-                      newValue={editMaterialDescription}
-                      setNewValue={setEditMaterialDescription}
-                      placeholder={"Material Description"}
-                      currentState={material.material_description}
-                    />
-                    <ButtonAcceptColumn
-                      display={"col-2 d-grid"}
-                      setRowToEdit={setRowToEdit}
-                      resourceID={material.material_id}
-                      editHandler={handleEditMaterial}
-                      clearEdit={clearEdit}
-                    />
-                  </div>
+                return (
+                  <ManagerCard
+                    itemtype={"Material"}
+                    id={material.material_id}
+                    itemName={material.material_name}
+                    description={material.material_description}
+                    handleDeleteItem={handleDeleteMaterial}
+                    setRowToEdit={setRowToEdit}
+                    editRow={rowToEdit}
+                    editName={editMaterialName}
+                    setEditName={setEditMaterialName}
+                    editDescription={editMaterialDescription}
+                    setEditDescription={setEditMaterialDescription}
+                    handleEdit={handleEditMaterial}
+                    clearEdit={clearEdit}
+                  />
                 );
               })}
           </div>
