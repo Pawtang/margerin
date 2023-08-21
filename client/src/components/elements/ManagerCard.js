@@ -1,20 +1,25 @@
 import ButtonAcceptColumn from "./ButtonAcceptColumn";
 import ButtonsColumn from "./ButtonsColumn";
 
+// Need to pass in a list of dictionaries and destructure into display and edit rows...
+
 const ManagerCard = (props) => {
   const {
     id,
     itemName,
-    description,
+    itemtype,
     handleDeleteItem,
     setRowToEdit,
     editRow,
     editName,
     setEditName,
-    editDescription,
-    setEditDescription,
+    // editDescription,
+    // setEditDescription,
     handleEdit,
     clearEdit,
+    displayRows,
+    editRows,
+    onChange,
   } = props;
   return (
     <>
@@ -22,9 +27,16 @@ const ManagerCard = (props) => {
         <div className="card my-4 shadow-sm" key={id}>
           <h5 className="card-header">{itemName}</h5>
           <div className="card-body">
-            <div className="row">
-              <p className="card-text">{description}</p>
-            </div>
+            {displayRows.map((content) => {
+              return (
+                <div className="row">
+                  <div className="card-text h6 bg-light rounded">
+                    {content.label}
+                  </div>
+                  <div className="card-text ">{content.value}</div>
+                </div>
+              );
+            })}
             <div className="row">
               <ButtonsColumn
                 display={"text-center d-grid justify-content-end"}
@@ -38,6 +50,7 @@ const ManagerCard = (props) => {
       ) : (
         <div className="card my-4 shadow-sm" key={id}>
           <h5 className="card-header">
+            <label htmlFor="">{itemtype} Name</label>
             <input
               className="form-control rounded border-primary"
               type="text"
@@ -51,15 +64,23 @@ const ManagerCard = (props) => {
           <div className="card-body">
             <div className="row">
               <div className="col-12 d-grid mt-1">
-                <input
-                  className="form-control rounded"
-                  type="text"
-                  defaultValue={description}
-                  value={editDescription}
-                  onChange={(e) => {
-                    setEditDescription(e.target.value);
-                  }}
-                />
+                {editRows.map((content) => {
+                  console.log(content);
+                  return (
+                    <>
+                      <label htmlFor="">{content.label}</label>
+                      <input
+                        className="form-control rounded"
+                        type="text"
+                        defaultValue={content.defaultValue}
+                        value={content.value}
+                        onChange={(e) => {
+                          content.onChange(e.target.value);
+                        }}
+                      />
+                    </>
+                  );
+                })}
               </div>
             </div>
             <div className="row">

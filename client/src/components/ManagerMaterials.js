@@ -231,6 +231,20 @@ const ManagerMaterials = () => {
                     setEditDescription={setEditMaterialDescription}
                     handleEdit={handleEditMaterial}
                     clearEdit={clearEdit}
+                    displayRows={[
+                      {
+                        label: "Material Description",
+                        value: material.material_description,
+                      },
+                    ]}
+                    editRows={[
+                      {
+                        label: "Description",
+                        value: editMaterialDescription,
+                        defaultValue: material.material_description,
+                        onChange: setEditMaterialDescription,
+                      },
+                    ]}
                   />
                 );
               })}
