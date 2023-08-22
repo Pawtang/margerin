@@ -420,10 +420,8 @@ const TransactionManager = () => {
                     handleDeleteItem={handleDeleteTransaction}
                     setRowToEdit={setRowToEdit}
                     editRow={rowToEdit}
-                    editName={editTransactionDate}
-                    setEditName={setEditTransactionDate}
-                    // editDescription={editMaterialDescription}
-                    // setEditDescription={setEditMaterialDescription}
+                    editName={editTransactionMaterial}
+                    setEditName={setEditTransactionMaterial}
                     handleEdit={handleEditTransaction}
                     clearEdit={clearEdit}
                     displayRows={[
@@ -449,7 +447,30 @@ const TransactionManager = () => {
                     ]}
                     editRows={[
                       {
+                        label: "Date",
+                        type: "date",
+                        value: editTransactionDate,
+                        defaultValue: transaction.transaction_date,
+                        onChange: setEditTransactionDate,
+                      },
+                      {
+                        label: "Supplier",
+                        select: true,
+                        type: "text",
+                        value: editTransactionSupplier,
+                        defaultValue: transaction.supplier_id,
+                        onChange: setNewTransactionSupplier,
+                      },
+                      {
+                        label: "Quantity",
+                        type: "text",
+                        value: editTransactionQuantity,
+                        defaultValue: transaction.quantity,
+                        onChange: setEditTransactionQuantity,
+                      },
+                      {
                         label: "Cost",
+                        type: "text",
                         value: editTransactionCost,
                         defaultValue: transaction.cost,
                         onChange: setEditTransactionCost,

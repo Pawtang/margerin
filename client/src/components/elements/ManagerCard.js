@@ -1,5 +1,6 @@
 import ButtonAcceptColumn from "./ButtonAcceptColumn";
 import ButtonsColumn from "./ButtonsColumn";
+import SelectColumn from "./SelectColumn";
 
 // Need to pass in a list of dictionaries and destructure into display and edit rows...
 
@@ -13,13 +14,10 @@ const ManagerCard = (props) => {
     editRow,
     editName,
     setEditName,
-    // editDescription,
-    // setEditDescription,
     handleEdit,
     clearEdit,
     displayRows,
     editRows,
-    onChange,
   } = props;
   return (
     <>
@@ -63,21 +61,32 @@ const ManagerCard = (props) => {
             <div className="row">
               <div className="col-12 d-grid mt-1">
                 {editRows.map((content) => {
-                  console.log(content);
-                  return (
-                    <>
-                      <label htmlFor="">{content.label}</label>
-                      <input
-                        className="form-control rounded"
-                        type="text"
-                        defaultValue={content.defaultValue}
-                        value={content.value}
-                        onChange={(e) => {
-                          content.onChange(e.target.value);
-                        }}
-                      />
-                    </>
-                  );
+                  if (content.select) {
+                    return <SelectColumn 
+                    display=
+                    label=
+                    list=
+                    itemkey=
+                    newValue=
+                    setNewValue=
+                    currentState=
+                    id={content.id}
+                    />;
+                  } else
+                    return (
+                      <>
+                        <label htmlFor="">{content.label}</label>
+                        <input
+                          className="form-control rounded"
+                          type={content.type}
+                          defaultValue={content.defaultValue}
+                          value={content.value}
+                          onChange={(e) => {
+                            content.onChange(e.target.value);
+                          }}
+                        />
+                      </>
+                    );
                 })}
               </div>
             </div>

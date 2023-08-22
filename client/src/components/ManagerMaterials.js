@@ -240,6 +240,7 @@ const ManagerMaterials = () => {
                     editRows={[
                       {
                         label: "Description",
+                        type: "text",
                         value: editMaterialDescription,
                         defaultValue: material.material_description,
                         onChange: setEditMaterialDescription,

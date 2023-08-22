@@ -276,12 +276,14 @@ const ManagerSuppliers = () => {
                     editRows={[
                       {
                         label: "Contact Name",
+                        type: "text",
                         value: editSupplierContactName,
                         defaultValue: Supplier.contact_name,
                         onChange: setEditSupplierContactName,
                       },
                       {
                         label: "Contact Phone",
+                        type: "text",
                         value: editSupplierPhone,
                         defaultValue: Supplier.supplier_phone,
                         onChange: setEditSupplierPhone,
