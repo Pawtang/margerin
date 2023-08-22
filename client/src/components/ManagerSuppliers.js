@@ -265,10 +265,6 @@ const ManagerSuppliers = () => {
                     clearEdit={clearEdit}
                     displayRows={[
                       {
-                        label: "Supplier Name",
-                        value: Supplier.supplier_name,
-                      },
-                      {
                         label: "Contact Name",
                         value: Supplier.contact_name,
                       },

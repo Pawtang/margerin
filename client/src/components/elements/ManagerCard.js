@@ -29,10 +29,8 @@ const ManagerCard = (props) => {
           <div className="card-body">
             {displayRows.map((content) => {
               return (
-                <div className="row">
-                  <div className="card-text h6 bg-light rounded">
-                    {content.label}
-                  </div>
+                <div className="row my-2 mx-2 bg-light rounded p-2">
+                  <div className="card-text h6 ">{content.label}</div>
                   <div className="card-text ">{content.value}</div>
                 </div>
               );
