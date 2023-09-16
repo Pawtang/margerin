@@ -493,6 +493,17 @@ const TransactionManager = () => {
                         onChange: setEditTransactionQuantity,
                       },
                       {
+                        select: true,
+                        display: "col-2",
+                        label: "Unit",
+                        list: units,
+                        itemkey: "unit_name",
+                        id: "unit_id",
+                        currentState: transaction.unit_id,
+                        newValue: { editTransactionUnit },
+                        setNewValue: setEditTransactionUnit,
+                      },
+                      {
                         label: "Cost",
                         type: "text",
                         value: editTransactionCost,
