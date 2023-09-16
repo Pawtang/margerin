@@ -24,7 +24,7 @@ const IsPerUnitCheck = (props) => {
       delay={{ show: 100, hide: 400 }}
       overlay={renderTooltip}
     >
-      <div className={`${display} text-center w-100`}>
+      <div className={`${display} text-center`}>
         <input
           checked={isPerUnit ? true : false}
           type="checkbox"

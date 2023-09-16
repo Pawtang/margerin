@@ -5,6 +5,7 @@ import DisplayColumn from "./elements/DisplayColumn";
 import ButtonsColumn from "./elements/ButtonsColumn";
 import ButtonAcceptColumn from "./elements/ButtonAcceptColumn";
 import EditColumn from "./elements/EditColumn";
+import ManagerCard from "./elements/ManagerCard";
 import { getMaterials } from "../middleware/ProductHasMaterialUtils";
 import { deleteMaterial, editMaterial } from "../middleware/MaterialUtils";
 import { newMaterial } from "../middleware/ProductHasMaterialUtils";
@@ -113,99 +114,142 @@ const ManagerMaterials = () => {
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white px-4">
           <h1 className="my-3">Material Manager</h1>
-          <div className="row row-cols-5 gx-1 mt-4">
-            <HeaderColumn display={"col-5"} headerText={"Material Name"} />
-            <HeaderColumn
-              display={"col-5"}
-              headerText={"Material Description"}
-            />
-            <HeaderColumn display={"col-2"} headerText={""} />
-          </div>
-
-          <div className="row row-cols-3 border-bottom py-2 mb-2 gx-2">
-            <EditColumn
-              display={"col-5"}
-              type={"text"}
-              label={"Name"}
-              newValue={newMaterialName}
-              setNewValue={setNewMaterialName}
-              placeholder={"Material Name"}
-            />
-            <EditColumn
-              display={"col-5"}
-              type={"text"}
-              label={"Description"}
-              newValue={newMaterialDescription}
-              setNewValue={setNewMaterialDescription}
-              placeholder={"Description"}
-            />
-
-            <div className="col-2 text-center d-grid">
-              <button
-                className="btn btn-outline-primary"
-                onClick={handleAddMaterial}
-              >
-                Add
-              </button>
+          <div className="p-3 mx-auto gx-1  mb-2 row ">
+            {/* <div className="row row-cols-3 border-bottom py-2 mb-2 gx-2 border"> */}
+            <div className="row border-bottom py-2 mb-2 gx-2 ">
+              <h3>Add Materials</h3>
+              <div className="col-12 col-sm-5">
+                <HeaderColumn display={""} headerText={"Material Name"} />
+                <EditColumn
+                  display={""}
+                  type={"text"}
+                  label={"Name"}
+                  newValue={newMaterialName}
+                  setNewValue={setNewMaterialName}
+                  placeholder={"Material Name"}
+                />
+              </div>
+              <div className="col-12  col-sm-5">
+                <HeaderColumn
+                  display={""}
+                  headerText={"Material Description"}
+                />
+                <EditColumn
+                  display={""}
+                  type={"text"}
+                  label={"Description"}
+                  newValue={newMaterialDescription}
+                  setNewValue={setNewMaterialDescription}
+                  placeholder={"Description"}
+                />
+              </div>
+              <div className="col-12 col-sm-2 text-center d-grid">
+                <HeaderColumn display={""} headerText={""} />
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={handleAddMaterial}
+                >
+                  Add
+                </button>
+              </div>
             </div>
           </div>
           {/* --------------------------- Enumerated Existing -------------------------- */}
-          {!_.isEmpty(materials) &&
-            materials.map((material) => {
-              return material.material_id !== rowToEdit ? (
-                <div
-                  className="row row-cols-3 border-bottom py-2 gx-2 highlight"
-                  key={material.material_id}
-                >
-                  <DisplayColumn
-                    display={"col-5"}
-                    content={material.material_name}
-                  />
-                  <DisplayColumn
-                    display={"col-5"}
-                    content={material.material_description}
-                  />
-                  <ButtonsColumn
-                    display={"col-2 text-center d-grid"}
-                    ID={material.material_id}
-                    handleDeleteResource={handleDeleteMaterial}
+          <h3>Current Materials</h3>
+          <div className="d-none d-sm-block">
+            {!_.isEmpty(materials) &&
+              materials.map((material) => {
+                return material.material_id !== rowToEdit ? (
+                  <div
+                    className="row row-cols-3 border-bottom py-2 gx-2 highlight"
+                    key={material.material_id}
+                  >
+                    <DisplayColumn
+                      display={"col-5"}
+                      content={material.material_name}
+                    />
+                    <DisplayColumn
+                      display={"col-5"}
+                      content={material.material_description}
+                    />
+                    <ButtonsColumn
+                      display={"col-2 text-center d-grid"}
+                      ID={material.material_id}
+                      handleDeleteResource={handleDeleteMaterial}
+                      setRowToEdit={setRowToEdit}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="row row-cols-5 border-bottom py-2 mb-2 gx-2"
+                    key={material.material_id}
+                  >
+                    <EditColumn
+                      display={"col-5"}
+                      type={"text"}
+                      label={"Name"}
+                      newValue={editMaterialName}
+                      setNewValue={setEditMaterialName}
+                      placeholder={"Material Name"}
+                      currentState={material.material_name}
+                    />
+                    <EditColumn
+                      display={"col-5"}
+                      type={"text"}
+                      label={"Description"}
+                      newValue={editMaterialDescription}
+                      setNewValue={setEditMaterialDescription}
+                      placeholder={"Material Description"}
+                      currentState={material.material_description}
+                    />
+                    <ButtonAcceptColumn
+                      display={"col-2 d-grid"}
+                      setRowToEdit={setRowToEdit}
+                      resourceID={material.material_id}
+                      editHandler={handleEditMaterial}
+                      clearEdit={clearEdit}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+          <div className="d-block d-sm-none">
+            {!_.isEmpty(materials) &&
+              materials.map((material) => {
+                return (
+                  <ManagerCard
+                    itemtype={"Material"}
+                    id={material.material_id}
+                    itemName={material.material_name}
+                    description={material.material_description}
+                    handleDeleteItem={handleDeleteMaterial}
                     setRowToEdit={setRowToEdit}
-                  />
-                </div>
-              ) : (
-                <div
-                  className="row row-cols-5 border-bottom py-2 mb-2 gx-2"
-                  key={material.material_id}
-                >
-                  <EditColumn
-                    display={"col-5"}
-                    type={"text"}
-                    label={"Name"}
-                    newValue={editMaterialName}
-                    setNewValue={setEditMaterialName}
-                    placeholder={"Material Name"}
-                    currentState={material.material_name}
-                  />
-                  <EditColumn
-                    display={"col-5"}
-                    type={"text"}
-                    label={"Description"}
-                    newValue={editMaterialDescription}
-                    setNewValue={setEditMaterialDescription}
-                    placeholder={"Material Description"}
-                    currentState={material.material_description}
-                  />
-                  <ButtonAcceptColumn
-                    display={"col-2 d-grid"}
-                    setRowToEdit={setRowToEdit}
-                    resourceID={material.material_id}
-                    editHandler={handleEditMaterial}
+                    editRow={rowToEdit}
+                    editName={editMaterialName}
+                    setEditName={setEditMaterialName}
+                    editDescription={editMaterialDescription}
+                    setEditDescription={setEditMaterialDescription}
+                    handleEdit={handleEditMaterial}
                     clearEdit={clearEdit}
+                    displayRows={[
+                      {
+                        label: "Material Description",
+                        value: material.material_description,
+                      },
+                    ]}
+                    editRows={[
+                      {
+                        label: "Description",
+                        type: "text",
+                        value: editMaterialDescription,
+                        defaultValue: material.material_description,
+                        onChange: setEditMaterialDescription,
+                      },
+                    ]}
                   />
-                </div>
-              );
-            })}
-
+                );
+              })}
+          </div>
           {/* ----------------------------------- End ---------------------------------- */}
         </div>
       </div>

@@ -516,7 +516,7 @@ const ProductHasMaterials = (props) => {
                   />
                 </div>
               ) : (
-                <div className="row row-cols-6 border-bottom py-1 mx-auto gx-1">
+                <div className="row  border-bottom py-1 mx-auto gx-1">
                   <SelectWithToggleColumn
                     display={"col-3"}
                     label={"Material"}
@@ -554,9 +554,10 @@ const ProductHasMaterials = (props) => {
                     currentState={material.is_per_unit}
                     isPerUnit={editIsPerUnit}
                     setIsPerUnit={setEditIsPerUnit}
+                    display={"col-1"}
                   />
                   <DisplayColumn
-                    display={"text-muted text-center"}
+                    display={"text-muted text-center border col-2"}
                     content={
                       material.avgcost
                         ? `$${parseFloat(
@@ -566,7 +567,7 @@ const ProductHasMaterials = (props) => {
                     }
                   />
                   <ButtonAcceptColumn
-                    display={"col-2 d-grid"}
+                    display={"col-2 border d-grid"}
                     editHandler={handleEditProductHasMaterial}
                     resourceID={material.phm_id}
                     setRowToEdit={setRowToEdit}
@@ -602,8 +603,8 @@ const ProductHasMaterials = (props) => {
 
                     {/* Edit */}
                     <div className="row">
-                      <div className="col-6 mx-auto mt-2">
-                        <div className="row">
+                      <div className="col-12 mx-auto mt-2">
+                        <div className="row mx-1">
                           <button
                             key="displayAverageCost"
                             className={
@@ -628,24 +629,26 @@ const ProductHasMaterials = (props) => {
                       </div>
                     </div>
 
-                    <div className="row mt-2">
-                      <div className="col-6 mx-auto">
+                    <div className="row mt-2 mx-1 justify-content-around">
+                      <div className="col-6">
                         <div className="row">
-                          <div className="btn-group">
-                            <button
-                              className="btn btn-outline-primary"
-                              type="button"
-                            >
-                              Edit <i className="bi bi-pencil-square"></i>
-                            </button>
-                            <button
-                              className="btn btn-outline-danger"
-                              type="button"
-                              onClick={() => {}}
-                            >
-                              Delete <i className="bi bi-trash-fill"></i>
-                            </button>
-                          </div>
+                          <button
+                            className="btn btn-outline-primary"
+                            type="button"
+                          >
+                            Edit <i className="bi bi-pencil-square"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className="row">
+                          <button
+                            className="btn btn-outline-danger"
+                            type="button"
+                            onClick={() => {}}
+                          >
+                            Delete <i className="bi bi-trash-fill"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
