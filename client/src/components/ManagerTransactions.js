@@ -218,82 +218,98 @@ const TransactionManager = () => {
       <div className="container-xxl mb-5">
         <div className="row shadow rounded-3 bg-white px-4">
           <h1 className="my-3">Transaction Manager</h1>
-          <div className="row row-cols-7 gx-1 mt-4">
-            <HeaderColumn display={"col-2"} headerText={"Transaction Date"} />
-            <HeaderColumn display={"col-2"} headerText={"Material"} />
-            <HeaderColumn display={"col-2"} headerText={"Supplier"} />
-            <HeaderColumn display={"col-1"} headerText={"Quantity"} />
-            <HeaderColumn display={"col-2"} headerText={"Unit"} />
-            <HeaderColumn display={"col-1"} headerText={"Total Cost"} />
-            <HeaderColumn display={"col-2"} headerText={""} />
-          </div>
-
-          <div className="row row-cols-6 border-bottom py-2 mb-2 gx-2">
-            <EditColumn
-              display={"col-2"}
-              type={"date"}
-              label={"Date"}
-              newValue={newTransactionDate}
-              setNewValue={setNewTransactionDate}
-              placeholder={"Transaction Date"}
-            />
-            <SelectColumn
-              display={"col-2"}
-              label={"Material"}
-              list={materials}
-              itemkey={"material_name"}
-              id={"material_id"}
-              // currentState={materials[0].material_id}
-              newValue={newTransactionMaterial}
-              setNewValue={setNewTransactionMaterial}
-            />
-            <SelectColumn
-              display={"col-2"}
-              // id={"selectSupplier"}
-              label={"Supplier"}
-              list={suppliers}
-              itemkey={"supplier_name"}
-              id={"supplier_id"}
-              // currentState={suppliers[0].supplier_id}
-              newValue={newTransactionSupplier}
-              setNewValue={setNewTransactionSupplier}
-            />
-            <EditColumn
-              display={"col-1"}
-              type={"number"}
-              label={"Quantity"}
-              min={0}
-              newValue={newTransactionQuantity}
-              setNewValue={setNewTransactionQuantity}
-              placeholder={"0"}
-            />
-            <SelectColumn
-              display={"col-2"}
-              // id={"selectUnit"}
-              label={"Unit"}
-              list={units}
-              itemkey={"unit_name"}
-              id={"unit_id"}
-              currentState={1}
-              newValue={newTransactionUnit}
-              setNewValue={setNewTransactionUnit}
-            />
-
-            <InputCost
-              display={"col-2"}
-              value={newTransactionCost}
-              setter={setNewTransactionCost}
-            />
-
-            <div className="col-1 text-center d-grid">
-              <button
-                className="btn btn-outline-primary"
-                onClick={handleAddTransaction}
-              >
-                Add
-              </button>
+          <div className="p-3 mx-auto gx-1  mb-2 row ">
+            <div className="row border-bottom py-2 mb-2 gx-2 ">
+              <h3>Add Transactions</h3>
+              <div className="col-12 col-sm-4 col-md-2">
+                <HeaderColumn display={""} headerText={"Transaction Date"} />
+                <EditColumn
+                  display={""}
+                  type={"date"}
+                  label={"Date"}
+                  newValue={newTransactionDate}
+                  setNewValue={setNewTransactionDate}
+                  placeholder={"Transaction Date"}
+                />
+              </div>
+              <div className="col-12 col-md-2 col-sm-4">
+                <HeaderColumn display={""} headerText={"Material"} />
+                <SelectColumn
+                  display={""}
+                  // id={"selectSupplier"}
+                  label={"Supplier"}
+                  list={suppliers}
+                  itemkey={"supplier_name"}
+                  id={"supplier_id"}
+                  // currentState={suppliers[0].supplier_id}
+                  newValue={newTransactionSupplier}
+                  setNewValue={setNewTransactionSupplier}
+                />
+              </div>
+              <div className="col-12 col-md-2 col-sm-4">
+                <HeaderColumn display={""} headerText={"Supplier"} />
+                <SelectColumn
+                  // display={"col-2"}
+                  // id={"selectSupplier"}
+                  label={"Supplier"}
+                  list={suppliers}
+                  itemkey={"supplier_name"}
+                  id={"supplier_id"}
+                  // currentState={suppliers[0].supplier_id}
+                  newValue={newTransactionSupplier}
+                  setNewValue={setNewTransactionSupplier}
+                />
+              </div>
+              <div className="col-12 col-md-1 col-sm-4">
+                <HeaderColumn display={""} headerText={"Quantity"} />
+                <EditColumn
+                  // display={"col-1"}
+                  type={"number"}
+                  label={"Quantity"}
+                  min={0}
+                  newValue={newTransactionQuantity}
+                  setNewValue={setNewTransactionQuantity}
+                  placeholder={"0"}
+                />
+              </div>
+              <div className="col-12 col-md-2 col-sm-4">
+                <HeaderColumn display={""} headerText={"Unit"} />
+                <SelectColumn
+                  // display={"col-2"}
+                  // id={"selectUnit"}
+                  label={"Unit"}
+                  list={units}
+                  itemkey={"unit_name"}
+                  id={"unit_id"}
+                  currentState={1}
+                  newValue={newTransactionUnit}
+                  setNewValue={setNewTransactionUnit}
+                />
+              </div>
+              <div className="col-12 col-md-2 col-sm-4">
+                <HeaderColumn display={""} headerText={"Total Cost"} />
+                <InputCost
+                  display={""}
+                  value={newTransactionCost}
+                  setter={setNewTransactionCost}
+                />
+              </div>
+              <div className="col-12 col-md-1">
+                <HeaderColumn display={""} headerText={""} />
+                <div className=" text-center d-grid">
+                  <button
+                    className="btn btn-outline-primary"
+                    onClick={handleAddTransaction}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
             </div>
+            {/* <div className="row row-cols-7 gx-1 mt-4"> */}
           </div>
+
+          <div className="row row-cols-6 border-bottom py-2 mb-2 gx-2"></div>
           {/* --------------------------- Enumerated Existing -------------------------- */}
           <div className="d-none d-sm-block">
             {!_.isEmpty(transactions) &&
@@ -414,7 +430,7 @@ const TransactionManager = () => {
                 return (
                   <ManagerCard
                     itemtype={"Transaction"}
-                    id={transaction.transactionID}
+                    id={transaction.transaction_id}
                     itemName={transaction.material_name}
                     description={"description"}
                     handleDeleteItem={handleDeleteTransaction}
@@ -460,6 +476,14 @@ const TransactionManager = () => {
                         value: editTransactionSupplier,
                         defaultValue: transaction.supplier_id,
                         onChange: setNewTransactionSupplier,
+                        display: "col-2 mt-2",
+                        label: "Supplier",
+                        list: suppliers,
+                        itemkey: "supplier_name",
+                        id: "supplier_id",
+                        currentState: transaction.supplier_id,
+                        newValue: editTransactionSupplier,
+                        setNewValue: setEditTransactionSupplier,
                       },
                       {
                         label: "Quantity",

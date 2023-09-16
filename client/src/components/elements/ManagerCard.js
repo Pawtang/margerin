@@ -19,6 +19,7 @@ const ManagerCard = (props) => {
     displayRows,
     editRows,
   } = props;
+  // console.log(id, editRow, editName);
   return (
     <>
       {id !== editRow ? (
@@ -27,10 +28,12 @@ const ManagerCard = (props) => {
           <div className="card-body">
             {displayRows.map((content) => {
               return (
-                <div className="row my-2 mx-2 bg-light rounded p-2">
-                  <div className="card-text h6 ">{content.label}</div>
-                  <div className="card-text ">{content.value}</div>
-                </div>
+                content.value && (
+                  <div className="row my-2 mx-2 bg-light rounded p-2">
+                    <div className="card-text h6 ">{content.label}</div>
+                    <div className="card-text ">{content.value}</div>
+                  </div>
+                )
               );
             })}
             <div className="row">
@@ -46,32 +49,28 @@ const ManagerCard = (props) => {
       ) : (
         <div className="card my-4 shadow-sm" key={id}>
           <h5 className="card-header">
-            <label htmlFor="">{itemtype} Name</label>
-            <input
-              className="form-control rounded border-primary"
-              type="text"
-              value={editName}
-              defaultValue={itemName}
-              onChange={(e) => {
-                setEditName(e.target.value);
-              }}
-            />
+            <h5 className="card-header">{itemName}</h5>
           </h5>
           <div className="card-body">
             <div className="row">
               <div className="col-12 d-grid mt-1">
                 {editRows.map((content) => {
                   if (content.select) {
-                    return <SelectColumn 
-                    display=
-                    label=
-                    list=
-                    itemkey=
-                    newValue=
-                    setNewValue=
-                    currentState=
-                    id={content.id}
-                    />;
+                    return (
+                      <>
+                        <label htmlFor="">{content.label}</label>
+                        <SelectColumn
+                          // display={content.label}
+                          label={content.label}
+                          list={content.list}
+                          itemkey={content.itemkey}
+                          id={content.id}
+                          newValue={content.newValue}
+                          setNewValue={content.setNewValue}
+                          currentState={content.currentState}
+                        />
+                      </>
+                    );
                   } else
                     return (
                       <>
